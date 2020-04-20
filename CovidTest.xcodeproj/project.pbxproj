@@ -90,8 +90,10 @@
 				53EA158624494B2800CCAB40 /* ViewController.swift */,
 				53EA159E244C20FB00CCAB40 /* BarChartViewController.swift */,
 				53EA15A0244C4BEE00CCAB40 /* LocationInfo.swift */,
-				53EA15AB244D96AD00CCAB40 /* Managers */,
-				53EA15AA244D968500CCAB40 /* Extensions */,
+				53EA15A4244D340800CCAB40 /* LocationManager.swift */,
+				53EA15A2244C53FD00CCAB40 /* AuthenticationManager.swift */,
+				53EA15A6244D67E600CCAB40 /* CoreDataManager.swift */,
+				53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */,
 				53EA158824494B2800CCAB40 /* Main.storyboard */,
 				53EA158E24494B2900CCAB40 /* Assets.xcassets */,
 				53EA159024494B2900CCAB40 /* LaunchScreen.storyboard */,
@@ -99,24 +101,6 @@
 				53EA158B24494B2800CCAB40 /* CovidTest.xcdatamodeld */,
 			);
 			path = CovidTest;
-			sourceTree = "<group>";
-		};
-		53EA15AA244D968500CCAB40 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		53EA15AB244D96AD00CCAB40 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				53EA15A2244C53FD00CCAB40 /* AuthenticationManager.swift */,
-				53EA15A6244D67E600CCAB40 /* CoreDataManager.swift */,
-				53EA15A4244D340800CCAB40 /* LocationManager.swift */,
-			);
-			path = Managers;
 			sourceTree = "<group>";
 		};
 		A99C9451329466CA9018595B /* Pods */ = {
