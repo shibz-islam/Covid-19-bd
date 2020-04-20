@@ -17,7 +17,7 @@ class AuthenticationManager {
     
     let apiStringForDistrictLevelData: String = "http://149.165.157.107:1971/api/data?name=Bangladesh&type=country&date="
     let apiStringForCityLevelData: String = "http://149.165.157.107:1971/api/data?name=Dhaka&type=city&date="
-    
+    let apiStringForLocation: String = "http://149.165.157.107:1971/api/get_location"
     
     func sendRequestForLocationData(withIsLevelCity isLevelCity: Bool?, completionHandler: @escaping(_ isSuccess: Bool?, _ locationArray: [LocationInfo]?)->Void) {
 
@@ -80,7 +80,7 @@ class AuthenticationManager {
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         
         // create post request
-        let url = URL(string: "http://149.165.157.107:1971/api/get_location")!
+        let url = URL(string: apiStringForLocation)!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         

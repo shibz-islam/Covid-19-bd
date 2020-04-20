@@ -12,4 +12,8 @@ class CoreDataManager {
     static let shared = CoreDataManager()
     private init(){}
     
+    func storeLocationInfo() {
+        
+    }
+    
 }
