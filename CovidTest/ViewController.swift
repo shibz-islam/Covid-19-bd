@@ -57,12 +57,17 @@ class ViewController: UIViewController {
     
     @objc private func onDidReceiveData(_ notification: Notification) {
         print("onDidReceiveData...")
-        loadInitialData()
+        DispatchQueue.main.async {
+            self.loadInitialData()
+        }
     }
     
     @objc private func onDidReceiveDataForCity(_ notification: Notification) {
         print("onDidReceiveDataForCity...")
-        loadInitialDataForCity()
+        DispatchQueue.main.async {
+            self.loadInitialDataForCity()
+        }
+        
     }
     
     @IBAction func segmentedControlPressed(_ sender: Any) {
@@ -82,53 +87,55 @@ class ViewController: UIViewController {
     }
     
     private func loadInitialData() {
-        DispatchQueue.main.async {
-            self.mapView.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocation.coordinate.latitude, longitude: self.defaultLocation.coordinate.longitude, zoom: self.defaultZoomLevel)
-            
-            if LocationManager.shared.dictForDistrictLocation.count > 0 {
-                do {
-                    //print("loadInitialData")
-                    self.mapView.clear()
-                    for (key, location) in LocationManager.shared.dictForDistrictLocation{
-                        let m = GMSMarker()
-                        m.position = CLLocationCoordinate2D(latitude: location.latitude ?? self.defaultLocation.coordinate.latitude, longitude: location.longitude ?? self.defaultLocation.coordinate.longitude)
-                        m.title = location.name
-                        m.snippet = "Current Patients=\(location.cases)"
-                        self.markers.append(m)
-                    }
-                    //print("loadMarkerPositions")
-                    for item in self.markers {
-                        item.map = self.mapView
-                    }
-                } catch {
-                    print("Unexpected error: \(error).")
+//        DispatchQueue.main.async {
+//
+//        }
+        self.mapView.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocation.coordinate.latitude, longitude: self.defaultLocation.coordinate.longitude, zoom: self.defaultZoomLevel)
+        
+        if LocationManager.shared.dictForDistrictLocation.count > 0 {
+            do {
+                //print("loadInitialData")
+                self.mapView.clear()
+                for (key, location) in LocationManager.shared.dictForDistrictLocation{
+                    let m = GMSMarker()
+                    m.position = CLLocationCoordinate2D(latitude: location.latitude ?? self.defaultLocation.coordinate.latitude, longitude: location.longitude ?? self.defaultLocation.coordinate.longitude)
+                    m.title = location.name
+                    m.snippet = "Current Patients=\(location.cases)"
+                    self.markers.append(m)
                 }
+                //print("loadMarkerPositions")
+                for item in self.markers {
+                    item.map = self.mapView
+                }
+            } catch {
+                print("Unexpected error: \(error).")
             }
         }
     }
     
     private func loadInitialDataForCity(){
-        DispatchQueue.main.async {
-            self.mapViewCity.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocationCity.coordinate.latitude, longitude: self.defaultLocationCity.coordinate.longitude, zoom: self.defaultZoomLevel*2)
-            
-            if LocationManager.shared.dictForCityLocation.count > 0 {
-                do {
-                    //print("loadInitialData")
-                    self.mapViewCity.clear()
-                    for (key, location) in LocationManager.shared.dictForCityLocation{
-                        let m = GMSMarker()
-                        m.position = CLLocationCoordinate2D(latitude: location.latitude ?? self.defaultLocationCity.coordinate.latitude, longitude: location.longitude ?? self.defaultLocationCity.coordinate.longitude)
-                        m.title = location.name
-                        m.snippet = "Current Patients=\(location.cases)"
-                        self.markersForCity.append(m)
-                    }
-                    //print("loadMarkerPositions")
-                    for item in self.markersForCity {
-                        item.map = self.mapViewCity
-                    }
-                } catch {
-                    print("Unexpected error: \(error).")
+//        DispatchQueue.main.async {
+//
+//        }
+        self.mapViewCity.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocationCity.coordinate.latitude, longitude: self.defaultLocationCity.coordinate.longitude, zoom: self.defaultZoomLevel*2)
+        
+        if LocationManager.shared.dictForCityLocation.count > 0 {
+            do {
+                //print("loadInitialData")
+                self.mapViewCity.clear()
+                for (key, location) in LocationManager.shared.dictForCityLocation{
+                    let m = GMSMarker()
+                    m.position = CLLocationCoordinate2D(latitude: location.latitude ?? self.defaultLocationCity.coordinate.latitude, longitude: location.longitude ?? self.defaultLocationCity.coordinate.longitude)
+                    m.title = location.name
+                    m.snippet = "Current Patients=\(location.cases)"
+                    self.markersForCity.append(m)
                 }
+                //print("loadMarkerPositions")
+                for item in self.markersForCity {
+                    item.map = self.mapViewCity
+                }
+            } catch {
+                print("Unexpected error: \(error).")
             }
         }
     }

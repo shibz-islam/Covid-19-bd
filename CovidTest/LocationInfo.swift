@@ -9,15 +9,15 @@
 import Foundation
 
 class LocationInfo {
-    let name: String?
-    let parent: String?
-    let level: String?
-    var latitude: Double?
-    var longitude: Double?
-    let cases: Int?
-    let date: Date?
+    let name: String
+    let parent: String
+    let level: String
+    var latitude: Double
+    var longitude: Double
+    let cases: Int
+    let date: String
     
-    init(name: String?, parent: String?, level: String?, latitude: Double?, longitude: Double?, cases: Int?, date: Date?) {
+    init(name: String, parent: String, level: String, latitude: Double, longitude: Double, cases: Int, date: String) {
         self.name = name
         self.parent = parent
         self.level = level

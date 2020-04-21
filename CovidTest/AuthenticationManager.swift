@@ -15,17 +15,19 @@ class AuthenticationManager {
     static let shared = AuthenticationManager()
     private init(){}
     
-    let apiStringForDistrictLevelData: String = "http://149.165.157.107:1971/api/data?name=Bangladesh&type=country&date="
-    let apiStringForCityLevelData: String = "http://149.165.157.107:1971/api/data?name=Dhaka&type=city&date="
-    let apiStringForLocation: String = "http://149.165.157.107:1971/api/get_location"
+    let kApiStringForDistrictLevelData: String = "http://149.165.157.107:1971/api/data?name=Bangladesh&type=country&date="
+    let kApiStringForCityLevelData: String = "http://149.165.157.107:1971/api/data?name=Dhaka&type=city&date="
+    let kApiStringForLocation: String = "http://149.165.157.107:1971/api/get_location"
     
     func sendRequestForLocationData(withIsLevelCity isLevelCity: Bool?, completionHandler: @escaping(_ isSuccess: Bool?, _ locationArray: [LocationInfo]?)->Void) {
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-//        let formattedDate = dateFormatter.string(from: Date())
-        let formattedDate = "2020-04-19"
-        let apiString = isLevelCity == true ? apiStringForCityLevelData : apiStringForDistrictLevelData
+        
+        let formattedDate = dateFormatter.string(from: Date())
+        //let formattedDate = "2020-04-19"
+        
+        let apiString = isLevelCity == true ? kApiStringForCityLevelData : kApiStringForDistrictLevelData
         let urlString = apiString + formattedDate
         print("call to server with api: \(urlString)")
         let url = URL(string: urlString)!
@@ -51,15 +53,19 @@ class AuthenticationManager {
                     let level: String = json!["payload"]["level"].stringValue
                     let dateString = json!["payload"]["date"].stringValue
                     
-                    let dateValue = dateFormatter.date(from: dateString)
-                    
                     for item in json!["payload"]["data"].arrayValue {
                         //print(item["city"].stringValue)
                         let areaName = isLevelCity == true ? item["zone"].stringValue : item["city"].stringValue
-                        var location = LocationInfo(name: areaName, parent: parent, level: level, latitude: 0.0, longitude: 0.0, cases: item["cases"].intValue, date: dateValue)
+                        var location = LocationInfo(name: areaName,
+                                                    parent: parent,
+                                                    level: level,
+                                                    latitude: 0.0,
+                                                    longitude: 0.0,
+                                                    cases: item["cases"].intValue,
+                                                    date: dateString)
                         locationArray.append(location)
                     }
-                    print("Total item in array \(locationArray.count)")
+                    print("Numner of location received: \(locationArray.count)")
                     completionHandler(true, locationArray)
                 } catch {
                     print("Error: \(error)")
@@ -80,7 +86,7 @@ class AuthenticationManager {
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         
         // create post request
-        let url = URL(string: apiStringForLocation)!
+        let url = URL(string: kApiStringForLocation)!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         

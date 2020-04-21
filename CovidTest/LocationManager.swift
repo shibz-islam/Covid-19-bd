@@ -14,6 +14,9 @@ class LocationManager {
     var dictForDistrictLocation = [String: LocationInfo]()
     var dictForCityLocation = [String: LocationInfo]()
     
+    let kLocationLevelDistrict = "city"
+    let kLocationLevelCity = "zone"
+    
     private init(){}
     
     
@@ -26,16 +29,16 @@ class LocationManager {
                 //print("totalRequest \(totalRequest)")
                 for loc in locationArray ?? []{
                     //count = count + 1
-                    let key = loc.name! + "," + loc.parent!
+                    let key = loc.name + "," + loc.parent
                     AuthenticationManager.shared.sendRequestForLocationInfoWithKey(key: key) { (isSuccess, location) in
                         count = count + 1
                         if isSuccess == true{
-                            loc.latitude = location?.coordinate.latitude
-                            loc.longitude = location?.coordinate.longitude
+                            loc.latitude = location?.coordinate.latitude as! Double
+                            loc.longitude = location?.coordinate.longitude as! Double
                             if isLevelCity == true {
-                                self.dictForCityLocation[loc.name!] = loc
+                                self.dictForCityLocation[loc.name] = loc
                             }else{
-                                self.dictForDistrictLocation[loc.name!] = loc
+                                self.dictForDistrictLocation[loc.name] = loc
                             }
                             
                             if count == totalRequest {
@@ -51,7 +54,24 @@ class LocationManager {
         })//end of completionHandler
     }//end of func
 
-
+    
+    func setLocationDictionary(withList locationList:[LocationInfo]) -> Bool {
+        for location in locationList{
+            if location.level ==  kLocationLevelDistrict {
+                self.dictForDistrictLocation[location.name] = location
+            }
+            else if location.level ==  kLocationLevelCity {
+                self.dictForCityLocation[location.name] = location
+            }
+            else{
+                print("Error! Unknown location level.")
+                self.dictForDistrictLocation.removeAll()
+                self.dictForCityLocation.removeAll()
+                return false
+            }
+        }
+        return true
+    }
 
 
 }
