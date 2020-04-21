@@ -13,6 +13,7 @@ class LocationManager {
 
     var dictForDistrictLocation = [String: LocationInfo]()
     var dictForCityLocation = [String: LocationInfo]()
+    var dictForPastCases = [String: [Dictionary<String,String>]]()
     
     let kLocationLevelDistrict = "city"
     let kLocationLevelCity = "zone"
@@ -72,6 +73,24 @@ class LocationManager {
         }
         return true
     }
+    
+    
+    func getPastCasesForLocation(withLocation location:LocationInfo) {
+        if location.name.count>0 && location.level.count>0 {
+            AuthenticationManager.shared.sendRequestForPastCasesForLocation(withLocation: location, completionHandler: { (isSuccess, listOfPastDailyCases) in
+                if isSuccess == true {
+                    if self.dictForPastCases[location.name] != nil {
+                        var val = self.dictForPastCases[location.name]!
+                        val.append(contentsOf: listOfPastDailyCases ?? [])
+                        self.dictForPastCases[location.name] = val
+                    }else{
+                        self.dictForPastCases[location.name] = listOfPastDailyCases ?? []
+                    }
+                    NotificationCenter.default.post(name: .kDidLoadPastCasesInformation, object: nil)
+                }
+            })//end of completionHandler
+        }
+    }//end func
 
 
 }

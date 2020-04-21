@@ -9,6 +9,7 @@
 import Foundation
 
 extension Notification.Name {
-    static let didLoadLocationInformation = Notification.Name("didLoadLocationInformation")
-    static let didLoadLocationInformationForCity = Notification.Name("didLoadLocationInformationForCity")
+    static let kDidLoadLocationInformation = Notification.Name("didLoadLocationInformation")
+    static let kDidLoadLocationInformationForCity = Notification.Name("didLoadLocationInformationForCity")
+    static let kDidLoadPastCasesInformation = Notification.Name("didLoadPastCasesInformation")
 }

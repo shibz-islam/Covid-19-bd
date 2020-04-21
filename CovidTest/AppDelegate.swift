@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         if isSuccess == true {
                             print("Success from AppDelegate...")
                             print(LocationManager.shared.dictForDistrictLocation.count)
-                            NotificationCenter.default.post(name: .didLoadLocationInformation, object: nil)
+                            NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
 //                            DispatchQueue.main.async {
 //                                CoreDataManager.shared.storeLocationInfo(withIsLevelCity: false)
 //                            }
@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         if isSuccess == true {
                             print("Success from AppDelegate...")
                             print(LocationManager.shared.dictForCityLocation.count)
-                            NotificationCenter.default.post(name: .didLoadLocationInformationForCity, object: nil)
+                            NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
 //                            DispatchQueue.main.sync {
 //                                CoreDataManager.shared.storeLocationInfo(withIsLevelCity: true)
 //                            }
@@ -61,8 +61,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let success = CoreDataManager.shared.fetchLocationInfo(withDate: Date(), withManagedContextObject: managedContext)
                     if success {
                         print("Success")
-                        NotificationCenter.default.post(name: .didLoadLocationInformation, object: nil)
-                        NotificationCenter.default.post(name: .didLoadLocationInformationForCity, object: nil)
+                        NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
+                        NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     } else {
                         print("Failed")
                     }

@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import GoogleMaps
-import SwiftCSV
+
 
 
 class ViewController: UIViewController {
@@ -24,6 +24,8 @@ class ViewController: UIViewController {
     var defaultZoomLevel: Float = 7.0
     var markers: [GMSMarker] = []
     var markersForCity: [GMSMarker] = []
+    var locations: [String:LocationInfo] = [:]
+    var locationsForCity: [String:LocationInfo] = [:]
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -32,8 +34,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .didLoadLocationInformation, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveDataForCity(_:)), name: .didLoadLocationInformationForCity, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadLocationInformation, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveDataForCity(_:)), name: .kDidLoadLocationInformationForCity, object: nil)
         
         mapView.delegate = self
         mapViewCity.delegate = self
@@ -50,6 +52,11 @@ class ViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
+        self.locations.removeAll()
+        self.locationsForCity.removeAll()
+        self.markers.removeAll()
+        self.markersForCity.removeAll()
+        super.viewDidDisappear(animated)
     }
     
     
@@ -75,28 +82,26 @@ class ViewController: UIViewController {
         {
         case 0:
             print("0")
-            mapView.isHidden = false
-            mapViewCity.isHidden = true
+            self.mapView.isHidden = false
+            self.mapViewCity.isHidden = true
         case 1:
             print("1")
-            mapView.isHidden = true
-            mapViewCity.isHidden = false
+            self.mapView.isHidden = true
+            self.mapViewCity.isHidden = false
         default:
             break
         }
     }
     
     private func loadInitialData() {
-//        DispatchQueue.main.async {
-//
-//        }
         self.mapView.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocation.coordinate.latitude, longitude: self.defaultLocation.coordinate.longitude, zoom: self.defaultZoomLevel)
         
         if LocationManager.shared.dictForDistrictLocation.count > 0 {
             do {
                 //print("loadInitialData")
+                self.locations = LocationManager.shared.dictForDistrictLocation
                 self.mapView.clear()
-                for (key, location) in LocationManager.shared.dictForDistrictLocation{
+                for (key, location) in self.locations{
                     let m = GMSMarker()
                     m.position = CLLocationCoordinate2D(latitude: location.latitude ?? self.defaultLocation.coordinate.latitude, longitude: location.longitude ?? self.defaultLocation.coordinate.longitude)
                     m.title = location.name
@@ -114,16 +119,14 @@ class ViewController: UIViewController {
     }
     
     private func loadInitialDataForCity(){
-//        DispatchQueue.main.async {
-//
-//        }
         self.mapViewCity.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocationCity.coordinate.latitude, longitude: self.defaultLocationCity.coordinate.longitude, zoom: self.defaultZoomLevel*2)
         
         if LocationManager.shared.dictForCityLocation.count > 0 {
+            self.locationsForCity = LocationManager.shared.dictForCityLocation
             do {
                 //print("loadInitialData")
                 self.mapViewCity.clear()
-                for (key, location) in LocationManager.shared.dictForCityLocation{
+                for (key, location) in self.locationsForCity{
                     let m = GMSMarker()
                     m.position = CLLocationCoordinate2D(latitude: location.latitude ?? self.defaultLocationCity.coordinate.latitude, longitude: location.longitude ?? self.defaultLocationCity.coordinate.longitude)
                     m.title = location.name
@@ -163,10 +166,16 @@ extension ViewController: GMSMapViewDelegate{
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool
     {
-        //print("marker tapped!")
+        //print("marker tapped! \(String(describing: marker.title))")
+        var tappedLocation: LocationInfo!
+        tappedLocation = self.mapView.isHidden == false ? self.locations[marker.title!] : self.locationsForCity[marker.title!]
+        
+        print("Location selected: \(tappedLocation.name)")
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let barVC = storyboard.instantiateViewController(withIdentifier: "barChartVC") as! BarChartViewController
         barVC.descriptionText = marker.title! + "\n" + marker.snippet!
+        barVC.location = tappedLocation
         self.present(barVC, animated: true, completion: nil)
         return true
     }

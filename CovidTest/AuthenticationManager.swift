@@ -15,22 +15,29 @@ class AuthenticationManager {
     static let shared = AuthenticationManager()
     private init(){}
     
-    let kApiStringForDistrictLevelData: String = "http://149.165.157.107:1971/api/data?name=Bangladesh&type=country&date="
-    let kApiStringForCityLevelData: String = "http://149.165.157.107:1971/api/data?name=Dhaka&type=city&date="
-    let kApiStringForLocation: String = "http://149.165.157.107:1971/api/get_location"
+    let kApiBaseURL: String = "http://149.165.157.107:1971/api/"
+    let kApiStringForlocationData: String = "data?"
+    let kApiStringForLocationCoordinate: String = "get_location"
+    let kApiStringForPastData: String = "loc_data_seq?"
     
     func sendRequestForLocationData(withIsLevelCity isLevelCity: Bool?, completionHandler: @escaping(_ isSuccess: Bool?, _ locationArray: [LocationInfo]?)->Void) {
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
+        //let formattedDate = dateFormatter.string(from: Date())
+        let formattedDate = "2020-04-20"
         
-        let formattedDate = dateFormatter.string(from: Date())
-        //let formattedDate = "2020-04-19"
+        let nameString = isLevelCity == true ? "Dhaka" : "Bangladesh"
+        let typeString = isLevelCity == true ? "city" : "country"
         
-        let apiString = isLevelCity == true ? kApiStringForCityLevelData : kApiStringForDistrictLevelData
-        let urlString = apiString + formattedDate
-        print("call to server with api: \(urlString)")
-        let url = URL(string: urlString)!
+        var urlComponents = URLComponents(string: kApiBaseURL + kApiStringForlocationData)!
+        urlComponents.queryItems = [
+            URLQueryItem(name: "name", value: nameString),
+            URLQueryItem(name: "type", value: typeString),
+            URLQueryItem(name: "date", value: formattedDate)
+        ]
+        let url = urlComponents.url!
+        print("call to server with api: \(String(describing: urlComponents.url?.absoluteString))")
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
@@ -86,7 +93,7 @@ class AuthenticationManager {
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         
         // create post request
-        let url = URL(string: kApiStringForLocation)!
+        let url = URL(string: kApiBaseURL + kApiStringForLocationCoordinate)!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
@@ -125,6 +132,51 @@ class AuthenticationManager {
             }
         }
         
+        task.resume()
+    }
+    
+    
+    func sendRequestForPastCasesForLocation(withLocation location: LocationInfo, completionHandler: @escaping(_ isSuccess: Bool?, _ listOfPastDailyCases: [Dictionary<String,String>]?)->Void){
+        var urlComponents = URLComponents(string: kApiBaseURL + kApiStringForPastData)!
+        urlComponents.queryItems = [
+            URLQueryItem(name: "loc_type", value: location.level),
+            URLQueryItem(name: "loc_name", value: location.name)
+        ]
+        let url = urlComponents.url!
+        print("call to server with api: \(String(describing: urlComponents.url?.absoluteString))")
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("error: \(error)")
+            } else {
+                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                    print("Server error!")
+                    return
+                }
+                guard let mime = response.mimeType, mime == "application/json" else {
+                    print("Wrong MIME type!")
+                    return
+                }
+                
+                do {
+                    let json = try?JSON(data: data!)
+                    print(json)
+                    var locationArray = [Dictionary<String,String>]()
+                    
+                    for item in json!["payload"].arrayValue {
+                        let date: String = item["date"].stringValue
+                        let cases: Int = item["data"]["cases"].intValue
+                        locationArray.append(["date":date, "cases": String(cases)])
+                    }
+                    print("Numner of cases received: \(locationArray.count)")
+                    completionHandler(true, locationArray)
+                } catch {
+                    print("Error: \(error)")
+                    print("JSON error: \(error.localizedDescription)")
+                    completionHandler(false, [])
+                }
+            }
+        }
         task.resume()
     }
 }

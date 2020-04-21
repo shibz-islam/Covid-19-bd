@@ -13,65 +13,102 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var descriptionLabel: UILabel!
-    var months: [String]!
+    
     var descriptionText: String!
+    var location: LocationInfo!
+    var dateList: [String] = []
+    var caseList: [Int] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         barChartView.delegate = self
-        
-        //Dummy data
-        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        let unitsSold = [546, 4.0, 200, 3.0, 12.0, 47, 4.0, 18.0, 2.0, 4.0, 5.0, 4.0]
-        
-        setChart(dataPoints: months, values: unitsSold)
+        print("Location selected: \(self.location.name)")
+        if LocationManager.shared.dictForPastCases[self.location.name] != nil {
+            loadInitialData()
+        }else{
+            NotificationCenter.default.addObserver(self, selector: #selector(onDidReceivePastCases(_:)), name: .kDidLoadPastCasesInformation, object: nil)
+            LocationManager.shared.getPastCasesForLocation(withLocation: self.location)
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        months.removeAll()
+        self.dateList.removeAll()
+        self.caseList.removeAll()
+        NotificationCenter.default.removeObserver(self)
         super.viewDidDisappear(animated)
     }
     
-    func setChart(dataPoints: [String], values: [Double]) {
-            barChartView.noDataText = "You need to provide data for the chart."
-            
-            var dataEntries: [BarChartDataEntry] = []
-            
-            for i in 0..<dataPoints.count {
-                let dataEntry = BarChartDataEntry(x: Double(i), y: values[i])
-                dataEntries.append(dataEntry)
-            }
-            
-            let chartDataSet = BarChartDataSet(entries: dataEntries, label: "Covid Patients")
-            let chartData = BarChartData(dataSet: chartDataSet)
-            barChartView.data = chartData
-            
-            chartDataSet.colors = [UIColor(red: 230/255, green: 126/255, blue: 34/255, alpha: 1)]
-            //chartDataSet.colors = ChartColorTemplates.colorful()
-            
-            barChartView.xAxis.labelPosition = .bottom
-            barChartView.xAxis.granularity = 1
-            barChartView.xAxis.granularityEnabled = true
-            barChartView.xAxis.labelCount = dataPoints.count // number of points on X axis
-            if barChartView.xAxis.labelPosition == .bottom {
-                barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
-            }
-            barChartView.leftAxis.granularityEnabled = true
-            barChartView.leftAxis.granularity = 1.0
-            barChartView.rightAxis.enabled = false
-            
-            //barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
-            
-            //barChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
-            barChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0, easingOption: .easeInBounce)
-            
-//            let ll = ChartLimitLine(limit: 10.0, label: "Target")
-//            barChartView.rightAxis.addLimitLine(ll)
-            
-            descriptionLabel.text = descriptionText
-            
+    // MARK: - Helper
+    
+    @objc private func onDidReceivePastCases(_ notification: Notification) {
+        print("onDidReceivePastCases...")
+        DispatchQueue.main.async {
+            self.loadInitialData()
         }
+    }
+    
+    func loadInitialData() {
+        let tempKeys = LocationManager.shared.dictForPastCases.keys
+        print(tempKeys)
+        
+        if LocationManager.shared.dictForPastCases[self.location.name] != nil {
+            let val = LocationManager.shared.dictForPastCases[self.location.name]!
+            print("loading data...-> \(val.count)")
+            let ordered = val.sorted {
+                guard let s1 = $0["date"], let s2 = $1["date"] else {
+                    return false
+                }
+                return s1 < s2
+            }
+            self.dateList.removeAll()
+            self.caseList.removeAll()
+            for itemDict in ordered{
+                self.dateList.append(itemDict["date"]!)
+                self.caseList.append((itemDict["cases"]! as NSString).integerValue)
+            }
+            loadChart()
+        }
+    }
+    
+    func loadChart() {
+        barChartView.noDataText = "You need to provide data for the chart."
+        var dataEntries: [BarChartDataEntry] = []
+        
+        for i in 0..<self.dateList.count {
+            let dataEntry = BarChartDataEntry(x: Double(i), y: Double(self.caseList[i]))
+            dataEntries.append(dataEntry)
+        }
+        
+        let chartDataSet = BarChartDataSet(entries: dataEntries, label: "Covid Patients")
+        let chartData = BarChartData(dataSet: chartDataSet)
+        barChartView.data = chartData
+        
+        chartDataSet.colors = [UIColor(red: 230/255, green: 126/255, blue: 34/255, alpha: 1)]
+        //chartDataSet.colors = ChartColorTemplates.colorful()
+        
+        barChartView.xAxis.labelPosition = .bottom
+        barChartView.xAxis.granularity = 1
+        barChartView.xAxis.granularityEnabled = true
+        barChartView.xAxis.labelCount = self.dateList.count // number of points on X axis
+        if barChartView.xAxis.labelPosition == .bottom {
+            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: self.dateList)
+        }
+        barChartView.leftAxis.granularityEnabled = true
+        barChartView.leftAxis.granularity = 1.0
+        barChartView.rightAxis.enabled = false
+        
+        //barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
+        
+        //barChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+        barChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0, easingOption: .easeInBounce)
+        
+        //            let ll = ChartLimitLine(limit: 10.0, label: "Target")
+        //            barChartView.rightAxis.addLimitLine(ll)
+        
+        descriptionLabel.text = descriptionText
+    }
+    
     
     func chartValueSelected(chartView: ChartViewBase, entry: ChartDataEntry, dataSetIndex: Int, highlight: Highlight) {
         print("selected")
