@@ -21,9 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         GMSServices.provideAPIKey(googleApiKey)
         
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return false}
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
         if LocationManager.shared.dictForDistrictLocation.count == 0 {
             print("No data in memory")
-            if CoreDataManager.shared.isLocationInfoExist(withDate: Date()) == false {
+            if CoreDataManager.shared.isLocationInfoExist(withDate: Date(), withManagedContextObject: managedContext) == false {
                 print("No data in core data, getting data from server")
                 DispatchQueue.global(qos: .background).async {
                     LocationManager.shared.getLocationData(withIsLevelCity: false, completionHandler: { (isSuccess) in
@@ -31,7 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             print("Success from AppDelegate...")
                             print(LocationManager.shared.dictForDistrictLocation.count)
                             NotificationCenter.default.post(name: .didLoadLocationInformation, object: nil)
-                            //CoreDataManager.shared.storeLocationInfo(withIsLevelCity: false)
+//                            DispatchQueue.main.async {
+//                                CoreDataManager.shared.storeLocationInfo(withIsLevelCity: false)
+//                            }
+                            CoreDataManager.shared.storeLocationInfo(withIsLevelCity: false, withManagedContextObject: managedContext)
                         }
                     })
                 }
@@ -41,20 +47,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             print("Success from AppDelegate...")
                             print(LocationManager.shared.dictForCityLocation.count)
                             NotificationCenter.default.post(name: .didLoadLocationInformationForCity, object: nil)
-                            //CoreDataManager.shared.storeLocationInfo(withIsLevelCity: true)
+//                            DispatchQueue.main.sync {
+//                                CoreDataManager.shared.storeLocationInfo(withIsLevelCity: true)
+//                            }
+                            CoreDataManager.shared.storeLocationInfo(withIsLevelCity: true, withManagedContextObject: managedContext)
                         }
                     })
                 }
             }
             else{
-                print("Data found in core data... loading data into memory")
-                let success = CoreDataManager.shared.fetchLocationInfo(withDate: Date())
-                if success {
-                    print("Success")
-                    NotificationCenter.default.post(name: .didLoadLocationInformation, object: nil)
-                    NotificationCenter.default.post(name: .didLoadLocationInformationForCity, object: nil)
-                } else {
-                    print("Failed")
+                DispatchQueue.global(qos: .background).async {
+                    print("Data found in core data... loading data into memory")
+                    let success = CoreDataManager.shared.fetchLocationInfo(withDate: Date(), withManagedContextObject: managedContext)
+                    if success {
+                        print("Success")
+                        NotificationCenter.default.post(name: .didLoadLocationInformation, object: nil)
+                        NotificationCenter.default.post(name: .didLoadLocationInformationForCity, object: nil)
+                    } else {
+                        print("Failed")
+                    }
                 }
             }
         }

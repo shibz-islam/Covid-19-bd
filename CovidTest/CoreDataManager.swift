@@ -14,12 +14,16 @@ class CoreDataManager {
     static let shared = CoreDataManager()
     private init(){}
     
-    let kLocationInfoEntity: String = "LocationInfo"
+    let kLocationInfoEntity: String = "LocationInfoEntity"
     
     
-    func storeLocationInfo(withIsLevelCity isLevelCity: Bool) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
-        let managedContext = appDelegate.persistentContainer.viewContext
+    func storeLocationInfo(withIsLevelCity isLevelCity: Bool, withManagedContextObject managedContext:NSManagedObjectContext) {
+//        if Thread.isMainThread == false{
+//            print("Error! Trying to access UIApplication from background thread.")
+//            return false
+//        }
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
+//        let managedContext = appDelegate.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: kLocationInfoEntity, in: managedContext)!
         
         let dict = isLevelCity == true ? LocationManager.shared.dictForCityLocation : LocationManager.shared.dictForDistrictLocation
@@ -33,7 +37,7 @@ class CoreDataManager {
             locationEntity.setValue(location.longitude, forKeyPath: "longitude")
             locationEntity.setValue(location.cases, forKeyPath: "cases")
             locationEntity.setValue(location.date, forKeyPath: "date")
-            locationEntity.setValue(UUID().uuid, forKeyPath: "id")
+            locationEntity.setValue(UUID().uuidString, forKeyPath: "id")
         }
         do {
             try managedContext.save()
@@ -43,15 +47,18 @@ class CoreDataManager {
     }
     
     
-    func isLocationInfoExist(withDate date:Date) -> Bool {
+    func isLocationInfoExist(withDate date:Date, withManagedContextObject managedContext:NSManagedObjectContext) -> Bool {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let formattedDateString = dateFormatter.string(from: date)
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return false}
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: kLocationInfoEntity)
+//        if Thread.isMainThread == false{
+//            print("Error! Trying to access UIApplication from background thread.")
+//            return false
+//        }
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return false}
+//        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: kLocationInfoEntity)
         fetchRequest.predicate = NSPredicate(format:"date == %@", formattedDateString)
         
         do {
@@ -66,15 +73,18 @@ class CoreDataManager {
     }
     
     
-    func fetchLocationInfo(withDate date:Date)-> Bool{
+    func fetchLocationInfo(withDate date:Date, withManagedContextObject managedContext:NSManagedObjectContext)-> Bool{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let formattedDateString = dateFormatter.string(from: date)
         print("Date = \(formattedDateString)")
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return false}
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
+//        if Thread.isMainThread == false{
+//            print("Error! Trying to access UIApplication from background thread.")
+//            return false
+//        }
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return false}
+//        let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: kLocationInfoEntity)
         fetchRequest.predicate = NSPredicate(format:"date == %@", formattedDateString)
         
