@@ -21,6 +21,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         GMSServices.provideAPIKey(googleApiKey)
         
+        /* Get App ID */
+        if CoreDataManager.shared.isAppIdentifierExist() == false {
+            AuthenticationManager.shared.sendRequestForAppIdentifier { (isSuccess, identifier) in
+                if isSuccess == true, let id = identifier{
+                    let result = CoreDataManager.shared.storeAppIdentifier(id)
+                    print("Storing result: \(result)")
+                }
+            }
+        }
+        
+        /* Get Location Data By Date*/
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return false}
         let managedContext = appDelegate.persistentContainer.viewContext
         
@@ -60,11 +71,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print("Data found in core data... loading data into memory")
                     let success = CoreDataManager.shared.fetchLocationInfo(withDate: Date().dayBefore, withManagedContextObject: managedContext)
                     if success {
-                        print("Success")
+                        print("Successfully loaded into memory")
                         NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                         NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     } else {
-                        print("Failed")
+                        print("Failed to load into memory")
                     }
                 }
             }

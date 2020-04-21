@@ -9,12 +9,14 @@
 import Foundation
 import UIKit
 import CoreData
+import SwiftKeychainWrapper
 
 class CoreDataManager {
     static let shared = CoreDataManager()
     private init(){}
     
     let kLocationInfoEntity: String = "LocationInfoEntity"
+    let kAppIDKey: String = "kAppIDKey"
     
     
     func storeLocationInfo(withIsLevelCity isLevelCity: Bool, withManagedContextObject managedContext:NSManagedObjectContext) {
@@ -110,4 +112,34 @@ class CoreDataManager {
         return false
     }
     
+    
+    // MARK: - KeychainWrapper
+    func isAppIdentifierExist() -> Bool {
+        let retrievedString: String? = KeychainWrapper.standard.string(forKey: kAppIDKey)
+        if let identifier = retrievedString {
+            //print("Identifier: \(identifier)")
+            return true
+        }
+        return false
+    }
+    
+    func storeAppIdentifier(_ id:String)->Bool{
+        let saveSuccessful: Bool = KeychainWrapper.standard.set(id, forKey: kAppIDKey)
+        return saveSuccessful
+    }
+    
+    func retrieveAppIdentifier() -> String {
+        let retrievedString = KeychainWrapper.standard.string(forKey: kAppIDKey)!
+        return retrievedString
+    }
+
+    func deleteAppIdentifier() -> Bool {
+        let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: "myKey")
+        return removeSuccessful
+    }
+    
+    
 }
+
+
+

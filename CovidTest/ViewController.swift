@@ -43,9 +43,7 @@ class ViewController: UIViewController {
         segmentedControl.setTitle("Dhaka City", forSegmentAt: 1)
         
         loadInitialData()
-        
         loadInitialDataForCity()
-        //loadMarkerPositionsForCity()
         
         //loadLocationManager()
     }

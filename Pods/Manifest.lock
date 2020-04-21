@@ -8,12 +8,14 @@ PODS:
   - GoogleMaps/Maps (3.8.0):
     - GoogleMaps/Base
   - SwiftCSV (0.5.6)
+  - SwiftKeychainWrapper (3.4.0)
   - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
   - Charts
   - GoogleMaps
   - SwiftCSV
+  - SwiftKeychainWrapper
   - SwiftyJSON (~> 4.0)
 
 SPEC REPOS:
@@ -21,14 +23,16 @@ SPEC REPOS:
     - Charts
     - GoogleMaps
     - SwiftCSV
+    - SwiftKeychainWrapper
     - SwiftyJSON
 
 SPEC CHECKSUMS:
   Charts: 40a08591df1f8ad5c223ddedfb1a06da92f24f7c
   GoogleMaps: 7c8d66d70e4e8c300f43a7219d8fdaad7b325a9a
   SwiftCSV: efb4a15dd7f2f1212b3d6986f97a3369ff6c5100
+  SwiftKeychainWrapper: 6fc49fbf7d4a6b0772917acb0e53a1639f6078d6
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: 377879516d07a37f368596b55949d18dd2b50dc0
+PODFILE CHECKSUM: 502f2f551a1641833a8f7673d6c38232448ecef4
 
 COCOAPODS: 1.9.1

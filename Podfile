@@ -8,6 +8,7 @@ target 'CovidTest' do
     pod 'SwiftCSV'
     pod 'Charts'
     pod 'SwiftyJSON', '~> 4.0'
+    pod 'SwiftKeychainWrapper'
 
   # Pods for CovidTest
 

@@ -16,9 +16,47 @@ class AuthenticationManager {
     private init(){}
     
     let kApiBaseURL: String = "http://149.165.157.107:1971/api/"
+    let kApiStringForIdentifier: String = "gen_id"
     let kApiStringForlocationData: String = "data?"
     let kApiStringForLocationCoordinate: String = "get_location"
     let kApiStringForPastData: String = "loc_data_seq?"
+    
+    
+    func sendRequestForAppIdentifier(completionHandler: @escaping(_ isSuccess: Bool, _ identifier: String?)->Void) {
+        let url = URL(string: kApiBaseURL + kApiStringForIdentifier)!
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("error: \(error)")
+            } else {
+                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                    print("Server error!")
+                    return
+                }
+                guard let mime = response.mimeType, mime == "application/json" else {
+                    print("Wrong MIME type!")
+                    return
+                }
+                do {
+                    let json = try JSON(data: data!)
+                    print(json)
+                    //print(json["payload"]["id"])
+                    if let idString = json["payload"]["id"].stringValue as? String{
+                        completionHandler(true, idString)
+                    }else{
+                        completionHandler(false, nil)
+                    }
+                    
+                } catch {
+                    print("Error: \(error)")
+                    print("JSON error: \(error.localizedDescription)")
+                    completionHandler(false, nil)
+                }
+            }
+        }
+        
+        task.resume()
+    }
+    
     
     func sendRequestForLocationData(withIsLevelCity isLevelCity: Bool?, completionHandler: @escaping(_ isSuccess: Bool?, _ locationArray: [LocationInfo]?)->Void) {
 
@@ -97,10 +135,7 @@ class AuthenticationManager {
         let url = URL(string: kApiBaseURL + kApiStringForLocationCoordinate)!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        
-        // insert json data to the request
         request.httpBody = jsonData
-        //HTTP Headers
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
