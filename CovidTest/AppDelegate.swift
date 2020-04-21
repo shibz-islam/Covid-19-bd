@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if LocationManager.shared.dictForDistrictLocation.count == 0 {
             print("No data in memory")
-            if CoreDataManager.shared.isLocationInfoExist(withDate: Date(), withManagedContextObject: managedContext) == false {
+            if CoreDataManager.shared.isLocationInfoExist(withDate: Date().dayBefore, withManagedContextObject: managedContext) == false {
                 print("No data in core data, getting data from server")
                 DispatchQueue.global(qos: .background).async {
                     LocationManager.shared.getLocationData(withIsLevelCity: false, completionHandler: { (isSuccess) in
@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             else{
                 DispatchQueue.global(qos: .background).async {
                     print("Data found in core data... loading data into memory")
-                    let success = CoreDataManager.shared.fetchLocationInfo(withDate: Date(), withManagedContextObject: managedContext)
+                    let success = CoreDataManager.shared.fetchLocationInfo(withDate: Date().dayBefore, withManagedContextObject: managedContext)
                     if success {
                         print("Success")
                         NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)

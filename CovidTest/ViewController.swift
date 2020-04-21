@@ -174,7 +174,6 @@ extension ViewController: GMSMapViewDelegate{
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let barVC = storyboard.instantiateViewController(withIdentifier: "barChartVC") as! BarChartViewController
-        barVC.descriptionText = marker.title! + "\n" + marker.snippet!
         barVC.location = tappedLocation
         self.present(barVC, animated: true, completion: nil)
         return true

@@ -20,6 +20,7 @@
 		53EA15A5244D340800CCAB40 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15A4244D340800CCAB40 /* LocationManager.swift */; };
 		53EA15A7244D67E600CCAB40 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15A6244D67E600CCAB40 /* CoreDataManager.swift */; };
 		53EA15A9244D6DF700CCAB40 /* Notification+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */; };
+		53EA15AD244EDC0000CCAB40 /* Date+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */; };
 		BBBFC62685E2ECDDA1BC6D4E /* Pods_CovidTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD068D8D2FFB753FFD32A9C /* Pods_CovidTest.framework */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		53EA15A4244D340800CCAB40 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		53EA15A6244D67E600CCAB40 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Helper.swift"; sourceTree = "<group>"; };
+		53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helper.swift"; sourceTree = "<group>"; };
 		83066B67AEB887D3AD18691E /* Pods-CovidTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CovidTest.debug.xcconfig"; path = "Target Support Files/Pods-CovidTest/Pods-CovidTest.debug.xcconfig"; sourceTree = "<group>"; };
 		9CB3DDF853FACCCAB74C8D4E /* Pods-CovidTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CovidTest.release.xcconfig"; path = "Target Support Files/Pods-CovidTest/Pods-CovidTest.release.xcconfig"; sourceTree = "<group>"; };
 		AFD068D8D2FFB753FFD32A9C /* Pods_CovidTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CovidTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +101,7 @@
 				53EA159024494B2900CCAB40 /* LaunchScreen.storyboard */,
 				53EA159324494B2900CCAB40 /* Info.plist */,
 				53EA158B24494B2800CCAB40 /* CovidTest.xcdatamodeld */,
+				53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */,
 			);
 			path = CovidTest;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				53EA15A5244D340800CCAB40 /* LocationManager.swift in Sources */,
 				53EA158524494B2800CCAB40 /* SceneDelegate.swift in Sources */,
 				53EA15A9244D6DF700CCAB40 /* Notification+Helper.swift in Sources */,
+				53EA15AD244EDC0000CCAB40 /* Date+Helper.swift in Sources */,
 				53EA15A7244D67E600CCAB40 /* CoreDataManager.swift in Sources */,
 				53EA158D24494B2800CCAB40 /* CovidTest.xcdatamodeld in Sources */,
 				53EA159F244C20FB00CCAB40 /* BarChartViewController.swift in Sources */,

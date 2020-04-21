@@ -25,6 +25,7 @@ class AuthenticationManager {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         //let formattedDate = dateFormatter.string(from: Date())
+        #warning("Remove hard-coded date")
         let formattedDate = "2020-04-20"
         
         let nameString = isLevelCity == true ? "Dhaka" : "Bangladesh"

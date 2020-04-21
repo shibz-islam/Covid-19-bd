@@ -14,7 +14,6 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var descriptionLabel: UILabel!
     
-    var descriptionText: String!
     var location: LocationInfo!
     var dateList: [String] = []
     var caseList: [Int] = []
@@ -23,7 +22,8 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         super.viewDidLoad()
         
         barChartView.delegate = self
-        print("Location selected: \(self.location.name)")
+        descriptionLabel.text = "Loading data..."
+        
         if LocationManager.shared.dictForPastCases[self.location.name] != nil {
             loadInitialData()
         }else{
@@ -49,9 +49,6 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     }
     
     func loadInitialData() {
-        let tempKeys = LocationManager.shared.dictForPastCases.keys
-        print(tempKeys)
-        
         if LocationManager.shared.dictForPastCases[self.location.name] != nil {
             let val = LocationManager.shared.dictForPastCases[self.location.name]!
             print("loading data...-> \(val.count)")
@@ -64,7 +61,14 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
             self.dateList.removeAll()
             self.caseList.removeAll()
             for itemDict in ordered{
-                self.dateList.append(itemDict["date"]!)
+                let dateComponents = itemDict["date"]!.split(separator: "-")
+                var shortDate: String
+                if dateComponents.count > 1 {
+                    shortDate = dateComponents[dateComponents.count-2] + "/" + dateComponents[dateComponents.count-1]
+                }else{
+                    shortDate = itemDict["date"]!
+                }
+                self.dateList.append(shortDate)
                 self.caseList.append((itemDict["cases"]! as NSString).integerValue)
             }
             loadChart()
@@ -84,29 +88,34 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         let chartData = BarChartData(dataSet: chartDataSet)
         barChartView.data = chartData
         
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        chartData.setValueFormatter(DefaultValueFormatter(formatter:formatter))
+        
         chartDataSet.colors = [UIColor(red: 230/255, green: 126/255, blue: 34/255, alpha: 1)]
         //chartDataSet.colors = ChartColorTemplates.colorful()
         
         barChartView.xAxis.labelPosition = .bottom
         barChartView.xAxis.granularity = 1
-        barChartView.xAxis.granularityEnabled = true
+        barChartView.xAxis.granularityEnabled = false
+        barChartView.xAxis.drawAxisLineEnabled = false
+        barChartView.xAxis.drawGridLinesEnabled = false
         barChartView.xAxis.labelCount = self.dateList.count // number of points on X axis
         if barChartView.xAxis.labelPosition == .bottom {
             barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: self.dateList)
         }
-        barChartView.leftAxis.granularityEnabled = true
+        barChartView.leftAxis.granularityEnabled = false
         barChartView.leftAxis.granularity = 1.0
         barChartView.rightAxis.enabled = false
         
         //barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
         
-        //barChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
         barChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0, easingOption: .easeInBounce)
         
-        //            let ll = ChartLimitLine(limit: 10.0, label: "Target")
-        //            barChartView.rightAxis.addLimitLine(ll)
+        //let ll = ChartLimitLine(limit: 10.0, label: "Target")
+        //barChartView.rightAxis.addLimitLine(ll)
         
-        descriptionLabel.text = descriptionText
+        descriptionLabel.text = location.name + "\n Current Patients=\(location.cases)"
     }
     
     
