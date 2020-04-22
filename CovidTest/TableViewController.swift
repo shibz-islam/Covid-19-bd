@@ -15,6 +15,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var locations = [LocationInfo]()
     var locationsForCity = [LocationInfo]()
     var filteredLocations = [LocationInfo]()
+    var totalCasesCountryLevel: Int = 0
+    var totalCases: Int = 0
     let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
@@ -31,6 +33,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.dataSource = self
         segmentedControl.setTitle("District", forSegmentAt: 0)
         segmentedControl.setTitle("Dhaka City", forSegmentAt: 1)
+        
+        let nib = UINib(nibName: "CustomSectionHeaderView", bundle: nil)
+        tableView.register(nib, forHeaderFooterViewReuseIdentifier: "CustomSectionHeader")
         
         if LocationManager.shared.dictForCityLocation.count == 0 {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadLocationInformation, object: nil)
@@ -113,8 +118,36 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.present(barVC, animated: true, completion: nil)
             tableView.deselectRow(at: indexPath, animated: true)
         }
-        
     }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // Dequeue with the reuse identifier
+        let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
+        switch segmentedControl.selectedSegmentIndex
+        {
+            case 0:
+                header.titleLabel.text = "Cases in Bangladesh"
+                header.casesLabel.text = String(totalCasesCountryLevel)
+            case 1:
+                header.titleLabel.text = "Cases in Dhaka"
+                header.casesLabel.text = String(totalCases)
+            default:
+                header.titleLabel.text = ""
+                header.casesLabel.text = ""
+                break
+        }
+        header.backgroundView?.backgroundColor = UIColor.brown
+        return header
+    }
+    
+    /*
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch segmentedControl.selectedSegmentIndex
+    }*/
 
     /*
     // MARK: - Navigation
@@ -148,6 +181,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if LocationManager.shared.dictForDistrictLocation.count > 0 {
             for (key, location) in LocationManager.shared.dictForDistrictLocation{
                 self.locations.append(location)
+                totalCasesCountryLevel += location.cases
             }
             self.locations = self.locations.sorted(by: { $0.cases > $1.cases })
             self.tableView.reloadData()
@@ -158,6 +192,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if LocationManager.shared.dictForCityLocation.count > 0 {
             for (key, location) in LocationManager.shared.dictForCityLocation{
                 self.locationsForCity.append(location)
+                totalCases += location.cases
             }
             self.locationsForCity = self.locationsForCity.sorted(by: { $0.cases > $1.cases })
             self.tableView.reloadData()
