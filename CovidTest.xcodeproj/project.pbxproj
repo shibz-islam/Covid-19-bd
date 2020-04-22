@@ -22,6 +22,7 @@
 		53EA15A9244D6DF700CCAB40 /* Notification+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */; };
 		53EA15AD244EDC0000CCAB40 /* Date+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */; };
 		53EA15AF244FA01300CCAB40 /* ApplicationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15AE244FA01300CCAB40 /* ApplicationManager.swift */; };
+		53EA15F8244FD70F00CCAB40 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15F7244FD70F00CCAB40 /* TableViewController.swift */; };
 		BBBFC62685E2ECDDA1BC6D4E /* Pods_CovidTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD068D8D2FFB753FFD32A9C /* Pods_CovidTest.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Helper.swift"; sourceTree = "<group>"; };
 		53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helper.swift"; sourceTree = "<group>"; };
 		53EA15AE244FA01300CCAB40 /* ApplicationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationManager.swift; sourceTree = "<group>"; };
+		53EA15F7244FD70F00CCAB40 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		83066B67AEB887D3AD18691E /* Pods-CovidTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CovidTest.debug.xcconfig"; path = "Target Support Files/Pods-CovidTest/Pods-CovidTest.debug.xcconfig"; sourceTree = "<group>"; };
 		9CB3DDF853FACCCAB74C8D4E /* Pods-CovidTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CovidTest.release.xcconfig"; path = "Target Support Files/Pods-CovidTest/Pods-CovidTest.release.xcconfig"; sourceTree = "<group>"; };
 		AFD068D8D2FFB753FFD32A9C /* Pods_CovidTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CovidTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,6 +96,7 @@
 				53EA158424494B2800CCAB40 /* SceneDelegate.swift */,
 				53EA158624494B2800CCAB40 /* ViewController.swift */,
 				53EA159E244C20FB00CCAB40 /* BarChartViewController.swift */,
+				53EA15F7244FD70F00CCAB40 /* TableViewController.swift */,
 				53EA15A0244C4BEE00CCAB40 /* LocationInfo.swift */,
 				53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */,
 				53EA158824494B2800CCAB40 /* Main.storyboard */,
@@ -261,6 +264,7 @@
 			files = (
 				53EA15A1244C4BEE00CCAB40 /* LocationInfo.swift in Sources */,
 				53EA158724494B2800CCAB40 /* ViewController.swift in Sources */,
+				53EA15F8244FD70F00CCAB40 /* TableViewController.swift in Sources */,
 				53EA15A3244C53FD00CCAB40 /* AuthenticationManager.swift in Sources */,
 				53EA158324494B2800CCAB40 /* AppDelegate.swift in Sources */,
 				53EA15A5244D340800CCAB40 /* LocationManager.swift in Sources */,

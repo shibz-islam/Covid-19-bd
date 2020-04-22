@@ -14,7 +14,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var descriptionLabel: UILabel!
     
-    var location: LocationInfo!
+    var location: LocationInfo?
     var dateList: [String] = []
     var caseList: [Int] = []
     
@@ -24,12 +24,15 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         barChartView.delegate = self
         descriptionLabel.text = "Loading data..."
         
-        if LocationManager.shared.dictForPastCases[self.location.name] != nil {
-            loadInitialData()
-        }else{
-            NotificationCenter.default.addObserver(self, selector: #selector(onDidReceivePastCases(_:)), name: .kDidLoadPastCasesInformation, object: nil)
-            LocationManager.shared.getPastCasesForLocation(withLocation: self.location)
+        if let loc = self.location {
+            if LocationManager.shared.dictForPastCases[loc.name] != nil {
+                loadInitialData()
+            }else{
+                NotificationCenter.default.addObserver(self, selector: #selector(onDidReceivePastCases(_:)), name: .kDidLoadPastCasesInformation, object: nil)
+                LocationManager.shared.getPastCasesForLocation(withLocation: loc)
+            }
         }
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -49,29 +52,31 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     }
     
     func loadInitialData() {
-        if LocationManager.shared.dictForPastCases[self.location.name] != nil {
-            let val = LocationManager.shared.dictForPastCases[self.location.name]!
-            print("loading data...-> \(val.count)")
-            let ordered = val.sorted {
-                guard let s1 = $0["date"], let s2 = $1["date"] else {
-                    return false
+        if let loc = self.location {
+            if LocationManager.shared.dictForPastCases[loc.name] != nil {
+                let val = LocationManager.shared.dictForPastCases[loc.name]!
+                print("loading data...-> \(val.count)")
+                let ordered = val.sorted {
+                    guard let s1 = $0["date"], let s2 = $1["date"] else {
+                        return false
+                    }
+                    return s1 < s2
                 }
-                return s1 < s2
-            }
-            self.dateList.removeAll()
-            self.caseList.removeAll()
-            for itemDict in ordered{
-                let dateComponents = itemDict["date"]!.split(separator: "-")
-                var shortDate: String
-                if dateComponents.count > 1 {
-                    shortDate = dateComponents[dateComponents.count-2] + "/" + dateComponents[dateComponents.count-1]
-                }else{
-                    shortDate = itemDict["date"]!
+                self.dateList.removeAll()
+                self.caseList.removeAll()
+                for itemDict in ordered{
+                    let dateComponents = itemDict["date"]!.split(separator: "-")
+                    var shortDate: String
+                    if dateComponents.count > 1 {
+                        shortDate = dateComponents[dateComponents.count-2] + "/" + dateComponents[dateComponents.count-1]
+                    }else{
+                        shortDate = itemDict["date"]!
+                    }
+                    self.dateList.append(shortDate)
+                    self.caseList.append((itemDict["cases"]! as NSString).integerValue)
                 }
-                self.dateList.append(shortDate)
-                self.caseList.append((itemDict["cases"]! as NSString).integerValue)
+                loadChart()
             }
-            loadChart()
         }
     }
     
@@ -119,10 +124,17 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         if self.caseList.count > 1{
             let prev = self.caseList[self.caseList.count-2]
             let increase: Double = Double((self.caseList.last! - prev)*100/prev)
-            percentageText = "\n with increase = \(increase)%"
-            print(percentageText)
+            if increase >= 0 {
+                percentageText = "\n with increase = \(increase)%"
+            }
+            else{
+                percentageText = "\n with decrease = \(abs(increase))%"
+            }
+            //print(percentageText)
         }
-        descriptionLabel.text = location.name + "\n Current Patients = \(self.caseList.last!)" + percentageText
+        if let loc = self.location {
+            descriptionLabel.text = loc.name + "\n Current Patients = \(self.caseList.last!)" + percentageText
+        }
     }
     
     

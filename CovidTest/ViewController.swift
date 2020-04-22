@@ -14,9 +14,9 @@ import GoogleMaps
 
 
 class ViewController: UIViewController {
-    @IBOutlet weak var mapView: GMSMapView!
-    @IBOutlet weak var mapViewCity: GMSMapView!
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var mapView: GMSMapView?
+    @IBOutlet weak var mapViewCity: GMSMapView?
+    @IBOutlet weak var segmentedControl: UISegmentedControl?
     
     var locationManager: CLLocationManager!
     var defaultLocation = CLLocation(latitude: 23.777176, longitude: 90.399452)
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        print("viewWillAppear")
     }
     
     override func viewDidLoad() {
@@ -37,24 +37,25 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadLocationInformation, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveDataForCity(_:)), name: .kDidLoadLocationInformationForCity, object: nil)
         
-        mapView.delegate = self
-        mapViewCity.delegate = self
-        segmentedControl.setTitle("District", forSegmentAt: 0)
-        segmentedControl.setTitle("Dhaka City", forSegmentAt: 1)
+        mapView?.delegate = self
+        mapViewCity?.delegate = self
+        segmentedControl?.setTitle("District", forSegmentAt: 0)
+        segmentedControl?.setTitle("Dhaka City", forSegmentAt: 1)
         
         loadInitialData()
         loadInitialDataForCity()
         
         //loadLocationManager()
+        print("viewDidLoad")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self)
-        self.locations.removeAll()
-        self.locationsForCity.removeAll()
-        self.markers.removeAll()
-        self.markersForCity.removeAll()
+        print("viewDidDisappear")
         super.viewDidDisappear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        print("viewWillDisappear")
     }
     
     
@@ -63,6 +64,7 @@ class ViewController: UIViewController {
     @objc private func onDidReceiveData(_ notification: Notification) {
         print("onDidReceiveData...")
         DispatchQueue.main.async {
+            NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationInformation, object: nil)
             self.loadInitialData()
         }
     }
@@ -70,35 +72,36 @@ class ViewController: UIViewController {
     @objc private func onDidReceiveDataForCity(_ notification: Notification) {
         print("onDidReceiveDataForCity...")
         DispatchQueue.main.async {
+            NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationInformationForCity, object: nil)
             self.loadInitialDataForCity()
         }
         
     }
     
     @IBAction func segmentedControlPressed(_ sender: Any) {
-        switch segmentedControl.selectedSegmentIndex
+        switch segmentedControl?.selectedSegmentIndex
         {
         case 0:
             print("0")
-            self.mapView.isHidden = false
-            self.mapViewCity.isHidden = true
+            self.mapView?.isHidden = false
+            self.mapViewCity?.isHidden = true
         case 1:
             print("1")
-            self.mapView.isHidden = true
-            self.mapViewCity.isHidden = false
+            self.mapView?.isHidden = true
+            self.mapViewCity?.isHidden = false
         default:
             break
         }
     }
     
     private func loadInitialData() {
-        self.mapView.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocation.coordinate.latitude, longitude: self.defaultLocation.coordinate.longitude, zoom: self.defaultZoomLevel)
+        self.mapView?.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocation.coordinate.latitude, longitude: self.defaultLocation.coordinate.longitude, zoom: self.defaultZoomLevel)
         
         if LocationManager.shared.dictForDistrictLocation.count > 0 {
             do {
                 //print("loadInitialData")
                 self.locations = LocationManager.shared.dictForDistrictLocation
-                self.mapView.clear()
+                self.mapView?.clear()
                 for (key, location) in self.locations{
                     let m = GMSMarker()
                     m.position = CLLocationCoordinate2D(latitude: location.latitude ?? self.defaultLocation.coordinate.latitude, longitude: location.longitude ?? self.defaultLocation.coordinate.longitude)
@@ -117,13 +120,13 @@ class ViewController: UIViewController {
     }
     
     private func loadInitialDataForCity(){
-        self.mapViewCity.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocationCity.coordinate.latitude, longitude: self.defaultLocationCity.coordinate.longitude, zoom: self.defaultZoomLevel*2)
+        self.mapViewCity?.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocationCity.coordinate.latitude, longitude: self.defaultLocationCity.coordinate.longitude, zoom: self.defaultZoomLevel*2)
         
         if LocationManager.shared.dictForCityLocation.count > 0 {
             self.locationsForCity = LocationManager.shared.dictForCityLocation
             do {
                 //print("loadInitialData")
-                self.mapViewCity.clear()
+                self.mapViewCity?.clear()
                 for (key, location) in self.locationsForCity{
                     let m = GMSMarker()
                     m.position = CLLocationCoordinate2D(latitude: location.latitude ?? self.defaultLocationCity.coordinate.latitude, longitude: location.longitude ?? self.defaultLocationCity.coordinate.longitude)
@@ -165,10 +168,10 @@ extension ViewController: GMSMapViewDelegate{
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool
     {
         //print("marker tapped! \(String(describing: marker.title))")
-        var tappedLocation: LocationInfo!
-        tappedLocation = self.mapView.isHidden == false ? self.locations[marker.title!] : self.locationsForCity[marker.title!]
+        var tappedLocation: LocationInfo?
+        tappedLocation = self.mapView?.isHidden == false ? self.locations[marker.title!] : self.locationsForCity[marker.title!]
         
-        print("Location selected: \(tappedLocation.name)")
+        print("Location selected: \(tappedLocation?.name)")
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let barVC = storyboard.instantiateViewController(withIdentifier: "barChartVC") as! BarChartViewController
@@ -189,15 +192,15 @@ extension ViewController: CLLocationManagerDelegate {
         case .denied:
           print("User denied access to location.")
           // Display the map using the default location.
-          mapView.isHidden = false
+          mapView?.isHidden = false
         case .notDetermined:
           print("Location status not determined.")
         case .authorizedAlways: fallthrough
         case .authorizedWhenInUse:
           print("Location status is OK.")
             locationManager.startUpdatingLocation()
-            mapView.isMyLocationEnabled = true
-            mapView.settings.myLocationButton = true
+          mapView?.isMyLocationEnabled = true
+          mapView?.settings.myLocationButton = true
         @unknown default:
           fatalError()
         }
@@ -208,7 +211,7 @@ extension ViewController: CLLocationManagerDelegate {
             return
         }
     
-        mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+        mapView?.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
         locationManager.stopUpdatingLocation()
         print("Current Location: Lat=\(location.coordinate.latitude), Long=\(location.coordinate.longitude)")
         //fetchNearbyPlaces(coordinate: location.coordinate)

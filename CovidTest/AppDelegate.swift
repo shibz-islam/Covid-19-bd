@@ -23,6 +23,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         ApplicationManager.shared.loadApplication()
         
+        let mainVC = ViewController()
+        let tableVC = TableViewController()
+        
+//        let itemMap = UITabBarItem()
+//        itemMap.title = "Map"
+//        item.image = UIImage(named: "icon")
+//        mainVC.tabBarItem = itemMap
+//
+//        let itemTable = UITabBarItem()
+//        itemTable.title = "Table"
+//        item.image = UIImage(named: "icon")
+//        tableVC.tabBarItem = itemTable
+        
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [mainVC, tableVC]
+        
         return true
     }
 
