@@ -11,21 +11,24 @@ import UIKit
 import CoreData
 import SwiftKeychainWrapper
 
+/// Singleton class for managing Core data and keychain
 class CoreDataManager {
     static let shared = CoreDataManager()
     private init(){}
     
     let kLocationInfoEntity: String = "LocationInfoEntity"
     let kAppIDKey: String = "kAppIDKey"
+    let kAppLastUpdateDate: String = "kAppLastUpdateDate"
     
     
-    func storeLocationInfo(withIsLevelCity isLevelCity: Bool, withManagedContextObject managedContext:NSManagedObjectContext) {
-//        if Thread.isMainThread == false{
-//            print("Error! Trying to access UIApplication from background thread.")
-//            return false
-//        }
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
-//        let managedContext = appDelegate.persistentContainer.viewContext
+    func storeLocationInfo(withIsLevelCity isLevelCity: Bool) {
+        if Thread.isMainThread == false{
+            print("Error! Trying to access UIApplication from background thread.")
+            return
+        }
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
         let entity = NSEntityDescription.entity(forEntityName: kLocationInfoEntity, in: managedContext)!
         
         let dict = isLevelCity == true ? LocationManager.shared.dictForCityLocation : LocationManager.shared.dictForDistrictLocation
@@ -49,17 +52,16 @@ class CoreDataManager {
     }
     
     
-    func isLocationInfoExist(withDate date:Date, withManagedContextObject managedContext:NSManagedObjectContext) -> Bool {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let formattedDateString = dateFormatter.string(from: date)
+    func isLocationInfoExist(withDate date:Date) -> Bool {
+        if Thread.isMainThread == false{
+            print("Error! Trying to access UIApplication from background thread.")
+            return false
+        }
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return false}
+        let managedContext = appDelegate.persistentContainer.viewContext
         
-//        if Thread.isMainThread == false{
-//            print("Error! Trying to access UIApplication from background thread.")
-//            return false
-//        }
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return false}
-//        let managedContext = appDelegate.persistentContainer.viewContext
+        let formattedDateString = date.getStringDate()
+
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: kLocationInfoEntity)
         fetchRequest.predicate = NSPredicate(format:"date == %@", formattedDateString)
         
@@ -75,18 +77,16 @@ class CoreDataManager {
     }
     
     
-    func fetchLocationInfo(withDate date:Date, withManagedContextObject managedContext:NSManagedObjectContext)-> Bool{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let formattedDateString = dateFormatter.string(from: date)
-        print("Date = \(formattedDateString)")
+    func fetchLocationInfo(withDate date:Date)-> Bool{
+        if Thread.isMainThread == false{
+            print("Error! Trying to access UIApplication from background thread.")
+            return false
+        }
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return false}
+        let managedContext = appDelegate.persistentContainer.viewContext
         
-//        if Thread.isMainThread == false{
-//            print("Error! Trying to access UIApplication from background thread.")
-//            return false
-//        }
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return false}
-//        let managedContext = appDelegate.persistentContainer.viewContext
+        let formattedDateString = date.getStringDate()
+        
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: kLocationInfoEntity)
         fetchRequest.predicate = NSPredicate(format:"date == %@", formattedDateString)
         
@@ -114,31 +114,21 @@ class CoreDataManager {
     
     
     // MARK: - KeychainWrapper
-    func isAppIdentifierExist() -> Bool {
-        let retrievedString: String? = KeychainWrapper.standard.string(forKey: kAppIDKey)
-        if let identifier = retrievedString {
-            //print("Identifier: \(identifier)")
-            return true
-        }
-        return false
-    }
-    
-    func storeAppIdentifier(_ id:String)->Bool{
-        let saveSuccessful: Bool = KeychainWrapper.standard.set(id, forKey: kAppIDKey)
+    func storeValueInKeychain(withValue value:String, withKey key:String)->Bool{
+        let saveSuccessful: Bool = KeychainWrapper.standard.set(value, forKey: key)
         return saveSuccessful
     }
-    
-    func retrieveAppIdentifier() -> String {
-        let retrievedString = KeychainWrapper.standard.string(forKey: kAppIDKey)!
+    func retrieveValueFromKeychain(withKey key:String) -> String {
+        let retrievedString = KeychainWrapper.standard.string(forKey: key)!
         return retrievedString
     }
-
-    func deleteAppIdentifier() -> Bool {
-        let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: "myKey")
+    func deleteValueFromKeychain(withKey key:String) -> Bool {
+        let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: key)
         return removeSuccessful
     }
-    
-    
+    func isValueExistInKeychain(withKey key:String) -> Bool {
+        return KeychainWrapper.standard.hasValue(forKey: key)
+    }
 }
 
 

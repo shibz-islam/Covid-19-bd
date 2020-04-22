@@ -6,11 +6,12 @@
 //  Copyright © 2020 shihab. All rights reserved.
 //
 
-/* Singleton Class*/
+
 import Foundation
 import SwiftyJSON
 import CoreLocation
 
+/// Sinleton class for managing Server requests and responses
 class AuthenticationManager {
     static let shared = AuthenticationManager()
     private init(){}
@@ -20,6 +21,9 @@ class AuthenticationManager {
     let kApiStringForlocationData: String = "data?"
     let kApiStringForLocationCoordinate: String = "get_location"
     let kApiStringForPastData: String = "loc_data_seq?"
+    
+    let kErrorJson: String = "Json_Error"
+    let kErrorServer: String = "error"
     
     
     func sendRequestForAppIdentifier(completionHandler: @escaping(_ isSuccess: Bool, _ identifier: String?)->Void) {
@@ -58,14 +62,9 @@ class AuthenticationManager {
     }
     
     
-    func sendRequestForLocationData(withIsLevelCity isLevelCity: Bool?, completionHandler: @escaping(_ isSuccess: Bool?, _ locationArray: [LocationInfo]?)->Void) {
+    func sendRequestForLocationData(withIsLevelCity isLevelCity: Bool?, withDate date:Date, completionHandler: @escaping(_ isSuccess: Bool?, _ message:String?, _ locationArray: [LocationInfo]?)->Void) {
 
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        //let formattedDate = dateFormatter.string(from: Date())
-        #warning("Remove hard-coded date")
-        let formattedDate = "2020-04-20"
-        
+        let formattedDate = date.getStringDate()
         let nameString = isLevelCity == true ? "Dhaka" : "Bangladesh"
         let typeString = isLevelCity == true ? "city" : "country"
         
@@ -94,29 +93,34 @@ class AuthenticationManager {
                 do {
                     let json = try?JSON(data: data!)
                     //print(json)
-                    var locationArray = [LocationInfo]()
-                    let parent: String = json!["payload"]["name"].stringValue
-                    let level: String = json!["payload"]["level"].stringValue
-                    let dateString = json!["payload"]["date"].stringValue
-                    
-                    for item in json!["payload"]["data"].arrayValue {
-                        //print(item["city"].stringValue)
-                        let areaName = isLevelCity == true ? item["zone"].stringValue : item["city"].stringValue
-                        var location = LocationInfo(name: areaName,
-                                                    parent: parent,
-                                                    level: level,
-                                                    latitude: 0.0,
-                                                    longitude: 0.0,
-                                                    cases: item["cases"].intValue,
-                                                    date: dateString)
-                        locationArray.append(location)
+                    if json!["status"] == "error" {
+                        print("Received Error Status")
+                        completionHandler(false, self.kErrorServer, [])
+                    }else {
+                        var locationArray = [LocationInfo]()
+                        let parent: String = json!["payload"]["name"].stringValue
+                        let level: String = json!["payload"]["level"].stringValue
+                        let dateString = json!["payload"]["date"].stringValue
+                        
+                        for item in json!["payload"]["data"].arrayValue {
+                            //print(item["city"].stringValue)
+                            let areaName = isLevelCity == true ? item["zone"].stringValue : item["city"].stringValue
+                            var location = LocationInfo(name: areaName,
+                                                        parent: parent,
+                                                        level: level,
+                                                        latitude: 0.0,
+                                                        longitude: 0.0,
+                                                        cases: item["cases"].intValue,
+                                                        date: dateString)
+                            locationArray.append(location)
+                        }
+                        print("Numner of location received: \(locationArray.count)")
+                        completionHandler(true, nil, locationArray)
                     }
-                    print("Numner of location received: \(locationArray.count)")
-                    completionHandler(true, locationArray)
                 } catch {
                     print("Error: \(error)")
                     print("JSON error: \(error.localizedDescription)")
-                    completionHandler(false, [])
+                    completionHandler(false, self.kErrorJson, [])
                 }
             }
         }
@@ -155,11 +159,15 @@ class AuthenticationManager {
                     let json = try JSON(data: data!)
                     //print(json)
                     //print(json["payload"][key])
-                    if let latitude = json["payload"][key]["lat"].numberValue as? Double, let longitude = json["payload"][key]["lng"].numberValue as? Double {
-                        let location = CLLocation(latitude: latitude, longitude: longitude)
-                        completionHandler(true, location)
+                    if json["status"] == "error" {
+                        print("Received Error Status")
+                        completionHandler(false, nil)
+                    }else{
+                        if let latitude = json["payload"][key]["lat"].numberValue as? Double, let longitude = json["payload"][key]["lng"].numberValue as? Double {
+                            let location = CLLocation(latitude: latitude, longitude: longitude)
+                            completionHandler(true, location)
+                        }
                     }
-                    
                 } catch {
                     print("Error: \(error)")
                     print("JSON error: \(error.localizedDescription)")
@@ -196,16 +204,21 @@ class AuthenticationManager {
                 
                 do {
                     let json = try?JSON(data: data!)
-                    print(json)
-                    var locationArray = [Dictionary<String,String>]()
-                    
-                    for item in json!["payload"].arrayValue {
-                        let date: String = item["date"].stringValue
-                        let cases: Int = item["data"]["cases"].intValue
-                        locationArray.append(["date":date, "cases": String(cases)])
-                    }
-                    print("Numner of cases received: \(locationArray.count)")
-                    completionHandler(true, locationArray)
+                    //print(json)
+                    if json!["status"] == "error" {
+                        print("Received Error Status")
+                        completionHandler(false, [])
+                    }else {
+                        var locationArray = [Dictionary<String,String>]()
+                        
+                        for item in json!["payload"].arrayValue {
+                            let date: String = item["date"].stringValue
+                            let cases: Int = item["data"]["cases"].intValue
+                            locationArray.append(["date":date, "cases": String(cases)])
+                        }
+                        print("Numner of cases received: \(locationArray.count)")
+                        completionHandler(true, locationArray)
+                    }                    
                 } catch {
                     print("Error: \(error)")
                     print("JSON error: \(error.localizedDescription)")
