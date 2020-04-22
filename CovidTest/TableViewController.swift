@@ -14,9 +14,18 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     var locations = [LocationInfo]()
     var locationsForCity = [LocationInfo]()
+    var filteredLocations = [LocationInfo]()
+    let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("**** viewDidLoad")
+
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search locations..."
+        tableView.tableHeaderView = searchController.searchBar
+        definesPresentationContext = true
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -45,29 +54,36 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch segmentedControl.selectedSegmentIndex
-        {
-            case 0:
-                return self.locations.count > 0 ? self.locations.count : 0
-            case 1:
-                return self.locationsForCity.count > 0 ? self.locationsForCity.count : 0
-            default:
-                return 0
+        if self.isFiltering {
+            return self.filteredLocations.count
+        }else{
+            switch segmentedControl.selectedSegmentIndex
+            {
+                case 0:
+                    return self.locations.count > 0 ? self.locations.count : 0
+                case 1:
+                    return self.locationsForCity.count > 0 ? self.locationsForCity.count : 0
+                default:
+                    return 0
+            }
         }
     }
 
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
         var location: LocationInfo
-        switch segmentedControl.selectedSegmentIndex
-        {
-            case 0:
-                location = self.locations[indexPath.row]
-            case 1:
-                location = self.locationsForCity[indexPath.row]
-            default:
-                return UITableViewCell()
+        if isFiltering {
+            location = self.filteredLocations[indexPath.row]
+        }else{
+            switch segmentedControl.selectedSegmentIndex
+            {
+                case 0:
+                    location = self.locations[indexPath.row]
+                case 1:
+                    location = self.locationsForCity[indexPath.row]
+                default:
+                    return UITableViewCell()
+            }
         }
         cell.textLabel?.text = location.name
         cell.detailTextLabel?.text = "Current cases: \(location.cases)"
@@ -76,58 +92,29 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var tappedLocation: LocationInfo?
-        switch segmentedControl.selectedSegmentIndex
-        {
-            case 0:
-                tappedLocation = self.locations[indexPath.row]
-            case 1:
-                tappedLocation = self.locationsForCity[indexPath.row]
-            default:
-                print("Unknown cell")
+        if isFiltering {
+            tappedLocation = self.filteredLocations[indexPath.row]
+        }else{
+            switch segmentedControl.selectedSegmentIndex
+            {
+                case 0:
+                    tappedLocation = self.locations[indexPath.row]
+                case 1:
+                    tappedLocation = self.locationsForCity[indexPath.row]
+                default:
+                    print("Unknown cell")
+            }
         }
+        //print("Tapped: \(tappedLocation?.name)")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let barVC = storyboard.instantiateViewController(withIdentifier: "barChartVC") as! BarChartViewController
         if let location = tappedLocation{
             barVC.location = location
+            self.present(barVC, animated: true, completion: nil)
+            tableView.deselectRow(at: indexPath, animated: true)
         }
-        self.present(barVC, animated: true, completion: nil)
+        
     }
-    
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     /*
     // MARK: - Navigation
@@ -181,12 +168,45 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         switch segmentedControl?.selectedSegmentIndex
         {
             case 0:
+                searchController.isActive = false
                 print("Segment 0")
             case 1:
+                searchController.isActive = false
                 print("Segment 1")
             default:
                 break
         }
         self.tableView.reloadData()
+    }
+    
+    var isSearchBarEmpty: Bool {
+        return self.searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    var isFiltering: Bool {
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!isSearchBarEmpty || searchBarScopeIsFiltering)
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+extension TableViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        //print(searchBar.text)
+        switch segmentedControl.selectedSegmentIndex
+        {
+            case 0:
+                filteredLocations = self.locations.filter {
+                    $0.name.lowercased().contains(searchBar.text!.lowercased())
+            }
+            case 1:
+                filteredLocations = self.locationsForCity.filter {
+                    $0.name.lowercased().contains(searchBar.text!.lowercased())
+            }
+            default:
+                print("Unknown segment")
+        }
+        tableView.reloadData()
     }
 }

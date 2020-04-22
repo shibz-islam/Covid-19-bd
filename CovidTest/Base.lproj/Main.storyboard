@@ -112,7 +112,7 @@
                                             <constraint firstAttribute="height" constant="30" id="jAt-b7-MFg"/>
                                             <constraint firstAttribute="width" constant="45" id="mWz-3j-BHh"/>
                                         </constraints>
-                                        <state key="normal" title="Close"/>
+                                        <state key="normal" image="clear" catalog="system"/>
                                         <connections>
                                             <action selector="closeButtonTapped:" destination="f4B-2M-NpW" eventType="touchUpInside" id="2fY-xe-O0j"/>
                                         </connections>
@@ -225,6 +225,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="clear" catalog="system" width="128" height="114"/>
         <image name="map" catalog="system" width="128" height="113"/>
         <image name="table" catalog="system" width="128" height="93"/>
     </resources>
