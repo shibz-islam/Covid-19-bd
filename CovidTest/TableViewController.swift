@@ -74,6 +74,25 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var tappedLocation: LocationInfo?
+        switch segmentedControl.selectedSegmentIndex
+        {
+            case 0:
+                tappedLocation = self.locations[indexPath.row]
+            case 1:
+                tappedLocation = self.locationsForCity[indexPath.row]
+            default:
+                print("Unknown cell")
+        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let barVC = storyboard.instantiateViewController(withIdentifier: "barChartVC") as! BarChartViewController
+        if let location = tappedLocation{
+            barVC.location = location
+        }
+        self.present(barVC, animated: true, completion: nil)
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
