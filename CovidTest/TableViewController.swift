@@ -8,39 +8,72 @@
 
 import UIKit
 
-class TableViewController: UITableViewController {
+class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    var locations = [LocationInfo]()
+    var locationsForCity = [LocationInfo]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        tableView.delegate = self
+        tableView.dataSource = self
+        segmentedControl.setTitle("District", forSegmentAt: 0)
+        segmentedControl.setTitle("Dhaka City", forSegmentAt: 1)
+        
+        if LocationManager.shared.dictForCityLocation.count == 0 {
+            NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadLocationInformation, object: nil)
+        }
+        if LocationManager.shared.dictForCityLocation.count == 0 {
+            NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveDataForCity(_:)), name: .kDidLoadLocationInformationForCity, object: nil)
+        }
+        
+        loadInitialData()
+        loadInitialDataForCity()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch segmentedControl.selectedSegmentIndex
+        {
+            case 0:
+                return self.locations.count > 0 ? self.locations.count : 0
+            case 1:
+                return self.locationsForCity.count > 0 ? self.locationsForCity.count : 0
+            default:
+                return 0
+        }
     }
 
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
+        var location: LocationInfo
+        switch segmentedControl.selectedSegmentIndex
+        {
+            case 0:
+                location = self.locations[indexPath.row]
+            case 1:
+                location = self.locationsForCity[indexPath.row]
+            default:
+                return UITableViewCell()
+        }
+        cell.textLabel?.text = location.name
+        cell.detailTextLabel?.text = "Current cases: \(location.cases)"
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -86,5 +119,55 @@ class TableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // MARK: - Helper
+    
+    @objc private func onDidReceiveData(_ notification: Notification) {
+        print("onDidReceiveData from TableView")
+        DispatchQueue.main.async {
+            NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationInformation, object: nil)
+            self.loadInitialData()
+        }
+    }
+    
+    @objc private func onDidReceiveDataForCity(_ notification: Notification) {
+        print("onDidReceiveDataForCity from TableView")
+        DispatchQueue.main.async {
+            NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationInformationForCity, object: nil)
+            self.loadInitialDataForCity()
+        }
+    }
+    
+    private func loadInitialData() {
+        if LocationManager.shared.dictForDistrictLocation.count > 0 {
+            for (key, location) in LocationManager.shared.dictForDistrictLocation{
+                self.locations.append(location)
+            }
+            self.locations = self.locations.sorted(by: { $0.cases > $1.cases })
+            self.tableView.reloadData()
+        }
+    }
+    
+    private func loadInitialDataForCity(){
+        if LocationManager.shared.dictForCityLocation.count > 0 {
+            for (key, location) in LocationManager.shared.dictForCityLocation{
+                self.locationsForCity.append(location)
+            }
+            self.locationsForCity = self.locationsForCity.sorted(by: { $0.cases > $1.cases })
+            self.tableView.reloadData()
+        }
+    }
 
+    @IBAction func segmentedControlPressed(_ sender: Any) {
+        switch segmentedControl?.selectedSegmentIndex
+        {
+            case 0:
+                print("Segment 0")
+            case 1:
+                print("Segment 1")
+            default:
+                break
+        }
+        self.tableView.reloadData()
+    }
 }

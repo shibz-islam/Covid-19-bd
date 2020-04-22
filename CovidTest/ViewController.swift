@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear")
+        //print("viewWillAppear")
     }
     
     override func viewDidLoad() {
@@ -46,16 +46,16 @@ class ViewController: UIViewController {
         loadInitialDataForCity()
         
         //loadLocationManager()
-        print("viewDidLoad")
+        //print("viewDidLoad")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        print("viewDidDisappear")
+        //print("viewDidDisappear")
         super.viewDidDisappear(animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("viewWillDisappear")
+        //print("viewWillDisappear")
     }
     
     
@@ -75,18 +75,17 @@ class ViewController: UIViewController {
             NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationInformationForCity, object: nil)
             self.loadInitialDataForCity()
         }
-        
     }
     
     @IBAction func segmentedControlPressed(_ sender: Any) {
         switch segmentedControl?.selectedSegmentIndex
         {
         case 0:
-            print("0")
+            print("Segment 0")
             self.mapView?.isHidden = false
             self.mapViewCity?.isHidden = true
         case 1:
-            print("1")
+            print("Segment 1")
             self.mapView?.isHidden = true
             self.mapViewCity?.isHidden = false
         default:

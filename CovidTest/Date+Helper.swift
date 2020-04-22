@@ -12,10 +12,10 @@ extension Date {
     static var yesterday: Date { return Date().dayBefore }
     static var tomorrow:  Date { return Date().dayAfter }
     var dayBefore: Date {
-        return Calendar.current.date(byAdding: .day, value: -1, to: noon)!
+        return Calendar.current.date(byAdding: .day, value: -1, to: Date())!
     }
     var dayAfter: Date {
-        return Calendar.current.date(byAdding: .day, value: 1, to: noon)!
+        return Calendar.current.date(byAdding: .day, value: 1, to: Date())!
     }
     var noon: Date {
         return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
@@ -30,7 +30,7 @@ extension Date {
     func getStringDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let formattedDateString = dateFormatter.string(from: Date())
+        let formattedDateString = dateFormatter.string(from: self)
         return formattedDateString
     }
 }

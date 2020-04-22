@@ -36,15 +36,19 @@ class ApplicationManager {
     /// Check for new data in server
     func checkForNewData() {
         if CoreDataManager.shared.isValueExistInKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDate) == false {
+            print("No data in store. Need to fetch new data from server...")
             fetchNewDataFromServer(withDate: Date(), withIsLevelCity: false, withIsPreviousDataExist: false)
             fetchNewDataFromServer(withDate: Date(), withIsLevelCity: true, withIsPreviousDataExist: false)
         }
         else{
             let lastUpdateDate = CoreDataManager.shared.retrieveValueFromKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDate)
+            print("CoreData date: \(lastUpdateDate)")
             if lastUpdateDate == Date().getStringDate(){
+                print("Data already upto date.")
                 loadData(withDate: Date())
             }
             else{
+                print("Data not upto date. Need to fetch new data from server...")
                 fetchNewDataFromServer(withDate: Date(), withIsLevelCity: false, withIsPreviousDataExist: true)
                 fetchNewDataFromServer(withDate: Date(), withIsLevelCity: true, withIsPreviousDataExist: true)
             }
@@ -115,6 +119,7 @@ class ApplicationManager {
     /// Load data from Core data according to date
     /// - Parameter date: date of data
     func loadData(withDate date:Date) {
+        print("Load data from date: \(date.getStringDate())")
         DispatchQueue.main.async {
             if CoreDataManager.shared.isLocationInfoExist(withDate: date) == false {
                 print("No data found in core data, getting data from server")
