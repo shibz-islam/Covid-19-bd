@@ -115,7 +115,14 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         //let ll = ChartLimitLine(limit: 10.0, label: "Target")
         //barChartView.rightAxis.addLimitLine(ll)
         
-        descriptionLabel.text = location.name + "\n Current Patients=\(location.cases)"
+        var percentageText: String = ""
+        if self.caseList.count > 1{
+            let prev = self.caseList[self.caseList.count-2]
+            let increase: Double = Double((self.caseList.last! - prev)*100/prev)
+            percentageText = "\n with increase = \(increase)%"
+            print(percentageText)
+        }
+        descriptionLabel.text = location.name + "\n Current Patients = \(self.caseList.last!)" + percentageText
     }
     
     
