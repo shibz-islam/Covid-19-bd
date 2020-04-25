@@ -89,11 +89,25 @@ class LocationManager {
                     }else{
                         self.dictForPastCases[location.name] = listOfPastDailyCases ?? []
                     }
+                    self.sortPastCasesDict(withKey: location.name)
                     NotificationCenter.default.post(name: .kDidLoadPastCasesInformation, object: nil)
                 }
             })//end of completionHandler
         }
     }//end func
+    
+    
+    func sortPastCasesDict(withKey key:String) {
+        let val = LocationManager.shared.dictForPastCases[key]
+        print("loading data...-> \(String(describing: val?.count))")
+        let ordered = val?.sorted {
+            guard let s1 = $0["date"], let s2 = $1["date"] else {
+                return false
+            }
+            return s1 < s2
+        }
+        LocationManager.shared.dictForPastCases[key] = ordered
+    }
 
 
 }

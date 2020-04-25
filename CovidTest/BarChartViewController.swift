@@ -17,6 +17,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     var location: LocationInfo?
     var dateList: [String] = []
     var caseList: [Int] = []
+    let maxRecords: Int = 10
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,13 +55,10 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     func loadInitialData() {
         if let loc = self.location {
             if LocationManager.shared.dictForPastCases[loc.name] != nil {
-                let val = LocationManager.shared.dictForPastCases[loc.name]!
-                print("loading data...-> \(val.count)")
-                let ordered = val.sorted {
-                    guard let s1 = $0["date"], let s2 = $1["date"] else {
-                        return false
-                    }
-                    return s1 < s2
+                var ordered = LocationManager.shared.dictForPastCases[loc.name]!
+                if ordered.count > maxRecords {
+                    let arraySlice = ordered.suffix(maxRecords)
+                    ordered = Array(arraySlice)
                 }
                 self.dateList.removeAll()
                 self.caseList.removeAll()
@@ -81,7 +79,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     }
     
     func loadChart() {
-        barChartView.noDataText = "You need to provide data for the chart."
+        barChartView.noDataText = "No data for the chart."
         var dataEntries: [BarChartDataEntry] = []
         
         for i in 0..<self.dateList.count {
