@@ -213,7 +213,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9uM-oY-1sd"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Table" image="table" catalog="system" id="m4t-vs-qfh"/>
+                    <tabBarItem key="tabBarItem" title="List" image="list.bullet" catalog="system" id="m4t-vs-qfh"/>
                     <connections>
                         <outlet property="segmentedControl" destination="87L-ad-io9" id="c4L-aS-bIb"/>
                         <outlet property="tableView" destination="DJf-cl-V0e" id="RTP-bZ-2mM"/>
@@ -226,7 +226,7 @@
     </scenes>
     <resources>
         <image name="Close" width="44" height="44"/>
+        <image name="list.bullet" catalog="system" width="128" height="88"/>
         <image name="map" catalog="system" width="128" height="113"/>
-        <image name="table" catalog="system" width="128" height="93"/>
     </resources>
 </document>

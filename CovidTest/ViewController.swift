@@ -45,7 +45,7 @@ class ViewController: UIViewController {
         loadInitialData()
         loadInitialDataForCity()
         
-        //loadLocationManager()
+        loadLocationManager()
         //print("viewDidLoad")
     }
     
@@ -94,7 +94,7 @@ class ViewController: UIViewController {
     }
     
     private func loadInitialData() {
-        self.mapView?.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocation.coordinate.latitude, longitude: self.defaultLocation.coordinate.longitude, zoom: self.defaultZoomLevel)
+        //self.mapView?.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocation.coordinate.latitude, longitude: self.defaultLocation.coordinate.longitude, zoom: self.defaultZoomLevel)
         
         if LocationManager.shared.dictForDistrictLocation.count > 0 {
             do {
@@ -119,7 +119,7 @@ class ViewController: UIViewController {
     }
     
     private func loadInitialDataForCity(){
-        self.mapViewCity?.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocationCity.coordinate.latitude, longitude: self.defaultLocationCity.coordinate.longitude, zoom: self.defaultZoomLevel*2)
+        //self.mapViewCity?.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocationCity.coordinate.latitude, longitude: self.defaultLocationCity.coordinate.longitude, zoom: self.defaultZoomLevel*2)
         
         if LocationManager.shared.dictForCityLocation.count > 0 {
             self.locationsForCity = LocationManager.shared.dictForCityLocation
@@ -149,7 +149,7 @@ class ViewController: UIViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         if CLLocationManager.locationServicesEnabled(){
-            print("#######")
+            print("#locationServicesEnabled")
             locationManager.startUpdatingLocation()
         }
     }
@@ -197,7 +197,7 @@ extension ViewController: CLLocationManagerDelegate {
         case .authorizedAlways: fallthrough
         case .authorizedWhenInUse:
           print("Location status is OK.")
-            locationManager.startUpdatingLocation()
+          locationManager.startUpdatingLocation()
           mapView?.isMyLocationEnabled = true
           mapView?.settings.myLocationButton = true
         @unknown default:
@@ -207,19 +207,21 @@ extension ViewController: CLLocationManagerDelegate {
   
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else {
+            print("#Showing default location")
+            self.mapView?.camera = GMSCameraPosition(target: defaultLocation.coordinate, zoom: defaultZoomLevel, bearing: 0, viewingAngle: 0)
+            self.mapViewCity?.camera = GMSCameraPosition(target: defaultLocationCity.coordinate, zoom: defaultZoomLevel*2, bearing: 0, viewingAngle: 0)
             return
         }
-    
-        mapView?.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+        
+        self.mapView?.camera = GMSCameraPosition(target: location.coordinate, zoom: defaultZoomLevel, bearing: 0, viewingAngle: 0)
+        self.mapViewCity?.camera = GMSCameraPosition(target: location.coordinate, zoom: defaultZoomLevel*2, bearing: 0, viewingAngle: 0)
         locationManager.stopUpdatingLocation()
-        print("Current Location: Lat=\(location.coordinate.latitude), Long=\(location.coordinate.longitude)")
-        //fetchNearbyPlaces(coordinate: location.coordinate)
+        print("#Current Location: Lat=\(location.coordinate.latitude), Long=\(location.coordinate.longitude)")
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error){
         locationManager.stopUpdatingLocation()
         print("Error \(error)")
     }
-    
     
 }
