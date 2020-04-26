@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "53EA157E24494B2800CCAB40"
-               BuildableName = "CovidTest.app"
+               BuildableName = "Covid19-BD.app"
                BlueprintName = "CovidTest"
                ReferencedContainer = "container:CovidTest.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "53EA157E24494B2800CCAB40"
-            BuildableName = "CovidTest.app"
+            BuildableName = "Covid19-BD.app"
             BlueprintName = "CovidTest"
             ReferencedContainer = "container:CovidTest.xcodeproj">
          </BuildableReference>
@@ -66,7 +66,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "53EA157E24494B2800CCAB40"
-            BuildableName = "CovidTest.app"
+            BuildableName = "Covid19-BD.app"
             BlueprintName = "CovidTest"
             ReferencedContainer = "container:CovidTest.xcodeproj">
          </BuildableReference>

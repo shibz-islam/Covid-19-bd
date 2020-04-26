@@ -115,7 +115,12 @@ class AuthenticationManager {
                             locationArray.append(location)
                         }
                         print("Numner of location received: \(locationArray.count)")
-                        completionHandler(true, nil, locationArray)
+                        if locationArray.count > 0 {
+                            completionHandler(true, nil, locationArray)
+                        } else {
+                            completionHandler(false, self.kErrorServer, [])
+                        }
+                        
                     }
                 } catch {
                     print("Error: \(error)")
@@ -216,8 +221,13 @@ class AuthenticationManager {
                             let cases: Int = item["data"]["cases"].intValue
                             locationArray.append(["date":date, "cases": String(cases)])
                         }
+                        
                         print("Numner of cases received: \(locationArray.count)")
-                        completionHandler(true, locationArray)
+                        if locationArray.count > 0 {
+                            completionHandler(true, locationArray)
+                        } else{
+                            completionHandler(false, [])
+                        }
                     }                    
                 } catch {
                     print("Error: \(error)")

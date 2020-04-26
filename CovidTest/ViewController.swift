@@ -42,10 +42,9 @@ class ViewController: UIViewController {
         segmentedControl?.setTitle("District", forSegmentAt: 0)
         segmentedControl?.setTitle("Dhaka City", forSegmentAt: 1)
         
+        loadLocationManager()
         loadInitialData()
         loadInitialDataForCity()
-        
-        loadLocationManager()
         //print("viewDidLoad")
     }
     

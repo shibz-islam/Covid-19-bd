@@ -31,6 +31,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.keyboardDismissMode = .onDrag
         segmentedControl.setTitle("District", forSegmentAt: 0)
         segmentedControl.setTitle("Dhaka City", forSegmentAt: 1)
         
@@ -179,9 +180,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func loadInitialData() {
         if LocationManager.shared.dictForDistrictLocation.count > 0 {
+            //print("***dictForDistrictLocation \(LocationManager.shared.dictForDistrictLocation.count)")
             for (key, location) in LocationManager.shared.dictForDistrictLocation{
                 self.locations.append(location)
-                totalCasesCountryLevel += location.cases
+                totalCasesCountryLevel = totalCasesCountryLevel + location.cases
             }
             self.locations = self.locations.sorted(by: { $0.cases > $1.cases })
             self.tableView.reloadData()
@@ -190,9 +192,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func loadInitialDataForCity(){
         if LocationManager.shared.dictForCityLocation.count > 0 {
+            //print("***dictForCityLocation \(LocationManager.shared.dictForCityLocation.count)")
             for (key, location) in LocationManager.shared.dictForCityLocation{
                 self.locationsForCity.append(location)
-                totalCases += location.cases
+                totalCases = totalCases + location.cases
             }
             self.locationsForCity = self.locationsForCity.sorted(by: { $0.cases > $1.cases })
             self.tableView.reloadData()

@@ -29,8 +29,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [mainVC, tableVC]
         
+        print("### AppDelegate")
+        
         return true
     }
+    
+//    func applicationDidEnterBackground(_ application: UIApplication) {
+//        print("###AppDelegate - applicationDidEnterBackground")
+//    }
+//
+//    func applicationDidBecomeActive(_ application: UIApplication) {
+//        print("###AppDelegate - sceneDidBecomeActive")
+//    }
+//
+//    func applicationWillEnterForeground(_ application: UIApplication) {
+//        print("###AppDelegate - applicationWillEnterForeground")
+//    }
 
     // MARK: UISceneSession Lifecycle
 
