@@ -15,6 +15,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var locations = [LocationInfo]()
     var locationsForCity = [LocationInfo]()
     var filteredLocations = [LocationInfo]()
+    var summaryInfo: SummaryInfo?
     var totalCasesCountryLevel: Int = 0
     var totalCases: Int = 0
     let searchController = UISearchController(searchResultsController: nil)
@@ -43,6 +44,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         if LocationManager.shared.dictForCityLocation.count == 0 {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveDataForCity(_:)), name: .kDidLoadLocationInformationForCity, object: nil)
+        }
+        if LocationManager.shared.dictSummary[ApplicationManager.shared.kCountryNameKey] == nil {
+            LocationManager.shared.getSummary(withIsLevelCity: false)
+            NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveSummaryData(_:)), name: .kDidLoadSummaryInformation, object: nil)
         }
         
         loadInitialData()
@@ -178,6 +183,14 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    @objc private func onDidReceiveSummaryData(_ notification: Notification) {
+        print("onDidReceiveSummaryData from TableView")
+        DispatchQueue.main.async {
+            NotificationCenter.default.removeObserver(self, name: .kDidLoadSummaryInformation, object: nil)
+            self.loadSummaryData()
+        }
+    }
+    
     private func loadInitialData() {
         if LocationManager.shared.dictForDistrictLocation.count > 0 {
             //print("***dictForDistrictLocation \(LocationManager.shared.dictForDistrictLocation.count)")
@@ -199,6 +212,19 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             self.locationsForCity = self.locationsForCity.sorted(by: { $0.cases > $1.cases })
             self.tableView.reloadData()
+        }
+        if let mainDistrictLocation = LocationManager.shared.dictForDistrictLocation[ApplicationManager.shared.kMainDistrictNameKey]{
+            totalCases = mainDistrictLocation.cases
+        }
+    }
+    
+    private func loadSummaryData(){
+        if let summary = LocationManager.shared.dictSummary[ApplicationManager.shared.kCountryNameKey] {
+            summaryInfo = summary
+            if let cases = summaryInfo?.cases{
+                totalCasesCountryLevel = cases
+                self.tableView.reloadData()
+            }
         }
     }
 

@@ -21,6 +21,7 @@ class AuthenticationManager {
     let kApiStringForlocationData: String = "data?"
     let kApiStringForLocationCoordinate: String = "get_location"
     let kApiStringForPastData: String = "loc_data_seq?"
+    let kApiStringForSummary: String = "summary?"
     
     let kErrorJson: String = "Json_Error"
     let kErrorServer: String = "error"
@@ -65,7 +66,7 @@ class AuthenticationManager {
     func sendRequestForLocationData(withIsLevelCity isLevelCity: Bool?, withDate date:Date, completionHandler: @escaping(_ isSuccess: Bool?, _ message:String?, _ locationArray: [LocationInfo]?)->Void) {
 
         let formattedDate = date.getStringDate()
-        let nameString = isLevelCity == true ? "Dhaka" : "Bangladesh"
+        let nameString = isLevelCity == true ? ApplicationManager.shared.kMainDistrictNameKey : ApplicationManager.shared.kCountryNameKey
         let typeString = isLevelCity == true ? "city" : "country"
         
         var urlComponents = URLComponents(string: kApiBaseURL + kApiStringForlocationData)!
@@ -233,6 +234,57 @@ class AuthenticationManager {
                     print("Error: \(error)")
                     print("JSON error: \(error.localizedDescription)")
                     completionHandler(false, [])
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    func sendRequestForSummary(withIsLevelCity isLevelCity: Bool?, completionHandler: @escaping(_ isSuccess: Bool?, _ message:String?, _ summaryInfo: SummaryInfo?)->Void){
+        let nameString = isLevelCity == true ? ApplicationManager.shared.kMainDistrictNameKey : ApplicationManager.shared.kCountryNameKey
+        let typeString = isLevelCity == true ? "city" : "country"
+        
+        var urlComponents = URLComponents(string: kApiBaseURL + kApiStringForSummary)!
+        urlComponents.queryItems = [
+            URLQueryItem(name: "name", value: nameString),
+            URLQueryItem(name: "type", value: typeString),
+        ]
+        let url = urlComponents.url!
+        print("call to server with api: \(String(describing: urlComponents.url?.absoluteString))")
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("error: \(error)")
+            } else {
+                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                    print("Server error!")
+                    return
+                }
+                guard let mime = response.mimeType, mime == "application/json" else {
+                    print("Wrong MIME type!")
+                    return
+                }
+                
+                do {
+                    let json = try?JSON(data: data!)
+                    //print(json)
+                    if json!["status"] == "error" {
+                        print("Received Error Status")
+                        completionHandler(false, self.kErrorServer, nil)
+                    }else {
+                        let name: String = json!["payload"]["name"].stringValue
+                        let level: String = json!["payload"]["level"].stringValue
+                        let dateString = json!["payload"]["date"].stringValue
+                        let cases: Int = json!["payload"]["cases"].intValue
+                        let death: Int = json!["payload"]["death"].intValue
+                        let cured: Int = json!["payload"]["cured"].intValue
+                        let summaryInfo = SummaryInfo(name: name, level: level, cases: cases, death: death, cured: cured, date: dateString)
+                        completionHandler(true, nil, summaryInfo)
+                    }
+                } catch {
+                    print("Error: \(error)")
+                    print("JSON error: \(error.localizedDescription)")
+                    completionHandler(false, self.kErrorJson, nil)
                 }
             }
         }

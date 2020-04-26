@@ -15,6 +15,9 @@ class ApplicationManager {
     static let shared = ApplicationManager()
     private init(){}
     
+    let kCountryNameKey: String = "Bangladesh"
+    let kMainDistrictNameKey: String = "Dhaka"
+    
     func loadApplication() {
         checkAppIdentifier()
         checkForNewData()

@@ -23,7 +23,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         super.viewDidLoad()
         
         barChartView.delegate = self
-        descriptionLabel.text = "Loading data..."
+        descriptionLabel.text = ""
         
         if let loc = self.location {
             if LocationManager.shared.dictForPastCases[loc.name] != nil {
@@ -79,7 +79,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     }
     
     func loadChart() {
-        barChartView.noDataText = "No data for the chart."
+        barChartView.noDataText = "No data for the chart right now. Please try again later"
         var dataEntries: [BarChartDataEntry] = []
         
         for i in 0..<self.dateList.count {

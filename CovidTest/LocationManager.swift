@@ -15,6 +15,8 @@ class LocationManager {
     var dictForDistrictLocation = [String: LocationInfo]()
     var dictForCityLocation = [String: LocationInfo]()
     var dictForPastCases = [String: [Dictionary<String,String>]]()
+    var dictSummary = [String : SummaryInfo]()
+
     
     let kLocationLevelDistrict = "city"
     let kLocationLevelCity = "zone"
@@ -107,6 +109,18 @@ class LocationManager {
             return s1 < s2
         }
         LocationManager.shared.dictForPastCases[key] = ordered
+    }
+    
+    
+    func getSummary(withIsLevelCity isLevelCity: Bool){
+        AuthenticationManager.shared.sendRequestForSummary(withIsLevelCity: isLevelCity) { (isSuccess, message, summaryInfo) in
+            if isSuccess == true{
+                if let name = summaryInfo?.name {
+                    self.dictSummary[name] = summaryInfo
+                    NotificationCenter.default.post(name: .kDidLoadSummaryInformation, object: nil)
+                }
+            }
+        }
     }
 
 

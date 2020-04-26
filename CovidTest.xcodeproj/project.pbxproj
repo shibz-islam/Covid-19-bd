@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		534ED0AA2455983A00CBCE93 /* SummaryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0A92455983A00CBCE93 /* SummaryInfo.swift */; };
 		53EA158324494B2800CCAB40 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA158224494B2800CCAB40 /* AppDelegate.swift */; };
 		53EA158524494B2800CCAB40 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA158424494B2800CCAB40 /* SceneDelegate.swift */; };
 		53EA158724494B2800CCAB40 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA158624494B2800CCAB40 /* ViewController.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		534ED0A92455983A00CBCE93 /* SummaryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryInfo.swift; sourceTree = "<group>"; };
 		53EA157F24494B2800CCAB40 /* Covid19-BD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Covid19-BD.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53EA158224494B2800CCAB40 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		53EA158424494B2800CCAB40 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				53EA15A0244C4BEE00CCAB40 /* LocationInfo.swift */,
 				53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */,
 				53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */,
+				534ED0A92455983A00CBCE93 /* SummaryInfo.swift */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -303,6 +306,7 @@
 				53EA158524494B2800CCAB40 /* SceneDelegate.swift in Sources */,
 				53EA15AF244FA01300CCAB40 /* ApplicationManager.swift in Sources */,
 				53EA15A9244D6DF700CCAB40 /* Notification+Helper.swift in Sources */,
+				534ED0AA2455983A00CBCE93 /* SummaryInfo.swift in Sources */,
 				53EA15AD244EDC0000CCAB40 /* Date+Helper.swift in Sources */,
 				53EA15A7244D67E600CCAB40 /* CoreDataManager.swift in Sources */,
 				53EA158D24494B2800CCAB40 /* CovidTest.xcdatamodeld in Sources */,
