@@ -36,8 +36,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         segmentedControl.setTitle("District", forSegmentAt: 0)
         segmentedControl.setTitle("Dhaka City", forSegmentAt: 1)
         
-        let nib = UINib(nibName: "CustomSectionHeaderView", bundle: nil)
-        tableView.register(nib, forHeaderFooterViewReuseIdentifier: "CustomSectionHeader")
+        let nibCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
+        tableView.register(nibCell, forCellReuseIdentifier: "CustomCell")
+        let nibSection = UINib(nibName: "CustomSectionHeaderView", bundle: nil)
+        tableView.register(nibSection, forHeaderFooterViewReuseIdentifier: "CustomSectionHeader")
+        let nibDetailSection = UINib(nibName: "CustomDetailSectionHeaderView", bundle: nil)
+        tableView.register(nibDetailSection, forHeaderFooterViewReuseIdentifier: "CustomDetailSectionHeader")
         
         if LocationManager.shared.dictForCityLocation.count == 0 {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadLocationInformation, object: nil)
@@ -45,13 +49,13 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if LocationManager.shared.dictForCityLocation.count == 0 {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveDataForCity(_:)), name: .kDidLoadLocationInformationForCity, object: nil)
         }
-        if LocationManager.shared.dictSummary[ApplicationManager.shared.kCountryNameKey] == nil {
-            LocationManager.shared.getSummary(withIsLevelCity: false)
+        if LocationManager.shared.dictSummaryForCountry[ApplicationManager.shared.kCountryNameKey] == nil {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveSummaryData(_:)), name: .kDidLoadSummaryInformation, object: nil)
         }
         
         loadInitialData()
         loadInitialDataForCity()
+        loadSummaryData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,9 +83,13 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
         }
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 56.0
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomTableViewCell
         var location: LocationInfo
         if isFiltering {
             location = self.filteredLocations[indexPath.row]
@@ -96,8 +104,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     return UITableViewCell()
             }
         }
-        cell.textLabel?.text = location.name
-        cell.detailTextLabel?.text = "Current cases: \(location.cases)"
+        cell.locationNameLabel?.text = location.name
+        cell.countLabel?.text = "Cases: \(location.cases)"
+        
         return cell
     }
     
@@ -127,27 +136,48 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch segmentedControl.selectedSegmentIndex
+        {
+            case 0:
+                if self.summaryInfo != nil{
+                    return 100
+                }
+            case 1:
+                break
+            default:
+                break
+        }
         return 50
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         // Dequeue with the reuse identifier
-        let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
         switch segmentedControl.selectedSegmentIndex
         {
             case 0:
-                header.titleLabel.text = "Cases in Bangladesh"
-                header.casesLabel.text = String(totalCasesCountryLevel)
+                if let summary = self.summaryInfo{
+                    let detailedHeader = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomDetailSectionHeader") as! CustomDetailSectionHeaderView
+                    detailedHeader.nameLabel.text = summary.name
+                    detailedHeader.dateLabel.text = summary.date
+                    detailedHeader.casesLabel.text = String(summary.cases)
+                    detailedHeader.curedLabel.text = String(summary.cured)
+                    detailedHeader.deathLabel.text = String(summary.death)
+                    return detailedHeader
+                }else{
+                    let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
+                    header.titleLabel.text = "Cases in Bangladesh"
+                    header.casesLabel.text = String(totalCasesCountryLevel)
+                    return header
+                }
             case 1:
+                let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
                 header.titleLabel.text = "Cases in Dhaka"
                 header.casesLabel.text = String(totalCases)
+                return header
             default:
-                header.titleLabel.text = ""
-                header.casesLabel.text = ""
                 break
         }
-        header.backgroundView?.backgroundColor = UIColor.brown
-        return header
+        return UITableViewHeaderFooterView()
     }
     
     /*
@@ -219,7 +249,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     private func loadSummaryData(){
-        if let summary = LocationManager.shared.dictSummary[ApplicationManager.shared.kCountryNameKey] {
+        if let summary = LocationManager.shared.dictSummaryForCountry[ApplicationManager.shared.kCountryNameKey] {
             summaryInfo = summary
             if let cases = summaryInfo?.cases{
                 totalCasesCountryLevel = cases

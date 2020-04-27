@@ -20,7 +20,9 @@ class ApplicationManager {
     
     func loadApplication() {
         checkAppIdentifier()
-        checkForNewData()
+        checkForNewData(withIsLevelCity: false)
+        checkForNewData(withIsLevelCity: true)
+        checkForSummary()
     }
     
     /// Check if App id is fetched from server
@@ -37,23 +39,36 @@ class ApplicationManager {
     
     
     /// Check for new data in server
-    func checkForNewData() {
-        if CoreDataManager.shared.isValueExistInKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDate) == false {
-            print("No data in store. Need to fetch new data from server...")
-            fetchNewDataFromServer(withDate: Date(), withIsLevelCity: false, withIsPreviousDataExist: false)
-            fetchNewDataFromServer(withDate: Date(), withIsLevelCity: true, withIsPreviousDataExist: false)
+    func checkForNewData(withIsLevelCity isLevelCity: Bool) {
+        let isRecordsExist = isLevelCity == false ? CoreDataManager.shared.isValueExistInKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDate) : CoreDataManager.shared.isValueExistInKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDateForLevelCity)
+        if isRecordsExist == false {
+            print("No data in store. Need to fetch new data from server. isLevelCity: \(isLevelCity)")
+            fetchNewDataFromServer(withDate: Date(), withIsLevelCity: isLevelCity, withIsPreviousDataExist: false)
         }
         else{
-            let lastUpdateDate = CoreDataManager.shared.retrieveValueFromKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDate)
-            print("CoreData date: \(lastUpdateDate)")
+            let lastUpdateDate = isLevelCity == false ? CoreDataManager.shared.retrieveValueFromKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDate) : CoreDataManager.shared.retrieveValueFromKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDateForLevelCity)
+            print("CoreData date: \(lastUpdateDate), isLevelCity: \(isLevelCity)")
             if lastUpdateDate == Date().getStringDate(){
-                print("Data already upto date.")
-                loadData(withDate: Date())
+                print("Data already upto date. isLevelCity: \(isLevelCity)")
+                loadData(withDate: Date(), withIsLevelCity: isLevelCity)
             }
             else{
-                print("Data not upto date. Need to fetch new data from server...")
-                fetchNewDataFromServer(withDate: Date(), withIsLevelCity: false, withIsPreviousDataExist: true)
-                fetchNewDataFromServer(withDate: Date(), withIsLevelCity: true, withIsPreviousDataExist: true)
+                print("Data not upto date. Need to fetch new data from server. isLevelCity: \(isLevelCity)")
+                fetchNewDataFromServer(withDate: Date(), withIsLevelCity: isLevelCity, withIsPreviousDataExist: true)
+            }
+        }
+    }
+    
+    func checkForSummary() {
+        if let summaryInfo = LocationManager.shared.dictSummaryForCountry[ApplicationManager.shared.kCountryNameKey]{
+            if summaryInfo.date == Date().getStringDate() {
+                print("Summary already upto date.")
+                return
+            }
+        }
+        LocationManager.shared.getSummary(withIsLevelCity: false) { (isSuccess, message) in
+            if isSuccess == true {
+                NotificationCenter.default.post(name: .kDidLoadSummaryInformation, object: nil)
             }
         }
     }
@@ -70,20 +85,24 @@ class ApplicationManager {
                 if isLevelCity {
                     print("Success, total count: \(LocationManager.shared.dictForCityLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
+                    DispatchQueue.main.async {
+                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: CoreDataManager.shared.kAppLastUpdateDateForLevelCity)
+                    }
                 }
                 else{
                     print("Success, total count: \(LocationManager.shared.dictForDistrictLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
-                }
-                DispatchQueue.main.async {
-                    CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
-                    CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: CoreDataManager.shared.kAppLastUpdateDate)
+                    DispatchQueue.main.async {
+                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: CoreDataManager.shared.kAppLastUpdateDate)
+                    }
                 }
             }
             else{
                 if message == AuthenticationManager.shared.kErrorServer {
                     if isPreviousData == true {
-                        self.loadData(withDate: date.dayBefore)
+                        self.loadData(withDate: date.dayBefore, withIsLevelCity: isLevelCity)
                     }else{
                         self.fetchPreviousDataFromServer(withDate: date.dayBefore, withIsLevelCity: isLevelCity)
                     }
@@ -102,14 +121,18 @@ class ApplicationManager {
                 if isLevelCity {
                     print("Success, total count: \(LocationManager.shared.dictForCityLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
+                    DispatchQueue.main.async {
+                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: CoreDataManager.shared.kAppLastUpdateDateForLevelCity)
+                    }
                 }
                 else{
                     print("Success, total count: \(LocationManager.shared.dictForDistrictLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
-                }
-                DispatchQueue.main.async {
-                    CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
-                    CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: CoreDataManager.shared.kAppLastUpdateDate)
+                    DispatchQueue.main.async {
+                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: CoreDataManager.shared.kAppLastUpdateDate)
+                    }
                 }
             }
             else{
@@ -121,21 +144,24 @@ class ApplicationManager {
     
     /// Load data from Core data according to date
     /// - Parameter date: date of data
-    func loadData(withDate date:Date) {
+    func loadData(withDate date:Date, withIsLevelCity isLevelCity: Bool) {
         print("Load data from date: \(date.getStringDate())")
         DispatchQueue.main.async {
             if CoreDataManager.shared.isLocationInfoExist(withDate: date) == false {
-                print("No data found in core data, getting data from server")
-                self.fetchNewDataFromServer(withDate: date, withIsLevelCity: false, withIsPreviousDataExist: false)
-                self.fetchNewDataFromServer(withDate: date, withIsLevelCity: true, withIsPreviousDataExist: false)
+                print("No data found in core data, getting data from server. isLevelCity: \(isLevelCity)")
+                self.fetchNewDataFromServer(withDate: date, withIsLevelCity: isLevelCity, withIsPreviousDataExist: false)
+                //self.fetchNewDataFromServer(withDate: date, withIsLevelCity: true, withIsPreviousDataExist: false)
             }
             else{
-                print("Data found in core data... loading data into memory")
-                let success = CoreDataManager.shared.fetchLocationInfo(withDate: date)
+                print("Data found in core data... loading data into memory. isLevelCity: \(isLevelCity)")
+                let success = CoreDataManager.shared.fetchLocationInfo(withDate: date, withIsLevelCity: isLevelCity)
                 if success {
                     print("Successfully loaded into memory")
-                    NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
-                    NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
+                    if isLevelCity {
+                        NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
+                    }else{
+                        NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
+                    }
                 } else {
                     print("Failed to load into memory")
                 }

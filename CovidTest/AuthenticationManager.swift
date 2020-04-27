@@ -276,7 +276,7 @@ class AuthenticationManager {
                         let level: String = json!["payload"]["level"].stringValue
                         let dateString = json!["payload"]["date"].stringValue
                         let cases: Int = json!["payload"]["cases"].intValue
-                        let death: Int = json!["payload"]["death"].intValue
+                        let death: Int = json!["payload"]["deaths"].intValue
                         let cured: Int = json!["payload"]["cured"].intValue
                         let summaryInfo = SummaryInfo(name: name, level: level, cases: cases, death: death, cured: cured, date: dateString)
                         completionHandler(true, nil, summaryInfo)

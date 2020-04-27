@@ -15,7 +15,7 @@ class LocationManager {
     var dictForDistrictLocation = [String: LocationInfo]()
     var dictForCityLocation = [String: LocationInfo]()
     var dictForPastCases = [String: [Dictionary<String,String>]]()
-    var dictSummary = [String : SummaryInfo]()
+    var dictSummaryForCountry = [String : SummaryInfo]()
 
     
     let kLocationLevelDistrict = "city"
@@ -112,14 +112,15 @@ class LocationManager {
     }
     
     
-    func getSummary(withIsLevelCity isLevelCity: Bool){
+    func getSummary(withIsLevelCity isLevelCity: Bool, completionHandler: @escaping(_ isSuccess: Bool?, _ message: String?)->Void){
         AuthenticationManager.shared.sendRequestForSummary(withIsLevelCity: isLevelCity) { (isSuccess, message, summaryInfo) in
             if isSuccess == true{
                 if let name = summaryInfo?.name {
-                    self.dictSummary[name] = summaryInfo
-                    NotificationCenter.default.post(name: .kDidLoadSummaryInformation, object: nil)
+                    self.dictSummaryForCountry[name] = summaryInfo
+                    completionHandler(isSuccess, message)
                 }
             }
+            completionHandler(false, message)
         }
     }
 

@@ -88,6 +88,8 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         }
         
         let chartDataSet = BarChartDataSet(entries: dataEntries, label: "Covid Patients")
+        chartDataSet.colors = [UIColor.themeDarkOrange]
+        
         let chartData = BarChartData(dataSet: chartDataSet)
         barChartView.data = chartData
         
@@ -95,8 +97,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         formatter.minimumFractionDigits = 0
         chartData.setValueFormatter(DefaultValueFormatter(formatter:formatter))
         
-        chartDataSet.colors = [UIColor(red: 230/255, green: 126/255, blue: 34/255, alpha: 1)]
-        //chartDataSet.colors = ChartColorTemplates.colorful()
+        
         
         barChartView.xAxis.labelPosition = .bottom
         barChartView.xAxis.granularity = 1

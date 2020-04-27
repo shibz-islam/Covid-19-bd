@@ -19,6 +19,7 @@ class CoreDataManager {
     let kLocationInfoEntity: String = "LocationInfoEntity"
     let kAppIDKey: String = "kAppIDKey"
     let kAppLastUpdateDate: String = "kAppLastUpdateDate"
+    let kAppLastUpdateDateForLevelCity: String = "kAppLastUpdateDateForLevelCity"
     
     
     func storeLocationInfo(withIsLevelCity isLevelCity: Bool) {
@@ -77,7 +78,7 @@ class CoreDataManager {
     }
     
     
-    func fetchLocationInfo(withDate date:Date)-> Bool{
+    func fetchLocationInfo(withDate date:Date, withIsLevelCity isLevelCity: Bool)-> Bool{
         if Thread.isMainThread == false{
             print("Error! Trying to access UIApplication from background thread.")
             return false
@@ -88,7 +89,9 @@ class CoreDataManager {
         let formattedDateString = date.getStringDate()
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: kLocationInfoEntity)
-        fetchRequest.predicate = NSPredicate(format:"date == %@", formattedDateString)
+        let predicate1 = NSPredicate(format:"date == %@", formattedDateString)
+        let predicate2 = isLevelCity == true ? NSPredicate(format:"level == %@", LocationManager.shared.kLocationLevelCity) : NSPredicate(format:"level == %@", LocationManager.shared.kLocationLevelDistrict)
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
         
         do {
             let results = try managedContext.fetch(fetchRequest)

@@ -19,9 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        GMSServices.provideAPIKey(googleApiKey)
+        print("### AppDelegate")
         
-        ApplicationManager.shared.loadApplication()
+        GMSServices.provideAPIKey(googleApiKey)
         
         let mainVC = ViewController()
         let tableVC = TableViewController()
@@ -29,22 +29,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [mainVC, tableVC]
         
-        print("### AppDelegate")
-        
         return true
     }
     
-//    func applicationDidEnterBackground(_ application: UIApplication) {
-//        print("###AppDelegate - applicationDidEnterBackground")
-//    }
-//
-//    func applicationDidBecomeActive(_ application: UIApplication) {
-//        print("###AppDelegate - sceneDidBecomeActive")
-//    }
-//
-//    func applicationWillEnterForeground(_ application: UIApplication) {
-//        print("###AppDelegate - applicationWillEnterForeground")
-//    }
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        print("###AppDelegate - applicationDidEnterBackground")
+    }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        print("###AppDelegate - sceneDidBecomeActive")
+        ApplicationManager.shared.loadApplication()
+    }
+
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        print("###AppDelegate - applicationWillEnterForeground")
+    }
 
     // MARK: UISceneSession Lifecycle
 

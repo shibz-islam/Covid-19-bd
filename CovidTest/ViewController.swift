@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var mapViewCity: GMSMapView?
     @IBOutlet weak var segmentedControl: UISegmentedControl?
     
-    var locationManager: CLLocationManager!
+    var locationManager: CLLocationManager = CLLocationManager()
     var defaultLocation = CLLocation(latitude: 23.777176, longitude: 90.399452)
     var defaultLocationCity = CLLocation(latitude: 23.746402, longitude: 90.374574)
     var defaultZoomLevel: Float = 7.0
@@ -143,11 +143,11 @@ class ViewController: UIViewController {
     }
     
     private func loadLocationManager(){
-        locationManager = CLLocationManager()
+        //locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
-        //locationManager.requestWhenInUseAuthorization()
+        //locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled(){
             print("#locationServicesEnabled")
             locationManager.startUpdatingLocation()
