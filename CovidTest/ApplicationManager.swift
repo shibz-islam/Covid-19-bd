@@ -150,7 +150,6 @@ class ApplicationManager {
             if CoreDataManager.shared.isLocationInfoExist(withDate: date) == false {
                 print("No data found in core data, getting data from server. isLevelCity: \(isLevelCity)")
                 self.fetchNewDataFromServer(withDate: date, withIsLevelCity: isLevelCity, withIsPreviousDataExist: false)
-                //self.fetchNewDataFromServer(withDate: date, withIsLevelCity: true, withIsPreviousDataExist: false)
             }
             else{
                 print("Data found in core data... loading data into memory. isLevelCity: \(isLevelCity)")
@@ -170,6 +169,10 @@ class ApplicationManager {
     }
     
     
+    func startLocationService() {
+        print("startLocationService")
+        NotificationCenter.default.post(name: .kDidLoadLocationServiceNotification, object: nil)
+    }
     
     
     

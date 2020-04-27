@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("###AppDelegate - sceneDidBecomeActive")
         ApplicationManager.shared.loadApplication()
+        ApplicationManager.shared.startLocationService()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

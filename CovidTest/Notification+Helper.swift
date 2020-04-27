@@ -13,4 +13,5 @@ extension Notification.Name {
     static let kDidLoadLocationInformationForCity = Notification.Name("didLoadLocationInformationForCity")
     static let kDidLoadPastCasesInformation = Notification.Name("didLoadPastCasesInformation")
     static let kDidLoadSummaryInformation = Notification.Name("didLoadSummaryInformation")
+    static let kDidLoadLocationServiceNotification = Notification.Name("kDidLoadLocationServiceNotification")
 }

@@ -44,6 +44,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to undo the changes made on entering the background.
         print("###sceneWillEnterForeground")
         ApplicationManager.shared.loadApplication()
+        ApplicationManager.shared.startLocationService()
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {

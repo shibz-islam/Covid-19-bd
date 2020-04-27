@@ -12,7 +12,6 @@ import CoreLocation
 import GoogleMaps
 
 
-
 class ViewController: UIViewController {
     @IBOutlet weak var mapView: GMSMapView?
     @IBOutlet weak var mapViewCity: GMSMapView?
@@ -36,16 +35,17 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadLocationInformation, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveDataForCity(_:)), name: .kDidLoadLocationInformationForCity, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveLocationServiceNotification(_:)), name: .kDidLoadLocationServiceNotification, object: nil)
         
         mapView?.delegate = self
         mapViewCity?.delegate = self
         segmentedControl?.setTitle("District", forSegmentAt: 0)
         segmentedControl?.setTitle("Dhaka City", forSegmentAt: 1)
         
-        loadLocationManager()
+        //loadLocationManager()
         loadInitialData()
         loadInitialDataForCity()
-        //print("viewDidLoad")
+        print("***viewDidLoad")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -73,6 +73,14 @@ class ViewController: UIViewController {
         DispatchQueue.main.async {
             NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationInformationForCity, object: nil)
             self.loadInitialDataForCity()
+        }
+    }
+    
+    @objc private func onDidReceiveLocationServiceNotification(_ notification: Notification) {
+        print("onDidReceiveLocationServiceNotification...")
+        DispatchQueue.main.async {
+            NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationServiceNotification, object: nil)
+            self.loadLocationManager()
         }
     }
     
@@ -143,15 +151,28 @@ class ViewController: UIViewController {
     }
     
     private func loadLocationManager(){
-        //locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        //self.locationManager = CLLocationManager()
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         //locationManager.requestAlwaysAuthorization()
-        locationManager.requestWhenInUseAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled(){
             print("#locationServicesEnabled")
             locationManager.startUpdatingLocation()
         }
+    }
+    
+    private func showAlertForLocation(){
+        let alert = UIAlertController(title: "Location Services disabled", message: "Please enable Location Services in Settings", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+        return
+    }
+    
+    private func showDefaultLocationOnMap(){
+        self.mapView?.camera = GMSCameraPosition(target: defaultLocation.coordinate, zoom: defaultZoomLevel, bearing: 0, viewingAngle: 0)
+        self.mapViewCity?.camera = GMSCameraPosition(target: defaultLocationCity.coordinate, zoom: defaultZoomLevel*2, bearing: 0, viewingAngle: 0)
     }
     
     
@@ -187,32 +208,30 @@ extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .restricted:
-          print("Location access was restricted.")
+            print("#Location access was restricted.")
         case .denied:
-          print("User denied access to location.")
-          // Display the map using the default location.
-          mapView?.isHidden = false
+            print("#User denied access to location.")
+            showAlertForLocation()
+            showDefaultLocationOnMap()
         case .notDetermined:
-          print("Location status not determined.")
+            print("#Location status not determined.")
+            showAlertForLocation()
+            showDefaultLocationOnMap()
         case .authorizedAlways: fallthrough
         case .authorizedWhenInUse:
-          print("Location status is OK.")
-          locationManager.startUpdatingLocation()
-          mapView?.isMyLocationEnabled = true
-          mapView?.settings.myLocationButton = true
+            print("#Location status is OK.")
+            locationManager.startUpdatingLocation()
         @unknown default:
-          fatalError()
+            fatalError()
         }
     }
   
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else {
             print("#Showing default location")
-            self.mapView?.camera = GMSCameraPosition(target: defaultLocation.coordinate, zoom: defaultZoomLevel, bearing: 0, viewingAngle: 0)
-            self.mapViewCity?.camera = GMSCameraPosition(target: defaultLocationCity.coordinate, zoom: defaultZoomLevel*2, bearing: 0, viewingAngle: 0)
+            showDefaultLocationOnMap()
             return
         }
-        
         self.mapView?.camera = GMSCameraPosition(target: location.coordinate, zoom: defaultZoomLevel, bearing: 0, viewingAngle: 0)
         self.mapViewCity?.camera = GMSCameraPosition(target: location.coordinate, zoom: defaultZoomLevel*2, bearing: 0, viewingAngle: 0)
         locationManager.stopUpdatingLocation()
