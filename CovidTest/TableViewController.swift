@@ -162,6 +162,11 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     detailedHeader.casesLabel.text = String(summary.cases)
                     detailedHeader.curedLabel.text = String(summary.cured)
                     detailedHeader.deathLabel.text = String(summary.death)
+                    let tapGestureRecognizer = UITapGestureRecognizer(
+                        target: self,
+                        action: #selector(headerTapped(_:))
+                    )
+                    detailedHeader.addGestureRecognizer(tapGestureRecognizer)
                     return detailedHeader
                 }else{
                     let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
@@ -219,6 +224,15 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             NotificationCenter.default.removeObserver(self, name: .kDidLoadSummaryInformation, object: nil)
             self.loadSummaryData()
         }
+    }
+    
+    @objc func headerTapped(_ sender: UITapGestureRecognizer?) {
+        print("Section header tapped!")
+        let location = LocationInfo(name: ApplicationManager.shared.kCountryNameKey, parent: "", level: "country", latitude: 0.0, longitude: 0.0, cases: 0, date: "")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let barVC = storyboard.instantiateViewController(withIdentifier: "barChartVC") as! BarChartViewController
+        barVC.location = location
+        self.present(barVC, animated: true, completion: nil)
     }
     
     private func loadInitialData() {

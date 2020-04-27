@@ -124,5 +124,21 @@ class LocationManager {
         }
     }
 
-
+    func getSummaryPastCasesForLocation(withLocation location:LocationInfo) {
+        if location.name.count>0 && location.level.count>0 {
+            AuthenticationManager.shared.sendRequestForSummaryPastCases(withLocation: location, completionHandler: { (isSuccess, listOfPastDailyCases) in
+                if isSuccess == true {
+                    if self.dictForPastCases[location.name] != nil {
+                        var val = self.dictForPastCases[location.name]!
+                        val.append(contentsOf: listOfPastDailyCases ?? [])
+                        self.dictForPastCases[location.name] = val
+                    }else{
+                        self.dictForPastCases[location.name] = listOfPastDailyCases ?? []
+                    }
+                    self.sortPastCasesDict(withKey: location.name)
+                    NotificationCenter.default.post(name: .kDidLoadSummaryPastCasesInformationNotification, object: nil)
+                }
+            })//end of completionHandler
+        }
+    }//end func
 }

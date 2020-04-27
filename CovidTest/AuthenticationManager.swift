@@ -22,6 +22,7 @@ class AuthenticationManager {
     let kApiStringForLocationCoordinate: String = "get_location"
     let kApiStringForPastData: String = "loc_data_seq?"
     let kApiStringForSummary: String = "summary?"
+    let kApiStringForSummaryPastData: String = "summary_seq?"
     
     let kErrorJson: String = "Json_Error"
     let kErrorServer: String = "error"
@@ -285,6 +286,62 @@ class AuthenticationManager {
                     print("Error: \(error)")
                     print("JSON error: \(error.localizedDescription)")
                     completionHandler(false, self.kErrorJson, nil)
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    func sendRequestForSummaryPastCases(withLocation location: LocationInfo, completionHandler: @escaping(_ isSuccess: Bool?, _ listOfPastDailyCases: [Dictionary<String,String>]?)->Void){
+        var urlComponents = URLComponents(string: kApiBaseURL + kApiStringForSummaryPastData)!
+        urlComponents.queryItems = [
+            URLQueryItem(name: "name", value: location.name),
+            URLQueryItem(name: "type", value: location.level)
+        ]
+        let url = urlComponents.url!
+        print("call to server with api: \(String(describing: urlComponents.url?.absoluteString))")
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("error: \(error)")
+            } else {
+                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                    print("Server error!")
+                    return
+                }
+                guard let mime = response.mimeType, mime == "application/json" else {
+                    print("Wrong MIME type!")
+                    return
+                }
+                
+                do {
+                    let json = try?JSON(data: data!)
+                    //print(json)
+                    if json!["status"] == "error" {
+                        print("Received Error Status")
+                        completionHandler(false, [])
+                    }else {
+                        var locationArray = [Dictionary<String,String>]()
+                        
+                        for item in json!["payload"].arrayValue {
+                            let date: String = item["date"].stringValue
+                            let cases: Int = item["cases"].intValue
+                            let cured: Int = item["cured"].intValue
+                            let deaths: Int = item["deaths"].intValue
+                            locationArray.append(["date":date, "cases": String(cases), "cured": String(cured), "deaths": String(deaths)])
+                        }
+                        
+                        print("Numner of cases received: \(locationArray.count)")
+                        if locationArray.count > 0 {
+                            completionHandler(true, locationArray)
+                        } else{
+                            completionHandler(false, [])
+                        }
+                    }
+                } catch {
+                    print("Error: \(error)")
+                    print("JSON error: \(error.localizedDescription)")
+                    completionHandler(false, [])
                 }
             }
         }
