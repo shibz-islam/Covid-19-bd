@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ZL8-cZ-tya">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -28,7 +29,7 @@
         <!--Map-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CovidTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Covid19_BD" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -71,7 +72,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Map" image="map" catalog="system" id="eEH-4d-8uR"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="SF_map_fill" id="eEH-4d-8uR"/>
                     <connections>
                         <outlet property="mapView" destination="ddF-Gd-VKt" id="ctF-VO-bir"/>
                         <outlet property="mapViewCity" destination="D3B-6Y-s0y" id="3Iw-PI-Z9Q"/>
@@ -85,7 +86,7 @@
         <!--Bar Chart View Controller-->
         <scene sceneID="w9K-vr-e48">
             <objects>
-                <viewController storyboardIdentifier="barChartVC" id="f4B-2M-NpW" customClass="BarChartViewController" customModule="CovidTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="barChartVC" id="f4B-2M-NpW" customClass="BarChartViewController" customModule="Covid19_BD" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5nS-lY-0g8">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -152,7 +153,7 @@
         <!--TableViewController-->
         <scene sceneID="bkq-tD-fyT">
             <objects>
-                <viewController title="TableViewController" id="8z8-pf-yQf" customClass="TableViewController" customModule="CovidTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="TableViewController" id="8z8-pf-yQf" customClass="TableViewController" customModule="Covid19_BD" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="J0S-la-01B">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -213,7 +214,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9uM-oY-1sd"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="List" image="list.bullet" catalog="system" id="m4t-vs-qfh"/>
+                    <tabBarItem key="tabBarItem" title="List" image="SF_list_dash" id="m4t-vs-qfh"/>
                     <connections>
                         <outlet property="segmentedControl" destination="87L-ad-io9" id="c4L-aS-bIb"/>
                         <outlet property="tableView" destination="DJf-cl-V0e" id="RTP-bZ-2mM"/>
@@ -226,7 +227,7 @@
     </scenes>
     <resources>
         <image name="Close" width="44" height="44"/>
-        <image name="list.bullet" catalog="system" width="128" height="88"/>
-        <image name="map" catalog="system" width="128" height="113"/>
+        <image name="SF_list_dash" width="22" height="22"/>
+        <image name="SF_map_fill" width="22" height="22"/>
     </resources>
 </document>

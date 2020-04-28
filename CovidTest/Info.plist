@@ -17,15 +17,15 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>The application wants to use your location to show Covid information near you.</string>
+	<string>The application wants to use your location to show Covid-19 related information near you.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>The application wants to use your location to show Covid information near you.</string>
+	<string>The application wants to use your location to show Covid-19 related information near you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>The application wants to use your location to show Covid information near you.</string>
+	<string>The application wants to use your location to show Covid-19 related information near you.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

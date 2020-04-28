@@ -46,6 +46,7 @@ class ViewController: UIViewController {
         loadInitialData()
         loadInitialDataForCity()
         print("***viewDidLoad")
+        showDefaultLocationOnMap()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
