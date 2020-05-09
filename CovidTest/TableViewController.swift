@@ -33,8 +33,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.delegate = self
         tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
-        segmentedControl.setTitle("District", forSegmentAt: 0)
-        segmentedControl.setTitle("Dhaka City", forSegmentAt: 1)
+        segmentedControl.setTitle(Constants.ViewControllerConstants.segmentedControlFirstIndex, forSegmentAt: 0)
+        segmentedControl.setTitle(Constants.ViewControllerConstants.segmentedControlSecondIndex, forSegmentAt: 1)
         
         let nibCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
         tableView.register(nibCell, forCellReuseIdentifier: "CustomCell")
@@ -49,7 +49,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if LocationManager.shared.dictForCityLocation.count == 0 {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveDataForCity(_:)), name: .kDidLoadLocationInformationForCity, object: nil)
         }
-        if LocationManager.shared.dictForRecentRecords[ApplicationManager.shared.kCountryNameKey] == nil {
+        if LocationManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName] == nil {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveSummaryData(_:)), name: .kDidLoadSummaryInformation, object: nil)
         }
         
@@ -228,7 +228,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @objc func headerTapped(_ sender: UITapGestureRecognizer?) {
         print("Section header tapped!")
-        let location = LocationInfo(name: ApplicationManager.shared.kCountryNameKey, parent: "", level: ApplicationManager.shared.kCountryKey, latitude: 0.0, longitude: 0.0, cases: 0, date: "")
+        let location = LocationInfo(name: Constants.LocationConstants.defaultCountryName, parent: "", level: Constants.KeyStrings.keyCountry, latitude: 0.0, longitude: 0.0, cases: 0, date: "")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let barVC = storyboard.instantiateViewController(withIdentifier: "barChartVC") as! BarChartViewController
         barVC.location = location
@@ -257,13 +257,13 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.locationsForCity = self.locationsForCity.sorted(by: { $0.cases > $1.cases })
             self.tableView.reloadData()
         }
-        if let mainDistrictLocation = LocationManager.shared.dictForDistrictLocation[ApplicationManager.shared.kMainDistrictNameKey]{
+        if let mainDistrictLocation = LocationManager.shared.dictForDistrictLocation[Constants.LocationConstants.defaultDistrictName]{
             totalCases = mainDistrictLocation.cases
         }
     }
     
     private func loadSummaryData(){
-        if let rec = LocationManager.shared.dictForRecentRecords[ApplicationManager.shared.kCountryNameKey] {
+        if let rec = LocationManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName] {
             self.record = rec
             if let cases = record?.cases{
                 totalCasesCountryLevel = cases

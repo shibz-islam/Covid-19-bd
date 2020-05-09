@@ -15,10 +15,6 @@ class ApplicationManager {
     static let shared = ApplicationManager()
     private init(){}
     
-    let kCountryNameKey: String = "Bangladesh"
-    let kCountryKey: String = "country"
-    let kMainDistrictNameKey: String = "Dhaka"
-    
     func loadApplication() {
         checkAppIdentifier()
         checkForNewData(withIsLevelCity: false)
@@ -28,10 +24,10 @@ class ApplicationManager {
     
     /// Check if App id is fetched from server
     func checkAppIdentifier() {
-        if CoreDataManager.shared.isValueExistInKeychain(withKey: CoreDataManager.shared.kAppIDKey) == false {
+        if CoreDataManager.shared.isValueExistInKeychain(withKey: Constants.KeyStrings.keyAppID) == false {
             AuthenticationManager.shared.sendRequestForAppIdentifier { (isSuccess, identifier) in
                 if isSuccess == true, let id = identifier{
-                    let result = CoreDataManager.shared.storeValueInKeychain(withValue: id, withKey: CoreDataManager.shared.kAppIDKey)
+                    let result = CoreDataManager.shared.storeValueInKeychain(withValue: id, withKey: Constants.KeyStrings.keyAppID)
                     print("Storing result: \(result)")
                 }
             }
@@ -41,13 +37,13 @@ class ApplicationManager {
     
     /// Check for new data in server
     func checkForNewData(withIsLevelCity isLevelCity: Bool) {
-        let isRecordsExist = isLevelCity == false ? CoreDataManager.shared.isValueExistInKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDate) : CoreDataManager.shared.isValueExistInKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDateForLevelCity)
+        let isRecordsExist = isLevelCity == false ? CoreDataManager.shared.isValueExistInKeychain(withKey: Constants.KeyStrings.keyAppLastUpdateDate) : CoreDataManager.shared.isValueExistInKeychain(withKey: Constants.KeyStrings.keyAppLastUpdateDateForLevelCity)
         if isRecordsExist == false {
             print("No data in store. Need to fetch new data from server. isLevelCity: \(isLevelCity)")
             fetchNewDataFromServer(withDate: Date(), withIsLevelCity: isLevelCity, withIsPreviousDataExist: false)
         }
         else{
-            let lastUpdateDate = isLevelCity == false ? CoreDataManager.shared.retrieveValueFromKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDate) : CoreDataManager.shared.retrieveValueFromKeychain(withKey: CoreDataManager.shared.kAppLastUpdateDateForLevelCity)
+            let lastUpdateDate = isLevelCity == false ? CoreDataManager.shared.retrieveValueFromKeychain(withKey: Constants.KeyStrings.keyAppLastUpdateDate) : CoreDataManager.shared.retrieveValueFromKeychain(withKey: Constants.KeyStrings.keyAppLastUpdateDateForLevelCity)
             print("CoreData date: \(lastUpdateDate), isLevelCity: \(isLevelCity)")
             if lastUpdateDate == Date().getStringDate(){
                 print("Data already upto date. isLevelCity: \(isLevelCity)")
@@ -74,7 +70,7 @@ class ApplicationManager {
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
-                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: CoreDataManager.shared.kAppLastUpdateDateForLevelCity)
+                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDateForLevelCity)
                     }
                 }
                 else{
@@ -82,7 +78,7 @@ class ApplicationManager {
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
-                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: CoreDataManager.shared.kAppLastUpdateDate)
+                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDate)
                     }
                 }
             }
@@ -110,7 +106,7 @@ class ApplicationManager {
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
-                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: CoreDataManager.shared.kAppLastUpdateDateForLevelCity)
+                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDateForLevelCity)
                     }
                 }
                 else{
@@ -118,7 +114,7 @@ class ApplicationManager {
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
-                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: CoreDataManager.shared.kAppLastUpdateDate)
+                        CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDate)
                     }
                 }
             }
@@ -157,13 +153,13 @@ class ApplicationManager {
     
     
     func checkForSummary() {
-        if let record = LocationManager.shared.dictForRecentRecords[ApplicationManager.shared.kCountryNameKey]{
+        if let record = LocationManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName]{
             if record.date == Date().getStringDate() {
                 print("Summary already upto date.")
                 return
             }
         }
-        LocationManager.shared.getRecentSummary(withName:kCountryNameKey, withType: kCountryKey) { (isSuccess, message) in
+        LocationManager.shared.getRecentSummary(withName:Constants.LocationConstants.defaultCountryName, withType: Constants.KeyStrings.keyCountry) { (isSuccess, message) in
             if isSuccess == true {
                 NotificationCenter.default.post(name: .kDidLoadSummaryInformation, object: nil)
             }

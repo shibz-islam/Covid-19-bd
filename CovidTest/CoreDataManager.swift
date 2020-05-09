@@ -18,9 +18,6 @@ class CoreDataManager {
     
     let kLocationInfoEntity: String = "LocationInfoEntity"
     let kRecordEntity: String = "RecordEntity"
-    let kAppIDKey: String = "kAppIDKey"
-    let kAppLastUpdateDate: String = "kAppLastUpdateDate"
-    let kAppLastUpdateDateForLevelCity: String = "kAppLastUpdateDateForLevelCity"
     
     
     func storeLocationInfo(withIsLevelCity isLevelCity: Bool) {
@@ -91,7 +88,7 @@ class CoreDataManager {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: kLocationInfoEntity)
         let predicate1 = NSPredicate(format:"date == %@", formattedDateString)
-        let predicate2 = isLevelCity == true ? NSPredicate(format:"level == %@", LocationManager.shared.kLocationLevelCity) : NSPredicate(format:"level == %@", LocationManager.shared.kLocationLevelDistrict)
+        let predicate2 = isLevelCity == true ? NSPredicate(format:"level == %@", Constants.KeyStrings.keyLocationLevelCity) : NSPredicate(format:"level == %@", Constants.KeyStrings.keyLocationLevelDistrict)
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
         
         do {

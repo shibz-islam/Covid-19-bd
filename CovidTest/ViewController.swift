@@ -11,15 +11,16 @@ import MapKit
 import CoreLocation
 import GoogleMaps
 
-
 class ViewController: UIViewController {
     @IBOutlet weak var mapView: GMSMapView?
     @IBOutlet weak var mapViewCity: GMSMapView?
     @IBOutlet weak var segmentedControl: UISegmentedControl?
     
     var locationManager: CLLocationManager = CLLocationManager()
-    var defaultLocation = CLLocation(latitude: 23.777176, longitude: 90.399452)
-    var defaultLocationCity = CLLocation(latitude: 23.746402, longitude: 90.374574)
+    var defaultLocation = CLLocation(latitude: Constants.LocationConstants.defaultLocationLatitude,
+                                     longitude: Constants.LocationConstants.defaultLocationLongitude)
+    var defaultLocationCity = CLLocation(latitude: Constants.LocationConstants.defaultLocationCityLatitude,
+                                         longitude: Constants.LocationConstants.defaultLocationCityLongitude)
     var defaultZoomLevel: Float = 7.0
     var markers: [GMSMarker] = []
     var markersForCity: [GMSMarker] = []
@@ -39,8 +40,8 @@ class ViewController: UIViewController {
         
         mapView?.delegate = self
         mapViewCity?.delegate = self
-        segmentedControl?.setTitle("District", forSegmentAt: 0)
-        segmentedControl?.setTitle("Dhaka City", forSegmentAt: 1)
+        segmentedControl?.setTitle(Constants.ViewControllerConstants.segmentedControlFirstIndex, forSegmentAt: 0)
+        segmentedControl?.setTitle(Constants.ViewControllerConstants.segmentedControlSecondIndex, forSegmentAt: 1)
         
         //loadLocationManager()
         loadInitialData()

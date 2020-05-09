@@ -67,8 +67,8 @@ class AuthenticationManager {
     func sendRequestForLocationData(withIsLevelCity isLevelCity: Bool?, withDate date:Date, completionHandler: @escaping(_ isSuccess: Bool?, _ message:String?, _ locationArray: [LocationInfo]?)->Void) {
 
         let formattedDate = date.getStringDate()
-        let nameString = isLevelCity == true ? ApplicationManager.shared.kMainDistrictNameKey : ApplicationManager.shared.kCountryNameKey
-        let typeString = isLevelCity == true ? "city" : "country"
+        let nameString = isLevelCity == true ? Constants.LocationConstants.defaultDistrictName : Constants.LocationConstants.defaultCountryName
+        let typeString = isLevelCity == true ? Constants.KeyStrings.keyLocationLevelDistrict : Constants.KeyStrings.keyCountry
         
         var urlComponents = URLComponents(string: kApiBaseURL + kApiStringForlocationData)!
         urlComponents.queryItems = [

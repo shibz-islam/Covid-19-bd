@@ -28,7 +28,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         descriptionLabel.text = ""
         
         if let loc = self.location {
-            if loc.name == ApplicationManager.shared.kCountryNameKey {
+            if loc.name == Constants.LocationConstants.defaultCountryName {
                 if LocationManager.shared.dictForAllRecords[loc.name] != nil {
                     loadInitialDataForSummary()
                 }else{

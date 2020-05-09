@@ -11,17 +11,13 @@ import Foundation
 /// Singleton class for managing locations in the application
 class LocationManager {
     static let shared = LocationManager()
-
+    private init(){}
+    
     var dictForDistrictLocation = [String: LocationInfo]()
     var dictForCityLocation = [String: LocationInfo]()
     
     var dictForAllRecords = [String: [Record]]()
     var dictForRecentRecords = [String: Record]()
-
-    let kLocationLevelDistrict = "city"
-    let kLocationLevelCity = "zone"
-    
-    private init(){}
     
     
     func getLocationData(withIsLevelCity isLevelCity: Bool?, withDate date: Date, completionHandler: @escaping(_ isSuccess: Bool?, _ message: String?)->Void){
@@ -63,10 +59,10 @@ class LocationManager {
     
     func setLocationDictionary(withList locationList:[LocationInfo]) -> Bool {
         for location in locationList{
-            if location.level ==  kLocationLevelDistrict {
+            if location.level == Constants.KeyStrings.keyLocationLevelDistrict {
                 self.dictForDistrictLocation[location.name] = location
             }
-            else if location.level ==  kLocationLevelCity {
+            else if location.level == Constants.KeyStrings.keyLocationLevelCity {
                 self.dictForCityLocation[location.name] = location
             }
             else{
