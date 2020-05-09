@@ -35,6 +35,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.keyboardDismissMode = .onDrag
         segmentedControl.setTitle(Constants.ViewControllerConstants.segmentedControlFirstIndex, forSegmentAt: 0)
         segmentedControl.setTitle(Constants.ViewControllerConstants.segmentedControlSecondIndex, forSegmentAt: 1)
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: "Refreshing Data...")
+        tableView.refreshControl = refreshControl
         
         let nibCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
         tableView.register(nibCell, forCellReuseIdentifier: "CustomCell")
@@ -238,6 +242,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private func loadInitialData() {
         if LocationManager.shared.dictForDistrictLocation.count > 0 {
             //print("***dictForDistrictLocation \(LocationManager.shared.dictForDistrictLocation.count)")
+            self.locations.removeAll()
             for (key, location) in LocationManager.shared.dictForDistrictLocation{
                 self.locations.append(location)
                 totalCasesCountryLevel = totalCasesCountryLevel + location.cases
@@ -250,6 +255,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private func loadInitialDataForCity(){
         if LocationManager.shared.dictForCityLocation.count > 0 {
             //print("***dictForCityLocation \(LocationManager.shared.dictForCityLocation.count)")
+            self.locationsForCity.removeAll()
             for (key, location) in LocationManager.shared.dictForCityLocation{
                 self.locationsForCity.append(location)
                 totalCases = totalCases + location.cases
@@ -285,6 +291,43 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 break
         }
         self.tableView.reloadData()
+    }
+    
+    @objc func refreshData(_ sender: Any){
+        print("Refresh Data...")
+        if LocationManager.shared.dictForDistrictLocation.count == 0 {
+            LocationManager.shared.getLocationData(withIsLevelCity: false, withDate: Date()) { (success, message) in
+                DispatchQueue.main.async {
+                    if success == true {
+                        self.loadInitialData()
+                    }
+                    self.tableView.refreshControl?.endRefreshing()
+                }
+            }
+        }
+        else if LocationManager.shared.dictForCityLocation.count == 0 {
+            LocationManager.shared.getLocationData(withIsLevelCity: true, withDate: Date()) { (success, message) in
+                DispatchQueue.main.async {
+                    if success == true {
+                        self.loadInitialDataForCity()
+                    }
+                    self.tableView.refreshControl?.endRefreshing()
+                }
+            }
+        }
+        else if LocationManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName] == nil {
+            LocationManager.shared.getRecentSummary(withName:Constants.LocationConstants.defaultCountryName, withType: Constants.KeyStrings.keyCountry) { (success, message) in
+                DispatchQueue.main.async {
+                    if success == true {
+                        self.loadInitialDataForCity()
+                    }
+                    self.loadSummaryData()
+                }
+            }
+        }
+        else{
+            self.tableView.refreshControl?.endRefreshing()
+        }
     }
     
     var isSearchBarEmpty: Bool {
