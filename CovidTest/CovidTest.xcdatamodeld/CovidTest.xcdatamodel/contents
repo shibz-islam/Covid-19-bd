@@ -10,7 +10,16 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="parent" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="RecordEntity" representedClassName="RecordEntity" syncable="YES">
+        <attribute name="cases" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="date" optional="YES" attributeType="String"/>
+        <attribute name="fatalities" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="level" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="recoveries" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
     <elements>
         <element name="LocationInfoEntity" positionX="-63" positionY="-18" width="128" height="163"/>
+        <element name="RecordEntity" positionX="-63" positionY="45" width="128" height="133"/>
     </elements>
 </model>

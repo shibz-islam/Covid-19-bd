@@ -187,7 +187,7 @@ class AuthenticationManager {
     }
     
     
-    func sendRequestForPastCasesForLocation(withLocation location: LocationInfo, completionHandler: @escaping(_ isSuccess: Bool?, _ listOfPastDailyCases: [Dictionary<String,String>]?)->Void){
+    func sendRequestForPastCasesForLocation(withLocation location: LocationInfo, completionHandler: @escaping(_ isSuccess: Bool?, _ listOfPastDailyCases: [Record]?)->Void){
         var urlComponents = URLComponents(string: kApiBaseURL + kApiStringForPastData)!
         urlComponents.queryItems = [
             URLQueryItem(name: "loc_type", value: location.level),
@@ -216,17 +216,19 @@ class AuthenticationManager {
                         print("Received Error Status")
                         completionHandler(false, [])
                     }else {
-                        var locationArray = [Dictionary<String,String>]()
+                        var recordArray = [Record]()
                         
                         for item in json!["payload"].arrayValue {
-                            let date: String = item["date"].stringValue
-                            let cases: Int = item["data"]["cases"].intValue
-                            locationArray.append(["date":date, "cases": String(cases)])
+                            let record = Record(name: location.name,
+                                                level: location.level,
+                                                cases: item["data"]["cases"].intValue,
+                                                date: item["date"].stringValue)
+                            recordArray.append(record)
                         }
                         
-                        print("Numner of cases received: \(locationArray.count)")
-                        if locationArray.count > 0 {
-                            completionHandler(true, locationArray)
+                        print("Numner of cases received: \(recordArray.count)")
+                        if recordArray.count > 0 {
+                            completionHandler(true, recordArray)
                         } else{
                             completionHandler(false, [])
                         }
@@ -241,14 +243,12 @@ class AuthenticationManager {
         task.resume()
     }
     
-    func sendRequestForSummary(withIsLevelCity isLevelCity: Bool?, completionHandler: @escaping(_ isSuccess: Bool?, _ message:String?, _ summaryInfo: SummaryInfo?)->Void){
-        let nameString = isLevelCity == true ? ApplicationManager.shared.kMainDistrictNameKey : ApplicationManager.shared.kCountryNameKey
-        let typeString = isLevelCity == true ? "city" : "country"
+    func sendRequestForRecentSummary(withName name:String, withType type: String, completionHandler: @escaping(_ isSuccess: Bool?, _ message:String?, _ record: Record?)->Void){
         
         var urlComponents = URLComponents(string: kApiBaseURL + kApiStringForSummary)!
         urlComponents.queryItems = [
-            URLQueryItem(name: "name", value: nameString),
-            URLQueryItem(name: "type", value: typeString),
+            URLQueryItem(name: "name", value: name),
+            URLQueryItem(name: "type", value: type)
         ]
         let url = urlComponents.url!
         print("call to server with api: \(String(describing: urlComponents.url?.absoluteString))")
@@ -273,14 +273,13 @@ class AuthenticationManager {
                         print("Received Error Status")
                         completionHandler(false, self.kErrorServer, nil)
                     }else {
-                        let name: String = json!["payload"]["name"].stringValue
-                        let level: String = json!["payload"]["level"].stringValue
-                        let dateString = json!["payload"]["date"].stringValue
-                        let cases: Int = json!["payload"]["cases"].intValue
-                        let death: Int = json!["payload"]["deaths"].intValue
-                        let cured: Int = json!["payload"]["cured"].intValue
-                        let summaryInfo = SummaryInfo(name: name, level: level, cases: cases, death: death, cured: cured, date: dateString)
-                        completionHandler(true, nil, summaryInfo)
+                        let record = Record(name: json!["payload"]["name"].stringValue,
+                                            level: json!["payload"]["level"].stringValue,
+                                            cases: json!["payload"]["cases"].intValue,
+                                            fatalities: json!["payload"]["deaths"].intValue,
+                                            recoveries: json!["payload"]["cured"].intValue,
+                                            date: json!["payload"]["date"].stringValue)
+                        completionHandler(true, nil, record)
                     }
                 } catch {
                     print("Error: \(error)")
@@ -292,7 +291,7 @@ class AuthenticationManager {
         task.resume()
     }
     
-    func sendRequestForSummaryPastCases(withLocation location: LocationInfo, completionHandler: @escaping(_ isSuccess: Bool?, _ listOfPastDailyCases: [Dictionary<String,String>]?)->Void){
+    func sendRequestForSummaryPastCases(withLocation location: LocationInfo, completionHandler: @escaping(_ isSuccess: Bool?, _ listOfPastRecords: [Record]?)->Void){
         var urlComponents = URLComponents(string: kApiBaseURL + kApiStringForSummaryPastData)!
         urlComponents.queryItems = [
             URLQueryItem(name: "name", value: location.name),
@@ -321,19 +320,21 @@ class AuthenticationManager {
                         print("Received Error Status")
                         completionHandler(false, [])
                     }else {
-                        var locationArray = [Dictionary<String,String>]()
+                        var recordArray = [Record]()
                         
                         for item in json!["payload"].arrayValue {
-                            let date: String = item["date"].stringValue
-                            let cases: Int = item["cases"].intValue
-                            let cured: Int = item["cured"].intValue
-                            let deaths: Int = item["deaths"].intValue
-                            locationArray.append(["date":date, "cases": String(cases), "cured": String(cured), "deaths": String(deaths)])
+                            let record = Record(name: location.name,
+                                                level: location.level,
+                                                cases: item["cases"].intValue,
+                                                fatalities: item["deaths"].intValue,
+                                                recoveries: item["cured"].intValue,
+                                                date: item["date"].stringValue)
+                            recordArray.append(record)
                         }
                         
-                        print("Numner of cases received: \(locationArray.count)")
-                        if locationArray.count > 0 {
-                            completionHandler(true, locationArray)
+                        print("Numner of cases received: \(recordArray.count)")
+                        if recordArray.count > 0 {
+                            completionHandler(true, recordArray)
                         } else{
                             completionHandler(false, [])
                         }

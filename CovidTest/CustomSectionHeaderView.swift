@@ -18,7 +18,6 @@ class CustomSectionHeaderView: UITableViewHeaderFooterView {
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         // Drawing code
-        let color: UIColor = UIColor(red: CGFloat(220/255.0), green: CGFloat(220/255.0), blue: CGFloat(220/255.0), alpha: CGFloat(1.0))
         self.backgroundWrapperView.backgroundColor = UIColor.themeLightOrange
     }
     

@@ -32,20 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-    
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        print("###AppDelegate - applicationDidEnterBackground")
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        print("###AppDelegate - sceneDidBecomeActive")
-        ApplicationManager.shared.loadApplication()
-        ApplicationManager.shared.startLocationService()
-    }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        print("###AppDelegate - applicationWillEnterForeground")
-    }
 
     // MARK: UISceneSession Lifecycle
 

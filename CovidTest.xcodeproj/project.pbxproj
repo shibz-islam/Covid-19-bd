@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		534ED0AA2455983A00CBCE93 /* SummaryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0A92455983A00CBCE93 /* SummaryInfo.swift */; };
+		5318A8E8245BF7350021E1F7 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5318A8E7245BF7350021E1F7 /* Record.swift */; };
 		534ED0AF245634F200CBCE93 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0AD245634F200CBCE93 /* CustomTableViewCell.swift */; };
 		534ED0B0245634F200CBCE93 /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 534ED0AE245634F200CBCE93 /* CustomTableViewCell.xib */; };
 		534ED0B22456404600CBCE93 /* CustomDetailSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */; };
@@ -35,7 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		534ED0A92455983A00CBCE93 /* SummaryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryInfo.swift; sourceTree = "<group>"; };
+		5318A8E7245BF7350021E1F7 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		534ED0AD245634F200CBCE93 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		534ED0AE245634F200CBCE93 /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				53EA15A0244C4BEE00CCAB40 /* LocationInfo.swift */,
-				534ED0A92455983A00CBCE93 /* SummaryInfo.swift */,
+				5318A8E7245BF7350021E1F7 /* Record.swift */,
 				53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */,
 				53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */,
 				534ED0B52456935F00CBCE93 /* Color+Helper.swift */,
@@ -324,8 +324,8 @@
 				53EA15A5244D340800CCAB40 /* LocationManager.swift in Sources */,
 				53EA158524494B2800CCAB40 /* SceneDelegate.swift in Sources */,
 				53EA15AF244FA01300CCAB40 /* ApplicationManager.swift in Sources */,
+				5318A8E8245BF7350021E1F7 /* Record.swift in Sources */,
 				53EA15A9244D6DF700CCAB40 /* Notification+Helper.swift in Sources */,
-				534ED0AA2455983A00CBCE93 /* SummaryInfo.swift in Sources */,
 				53EA15AD244EDC0000CCAB40 /* Date+Helper.swift in Sources */,
 				53EA15A7244D67E600CCAB40 /* CoreDataManager.swift in Sources */,
 				53EA158D24494B2800CCAB40 /* CovidTest.xcdatamodeld in Sources */,
@@ -480,7 +480,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = TKH4Q575R5;
 				INFOPLIST_FILE = CovidTest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -504,7 +504,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = TKH4Q575R5;
 				INFOPLIST_FILE = CovidTest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

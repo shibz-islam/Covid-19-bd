@@ -72,7 +72,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Map" image="SF_map_fill" id="eEH-4d-8uR"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="map" catalog="system" id="eEH-4d-8uR"/>
                     <connections>
                         <outlet property="mapView" destination="ddF-Gd-VKt" id="ctF-VO-bir"/>
                         <outlet property="mapViewCity" destination="D3B-6Y-s0y" id="3Iw-PI-Z9Q"/>
@@ -214,7 +214,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9uM-oY-1sd"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="List" image="SF_list_dash" id="m4t-vs-qfh"/>
+                    <tabBarItem key="tabBarItem" title="List" image="list.bullet" catalog="system" id="m4t-vs-qfh"/>
                     <connections>
                         <outlet property="segmentedControl" destination="87L-ad-io9" id="c4L-aS-bIb"/>
                         <outlet property="tableView" destination="DJf-cl-V0e" id="RTP-bZ-2mM"/>
@@ -227,7 +227,7 @@
     </scenes>
     <resources>
         <image name="Close" width="44" height="44"/>
-        <image name="SF_list_dash" width="22" height="22"/>
-        <image name="SF_map_fill" width="22" height="22"/>
+        <image name="list.bullet" catalog="system" width="128" height="88"/>
+        <image name="map" catalog="system" width="128" height="113"/>
     </resources>
 </document>

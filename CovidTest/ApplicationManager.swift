@@ -16,6 +16,7 @@ class ApplicationManager {
     private init(){}
     
     let kCountryNameKey: String = "Bangladesh"
+    let kCountryKey: String = "country"
     let kMainDistrictNameKey: String = "Dhaka"
     
     func loadApplication() {
@@ -55,20 +56,6 @@ class ApplicationManager {
             else{
                 print("Data not upto date. Need to fetch new data from server. isLevelCity: \(isLevelCity)")
                 fetchNewDataFromServer(withDate: Date(), withIsLevelCity: isLevelCity, withIsPreviousDataExist: true)
-            }
-        }
-    }
-    
-    func checkForSummary() {
-        if let summaryInfo = LocationManager.shared.dictSummaryForCountry[ApplicationManager.shared.kCountryNameKey]{
-            if summaryInfo.date == Date().getStringDate() {
-                print("Summary already upto date.")
-                return
-            }
-        }
-        LocationManager.shared.getSummary(withIsLevelCity: false) { (isSuccess, message) in
-            if isSuccess == true {
-                NotificationCenter.default.post(name: .kDidLoadSummaryInformation, object: nil)
             }
         }
     }
@@ -164,6 +151,21 @@ class ApplicationManager {
                 } else {
                     print("Failed to load into memory")
                 }
+            }
+        }
+    }
+    
+    
+    func checkForSummary() {
+        if let record = LocationManager.shared.dictForRecentRecords[ApplicationManager.shared.kCountryNameKey]{
+            if record.date == Date().getStringDate() {
+                print("Summary already upto date.")
+                return
+            }
+        }
+        LocationManager.shared.getRecentSummary(withName:kCountryNameKey, withType: kCountryKey) { (isSuccess, message) in
+            if isSuccess == true {
+                NotificationCenter.default.post(name: .kDidLoadSummaryInformation, object: nil)
             }
         }
     }

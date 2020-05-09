@@ -17,6 +17,7 @@ class CoreDataManager {
     private init(){}
     
     let kLocationInfoEntity: String = "LocationInfoEntity"
+    let kRecordEntity: String = "RecordEntity"
     let kAppIDKey: String = "kAppIDKey"
     let kAppLastUpdateDate: String = "kAppLastUpdateDate"
     let kAppLastUpdateDateForLevelCity: String = "kAppLastUpdateDateForLevelCity"
@@ -113,6 +114,67 @@ class CoreDataManager {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
         return false
+    }
+    
+    func storeRecords(withRecords records:[Record]) {
+        if Thread.isMainThread == false{
+            print("Error! Trying to access UIApplication from background thread.")
+            return
+        }
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let entity = NSEntityDescription.entity(forEntityName: kRecordEntity, in: managedContext)!
+        
+        for record in records{
+            let locationEntity = NSManagedObject(entity: entity, insertInto: managedContext)
+            locationEntity.setValue(record.name, forKeyPath: "name")
+            locationEntity.setValue(record.level, forKeyPath: "level")
+            locationEntity.setValue(record.cases, forKeyPath: "cases")
+            locationEntity.setValue(record.fatalities, forKeyPath: "fatalities")
+            locationEntity.setValue(record.recoveries, forKeyPath: "recoveries")
+            locationEntity.setValue(record.date, forKeyPath: "date")
+            locationEntity.setValue(UUID().uuidString, forKeyPath: "id")
+        }
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+    }
+    
+    func fetchRecords(withName name:String, withLevel level:String)-> [Record]{
+        if Thread.isMainThread == false{
+            print("Error! Trying to access UIApplication from background thread.")
+            return []
+        }
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return [] }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: kRecordEntity)
+        let predicate1 = NSPredicate(format:"name == %@", name)
+        let predicate2 = NSPredicate(format:"level == %@", level)
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+        
+        do {
+            let results = try managedContext.fetch(fetchRequest)
+            if results.count > 0 {
+                var recordList = [Record]()
+                for data in results as! [NSManagedObject]{
+                    let record = Record(name: data.value(forKeyPath: "name") as! String,
+                                                level: data.value(forKeyPath: "level") as! String,
+                                                cases: data.value(forKeyPath: "cases") as! Int,
+                                                fatalities: data.value(forKeyPath: "fatalities") as! Int,
+                                                recoveries: data.value(forKeyPath: "recoveries") as! Int,
+                                                date: data.value(forKeyPath: "date") as! String)
+                    recordList.append(record)
+                }
+                return recordList
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        return []
     }
     
     

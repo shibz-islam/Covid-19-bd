@@ -14,10 +14,10 @@ class LocationManager {
 
     var dictForDistrictLocation = [String: LocationInfo]()
     var dictForCityLocation = [String: LocationInfo]()
-    var dictForPastCases = [String: [Dictionary<String,String>]]()
-    var dictSummaryForCountry = [String : SummaryInfo]()
-
     
+    var dictForAllRecords = [String: [Record]]()
+    var dictForRecentRecords = [String: Record]()
+
     let kLocationLevelDistrict = "city"
     let kLocationLevelCity = "zone"
     
@@ -82,16 +82,10 @@ class LocationManager {
     
     func getPastCasesForLocation(withLocation location:LocationInfo) {
         if location.name.count>0 && location.level.count>0 {
-            AuthenticationManager.shared.sendRequestForPastCasesForLocation(withLocation: location, completionHandler: { (isSuccess, listOfPastDailyCases) in
+            AuthenticationManager.shared.sendRequestForPastCasesForLocation(withLocation: location, completionHandler: { (isSuccess, listOfPastRecords) in
                 if isSuccess == true {
-                    if self.dictForPastCases[location.name] != nil {
-                        var val = self.dictForPastCases[location.name]!
-                        val.append(contentsOf: listOfPastDailyCases ?? [])
-                        self.dictForPastCases[location.name] = val
-                    }else{
-                        self.dictForPastCases[location.name] = listOfPastDailyCases ?? []
-                    }
-                    self.sortPastCasesDict(withKey: location.name)
+                    let ordered = listOfPastRecords!.sorted(by: { $0.date < $1.date })
+                    self.dictForAllRecords[location.name] = ordered
                     NotificationCenter.default.post(name: .kDidLoadPastCasesInformation, object: nil)
                 }
             })//end of completionHandler
@@ -99,24 +93,24 @@ class LocationManager {
     }//end func
     
     
-    func sortPastCasesDict(withKey key:String) {
-        let val = LocationManager.shared.dictForPastCases[key]
-        print("loading data...-> \(String(describing: val?.count))")
-        let ordered = val?.sorted {
-            guard let s1 = $0["date"], let s2 = $1["date"] else {
-                return false
-            }
-            return s1 < s2
-        }
-        LocationManager.shared.dictForPastCases[key] = ordered
-    }
+//    func sortPastCasesDict(withKey key:String) {
+//        let val = LocationManager.shared.dictForPastCases[key]
+//        print("loading data...-> \(String(describing: val?.count))")
+//        let ordered = val?.sorted {
+//            guard let s1 = $0["date"], let s2 = $1["date"] else {
+//                return false
+//            }
+//            return s1 < s2
+//        }
+//        LocationManager.shared.dictForPastCases[key] = ordered
+//    }
     
     
-    func getSummary(withIsLevelCity isLevelCity: Bool, completionHandler: @escaping(_ isSuccess: Bool?, _ message: String?)->Void){
-        AuthenticationManager.shared.sendRequestForSummary(withIsLevelCity: isLevelCity) { (isSuccess, message, summaryInfo) in
+    func getRecentSummary(withName name:String, withType type: String, completionHandler: @escaping(_ isSuccess: Bool?, _ message: String?)->Void){
+        AuthenticationManager.shared.sendRequestForRecentSummary(withName: name, withType: type) { (isSuccess, message, record) in
             if isSuccess == true{
-                if let name = summaryInfo?.name {
-                    self.dictSummaryForCountry[name] = summaryInfo
+                if let name = record?.name {
+                    self.dictForRecentRecords[name] = record
                     completionHandler(isSuccess, message)
                 }
             }
@@ -126,16 +120,11 @@ class LocationManager {
 
     func getSummaryPastCasesForLocation(withLocation location:LocationInfo) {
         if location.name.count>0 && location.level.count>0 {
-            AuthenticationManager.shared.sendRequestForSummaryPastCases(withLocation: location, completionHandler: { (isSuccess, listOfPastDailyCases) in
+            AuthenticationManager.shared.sendRequestForSummaryPastCases(withLocation: location, completionHandler: { (isSuccess, listOfPastRecords) in
                 if isSuccess == true {
-                    if self.dictForPastCases[location.name] != nil {
-                        var val = self.dictForPastCases[location.name]!
-                        val.append(contentsOf: listOfPastDailyCases ?? [])
-                        self.dictForPastCases[location.name] = val
-                    }else{
-                        self.dictForPastCases[location.name] = listOfPastDailyCases ?? []
-                    }
-                    self.sortPastCasesDict(withKey: location.name)
+                    //let ordered = listOfPastRecords!.sorted(by: { $0.date < $1.date })
+                    let ordered = listOfPastRecords
+                    self.dictForAllRecords[location.name] = ordered
                     NotificationCenter.default.post(name: .kDidLoadSummaryPastCasesInformationNotification, object: nil)
                 }
             })//end of completionHandler

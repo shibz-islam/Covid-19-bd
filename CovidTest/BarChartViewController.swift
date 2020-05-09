@@ -29,14 +29,14 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         
         if let loc = self.location {
             if loc.name == ApplicationManager.shared.kCountryNameKey {
-                if LocationManager.shared.dictForPastCases[loc.name] != nil {
+                if LocationManager.shared.dictForAllRecords[loc.name] != nil {
                     loadInitialDataForSummary()
                 }else{
                     LocationManager.shared.getSummaryPastCasesForLocation(withLocation: loc)
                     NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveSummaryPastCases(_:)), name: .kDidLoadSummaryPastCasesInformationNotification, object: nil)
                 }
             }else{
-                if LocationManager.shared.dictForPastCases[loc.name] != nil {
+                if LocationManager.shared.dictForAllRecords[loc.name] != nil {
                     loadInitialData()
                 }else{
                     LocationManager.shared.getPastCasesForLocation(withLocation: loc)
@@ -73,24 +73,24 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     
     func loadInitialData() {
         if let loc = self.location {
-            if LocationManager.shared.dictForPastCases[loc.name] != nil {
-                var ordered = LocationManager.shared.dictForPastCases[loc.name]!
+            if LocationManager.shared.dictForAllRecords[loc.name] != nil {
+                var ordered = LocationManager.shared.dictForAllRecords[loc.name]!
                 if ordered.count > maxRecords {
                     let arraySlice = ordered.suffix(maxRecords)
                     ordered = Array(arraySlice)
                 }
                 self.dateList.removeAll()
                 self.caseList.removeAll()
-                for itemDict in ordered{
-                    let dateComponents = itemDict["date"]!.split(separator: "-")
+                for record in ordered{
+                    let dateComponents = record.date.split(separator: "-")
                     var shortDate: String
                     if dateComponents.count > 1 {
                         shortDate = dateComponents[dateComponents.count-2] + "/" + dateComponents[dateComponents.count-1]
                     }else{
-                        shortDate = itemDict["date"]!
+                        shortDate = record.date
                     }
                     self.dateList.append(shortDate)
-                    self.caseList.append((itemDict["cases"]! as NSString).integerValue)
+                    self.caseList.append(record.cases)
                 }
                 loadChart()
             }
@@ -99,28 +99,28 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     
     func loadInitialDataForSummary() {
         if let loc = self.location {
-            if LocationManager.shared.dictForPastCases[loc.name] != nil {
-                var ordered = LocationManager.shared.dictForPastCases[loc.name]!
+            if LocationManager.shared.dictForAllRecords[loc.name] != nil {
+                var ordered = LocationManager.shared.dictForAllRecords[loc.name]!
                 if ordered.count > 7 {
                     let arraySlice = ordered.suffix(7)
                     ordered = Array(arraySlice)
                 }
-                self.dateList.removeAll()
-                self.caseList.removeAll()
-                self.curedList.removeAll()
-                self.deathList.removeAll()
-                for itemDict in ordered{
-                    let dateComponents = itemDict["date"]!.split(separator: "-")
+//                self.dateList.removeAll()
+//                self.caseList.removeAll()
+//                self.curedList.removeAll()
+//                self.deathList.removeAll()
+                for record in ordered{
+                    let dateComponents = record.date.split(separator: "-")
                     var shortDate: String
                     if dateComponents.count > 1 {
                         shortDate = dateComponents[dateComponents.count-2] + "/" + dateComponents[dateComponents.count-1]
                     }else{
-                        shortDate = itemDict["date"]!
+                        shortDate = record.date
                     }
                     self.dateList.append(shortDate)
-                    self.caseList.append((itemDict["cases"]! as NSString).integerValue)
-                    self.curedList.append((itemDict["cured"]! as NSString).integerValue)
-                    self.deathList.append((itemDict["deaths"]! as NSString).integerValue)
+                    self.caseList.append(record.cases)
+                    self.curedList.append(record.recoveries)
+                    self.deathList.append(record.fatalities)
                 }
                 loadSummaryChart()
             }
