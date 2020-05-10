@@ -10,6 +10,8 @@ import Foundation
 
 enum Constants {
     
+    static let appName:String = "Covid19-BD"
+    
     enum LocationConstants {
         static let defaultCountryName: String = "Bangladesh"
         static let defaultDistrictName: String = "Dhaka"
@@ -35,6 +37,10 @@ enum Constants {
     enum ViewControllerConstants {
         static let segmentedControlFirstIndex: String = "District"
         static let segmentedControlSecondIndex: String = "Dhaka City"
+    }
+    
+    enum StoryboardConstants {
+        static let sideMenuNavigationControllerID: String = "RightMenuNavigationController"
     }
     
     enum CoreDataConstants {

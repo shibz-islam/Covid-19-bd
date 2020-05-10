@@ -13,6 +13,9 @@
 		534ED0B22456404600CBCE93 /* CustomDetailSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */; };
 		534ED0B42456405B00CBCE93 /* CustomDetailSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 534ED0B32456405B00CBCE93 /* CustomDetailSectionHeaderView.xib */; };
 		534ED0B62456935F00CBCE93 /* Color+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0B52456935F00CBCE93 /* Color+Helper.swift */; };
+		538EFC192467DE3C0048F9C3 /* SideMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538EFC182467DE3C0048F9C3 /* SideMenuTableViewController.swift */; };
+		538EFC212467FBF30048F9C3 /* SideMenuHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 538EFC1F2467FBF30048F9C3 /* SideMenuHeaderView.xib */; };
+		538EFC242467FBF90048F9C3 /* SideMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538EFC222467FBF90048F9C3 /* SideMenuHeaderView.swift */; };
 		53EA158324494B2800CCAB40 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA158224494B2800CCAB40 /* AppDelegate.swift */; };
 		53EA158524494B2800CCAB40 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA158424494B2800CCAB40 /* SceneDelegate.swift */; };
 		53EA158724494B2800CCAB40 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA158624494B2800CCAB40 /* ViewController.swift */; };
@@ -42,6 +45,11 @@
 		534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailSectionHeaderView.swift; sourceTree = "<group>"; };
 		534ED0B32456405B00CBCE93 /* CustomDetailSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomDetailSectionHeaderView.xib; sourceTree = "<group>"; };
 		534ED0B52456935F00CBCE93 /* Color+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Helper.swift"; sourceTree = "<group>"; };
+		538EFC182467DE3C0048F9C3 /* SideMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewController.swift; sourceTree = "<group>"; };
+		538EFC1E2467FBF30048F9C3 /* SideMenuHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideMenuHeaderView.swift; path = ../../TabViewTest/TabViewTest/SideMenuHeaderView.swift; sourceTree = "<group>"; };
+		538EFC1F2467FBF30048F9C3 /* SideMenuHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SideMenuHeaderView.xib; path = ../../TabViewTest/TabViewTest/SideMenuHeaderView.xib; sourceTree = "<group>"; };
+		538EFC222467FBF90048F9C3 /* SideMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuHeaderView.swift; sourceTree = "<group>"; };
+		538EFC232467FBF90048F9C3 /* SideMenuHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SideMenuHeaderView.xib; sourceTree = "<group>"; };
 		53EA157F24494B2800CCAB40 /* Covid19-BD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Covid19-BD.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53EA158224494B2800CCAB40 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		53EA158424494B2800CCAB40 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +117,8 @@
 		53EA158124494B2800CCAB40 /* CovidTest */ = {
 			isa = PBXGroup;
 			children = (
+				538EFC1E2467FBF30048F9C3 /* SideMenuHeaderView.swift */,
+				538EFC1F2467FBF30048F9C3 /* SideMenuHeaderView.xib */,
 				53EA158224494B2800CCAB40 /* AppDelegate.swift */,
 				53EA158424494B2800CCAB40 /* SceneDelegate.swift */,
 				53EA15B0244FA02000CCAB40 /* Manager */,
@@ -139,6 +149,7 @@
 				53EA158624494B2800CCAB40 /* ViewController.swift */,
 				53EA159E244C20FB00CCAB40 /* BarChartViewController.swift */,
 				53EA15F7244FD70F00CCAB40 /* TableViewController.swift */,
+				538EFC182467DE3C0048F9C3 /* SideMenuTableViewController.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -159,10 +170,12 @@
 		53EA15FE2450CA8200CCAB40 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				53EA15FF2450CAB600CCAB40 /* CustomSectionHeaderView.xib */,
-				53EA16012450D5FE00CCAB40 /* CustomSectionHeaderView.swift */,
-				53EA159024494B2900CCAB40 /* LaunchScreen.storyboard */,
 				53EA158824494B2800CCAB40 /* Main.storyboard */,
+				53EA159024494B2900CCAB40 /* LaunchScreen.storyboard */,
+				538EFC222467FBF90048F9C3 /* SideMenuHeaderView.swift */,
+				538EFC232467FBF90048F9C3 /* SideMenuHeaderView.xib */,
+				53EA16012450D5FE00CCAB40 /* CustomSectionHeaderView.swift */,
+				53EA15FF2450CAB600CCAB40 /* CustomSectionHeaderView.xib */,
 				534ED0AD245634F200CBCE93 /* CustomTableViewCell.swift */,
 				534ED0AE245634F200CBCE93 /* CustomTableViewCell.xib */,
 				534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */,
@@ -242,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				53EA16002450CAB600CCAB40 /* CustomSectionHeaderView.xib in Resources */,
+				538EFC212467FBF30048F9C3 /* SideMenuHeaderView.xib in Resources */,
 				53EA159224494B2900CCAB40 /* LaunchScreen.storyboard in Resources */,
 				53EA158F24494B2900CCAB40 /* Assets.xcassets in Resources */,
 				534ED0B0245634F200CBCE93 /* CustomTableViewCell.xib in Resources */,
@@ -321,6 +335,7 @@
 				53EA158724494B2800CCAB40 /* ViewController.swift in Sources */,
 				534ED0AF245634F200CBCE93 /* CustomTableViewCell.swift in Sources */,
 				53EA16022450D5FE00CCAB40 /* CustomSectionHeaderView.swift in Sources */,
+				538EFC242467FBF90048F9C3 /* SideMenuHeaderView.swift in Sources */,
 				53EA15F8244FD70F00CCAB40 /* TableViewController.swift in Sources */,
 				534ED0B22456404600CBCE93 /* CustomDetailSectionHeaderView.swift in Sources */,
 				53EA15A3244C53FD00CCAB40 /* AuthenticationManager.swift in Sources */,
@@ -335,6 +350,7 @@
 				53EA158D24494B2800CCAB40 /* CovidTest.xcdatamodeld in Sources */,
 				53EA159F244C20FB00CCAB40 /* BarChartViewController.swift in Sources */,
 				534ED0B62456935F00CBCE93 /* Color+Helper.swift in Sources */,
+				538EFC192467DE3C0048F9C3 /* SideMenuTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

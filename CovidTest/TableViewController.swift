@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SideMenu
 
-class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SideMenuNavigationControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -23,6 +24,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         print("**** viewDidLoad")
+        
+        self.navigationItem.title = Constants.appName
 
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -60,6 +63,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         loadInitialData()
         loadInitialDataForCity()
         loadSummaryData()
+        setupSideMenuFromStoryboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -359,5 +363,32 @@ extension TableViewController: UISearchResultsUpdating {
                 print("Unknown segment")
         }
         tableView.reloadData()
+    }
+    
+    // MARK: - SideMenu
+    private func setupSideMenuFromStoryboard() {
+        // Define the menus
+        SideMenuManager.default.rightMenuNavigationController = storyboard?.instantiateViewController(withIdentifier: Constants.StoryboardConstants.sideMenuNavigationControllerID) as? SideMenuNavigationController
+    
+        // Enable gestures. The left and/or right menus must be set up above for these to work.
+        // Note that these continue to work on the Navigation Controller independent of the View Controller it displays!
+        SideMenuManager.default.addPanGestureToPresent(toView: navigationController!.navigationBar)
+        //SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view)
+    }
+    
+    func sideMenuWillAppear(menu: SideMenuNavigationController, animated: Bool) {
+        print("SideMenu Appearing! (animated: \(animated))")
+    }
+    
+    func sideMenuDidAppear(menu: SideMenuNavigationController, animated: Bool) {
+        print("SideMenu Appeared! (animated: \(animated))")
+    }
+    
+    func sideMenuWillDisappear(menu: SideMenuNavigationController, animated: Bool) {
+        print("SideMenu Disappearing! (animated: \(animated))")
+    }
+    
+    func sideMenuDidDisappear(menu: SideMenuNavigationController, animated: Bool) {
+        print("SideMenu Disappeared! (animated: \(animated))")
     }
 }

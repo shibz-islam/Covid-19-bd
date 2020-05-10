@@ -7,6 +7,7 @@ PODS:
   - GoogleMaps/Base (3.8.0)
   - GoogleMaps/Maps (3.8.0):
     - GoogleMaps/Base
+  - SideMenu (6.4.8)
   - SwiftCSV (0.5.6)
   - SwiftKeychainWrapper (3.4.0)
   - SwiftyJSON (4.3.0)
@@ -14,6 +15,7 @@ PODS:
 DEPENDENCIES:
   - Charts
   - GoogleMaps
+  - SideMenu
   - SwiftCSV
   - SwiftKeychainWrapper
   - SwiftyJSON (~> 4.0)
@@ -22,6 +24,7 @@ SPEC REPOS:
   trunk:
     - Charts
     - GoogleMaps
+    - SideMenu
     - SwiftCSV
     - SwiftKeychainWrapper
     - SwiftyJSON
@@ -29,10 +32,11 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Charts: 40a08591df1f8ad5c223ddedfb1a06da92f24f7c
   GoogleMaps: 7c8d66d70e4e8c300f43a7219d8fdaad7b325a9a
+  SideMenu: 4a891be552d30bb6fa87ad404d62e485f8450c34
   SwiftCSV: efb4a15dd7f2f1212b3d6986f97a3369ff6c5100
   SwiftKeychainWrapper: 6fc49fbf7d4a6b0772917acb0e53a1639f6078d6
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: 502f2f551a1641833a8f7673d6c38232448ecef4
+PODFILE CHECKSUM: 6113e7e8f7c0b32578f6f53fa0f17bfa74d16053
 
 COCOAPODS: 1.9.1
