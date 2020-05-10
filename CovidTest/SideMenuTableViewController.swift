@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class SideMenuTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -74,8 +75,22 @@ class SideMenuTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        print("didSelectRowAt")
+        //print("didSelectRowAt")
         //performSegue(withIdentifier: "detailSeg", sender: self)
+        switch indexPath.row {
+            case 0:
+                //Home
+                self.dismiss(animated: true, completion: nil)
+            case 1:
+                //Helpful sites
+                let svc = SFSafariViewController(url: Constants.AppUrls.helpfulSites)
+                self.present(svc, animated: true, completion: nil)
+            case 2:
+                //About us
+                let svc = SFSafariViewController(url: Constants.AppUrls.aboutUs)
+                self.present(svc, animated: true, completion: nil)
+            default: break
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

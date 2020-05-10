@@ -43,6 +43,11 @@ enum Constants {
         static let sideMenuNavigationControllerID: String = "RightMenuNavigationController"
     }
     
+    enum AppUrls{
+        static let helpfulSites: URL = URL(string:"https://www.covid-bd.info/helpful-sites")!
+        static let aboutUs: URL = URL(string:"https://www.covid-bd.info/privacy-notice")!
+    }
+    
     enum CoreDataConstants {
         
     }
