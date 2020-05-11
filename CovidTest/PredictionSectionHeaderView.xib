@@ -10,14 +10,35 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" restorationIdentifier="PredictionSectionHeader" id="iN0-l3-epB" customClass="PredictionSectionHeaderView" customModule="Covid19_BD" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9dv-Ps-adg">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="District Level Prediction for day: 05-20" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Amy-d1-W7d">
+                            <rect key="frame" x="25" y="4.5" width="364" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="OmV-QQ-dkg"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemGray4Color" red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="81S-k3-yfP"/>
+                        <constraint firstItem="Amy-d1-W7d" firstAttribute="centerY" secondItem="9dv-Ps-adg" secondAttribute="centerY" id="HiG-ea-YTZ"/>
+                        <constraint firstAttribute="trailing" secondItem="Amy-d1-W7d" secondAttribute="trailing" constant="25" id="cR3-Oq-kAm"/>
+                        <constraint firstItem="Amy-d1-W7d" firstAttribute="leading" secondItem="9dv-Ps-adg" secondAttribute="leading" constant="25" id="rEj-6z-y6f"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uPW-Nq-G01">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                    <rect key="frame" x="0.0" y="30" width="414" height="40"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Region" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sow-0L-qto">
-                            <rect key="frame" x="20" y="14.5" width="184" height="21"/>
+                            <rect key="frame" x="20" y="9.5" width="184" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="biU-u9-mhj"/>
                             </constraints>
@@ -26,7 +47,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prediction" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6FV-fN-A0S">
-                            <rect key="frame" x="314" y="14.5" width="80" height="21"/>
+                            <rect key="frame" x="314" y="9.5" width="80" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="CPs-uo-7bF"/>
                                 <constraint firstAttribute="width" constant="80" id="S3c-QS-3oa"/>
@@ -36,7 +57,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cases" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T7c-9m-yCP">
-                            <rect key="frame" x="224" y="14.5" width="80" height="21"/>
+                            <rect key="frame" x="224" y="9.5" width="80" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="80" id="zYl-0O-l70"/>
                             </constraints>
@@ -60,17 +81,22 @@
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="9dv-Ps-adg" secondAttribute="trailing" id="EIY-p1-qiV"/>
+                <constraint firstItem="9dv-Ps-adg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="SdP-x5-Hw1"/>
                 <constraint firstItem="uPW-Nq-G01" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="Tzo-KP-ou3"/>
                 <constraint firstItem="uPW-Nq-G01" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="b8L-ml-sHy"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="uPW-Nq-G01" secondAttribute="trailing" id="dQ1-SC-5sU"/>
-                <constraint firstItem="uPW-Nq-G01" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="zQh-ls-6e8"/>
+                <constraint firstItem="9dv-Ps-adg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="jar-kI-reR"/>
+                <constraint firstItem="uPW-Nq-G01" firstAttribute="top" secondItem="9dv-Ps-adg" secondAttribute="bottom" id="m2a-8m-vrt"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="backgroundWrapperView" destination="uPW-Nq-G01" id="dz9-ff-RrH"/>
+                <outlet property="backgroundWrapperViewTop" destination="9dv-Ps-adg" id="DVG-7h-wbY"/>
+                <outlet property="descriptionLabel" destination="Amy-d1-W7d" id="AqB-wA-XNr"/>
             </connections>
-            <point key="canvasLocation" x="128.98550724637681" y="-203.57142857142856"/>
+            <point key="canvasLocation" x="128.98550724637681" y="-223.66071428571428"/>
         </view>
     </objects>
 </document>

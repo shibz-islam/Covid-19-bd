@@ -16,6 +16,7 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
     
     var records = [PredictionRecord]()
     var filteredRecords = [PredictionRecord]()
+    var predictionDate: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,11 +95,17 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 70
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = self.predTableView.dequeueReusableHeaderFooterView(withIdentifier: "PredictionSectionHeader") as! PredictionSectionHeaderView
+        if self.predictionDate.count > 0 {
+            header.descriptionLabel.text = "District level prediction for \(self.predictionDate)"
+        }
+        else{
+            header.descriptionLabel.text = "District level prediction for next day"
+        }
         return header
     }
 
@@ -106,10 +113,15 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
     func loadData() {
         if LocationManager.shared.dictForDistrictLevelPredictionRecords.count > 0{
             self.records.removeAll()
+            self.predictionDate = ""
             for (key, record) in LocationManager.shared.dictForDistrictLevelPredictionRecords{
                 self.records.append(record)
             }
             self.records = self.records.sorted(by: { $0.cases > $1.cases })
+            let currentDate = self.records[0].date
+            self.predictionDate = currentDate.toDate().dayAfter.getStringDate()
+            print("Current Date: \(currentDate)")
+            print("Prediction Date: \(self.predictionDate)")
             self.predTableView.reloadData()
         }
         else{

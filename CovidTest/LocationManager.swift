@@ -136,6 +136,7 @@ class LocationManager {
                     for predRecord in recordArray {
                         if isLevelCity == false && self.dictForDistrictLocation[predRecord.name] != nil {
                             predRecord.cases = self.dictForDistrictLocation[predRecord.name]?.cases ?? 0
+                            predRecord.date = self.dictForDistrictLocation[predRecord.name]?.date ?? ""
                         }
                         self.dictForDistrictLevelPredictionRecords[predRecord.name] = predRecord
                     }

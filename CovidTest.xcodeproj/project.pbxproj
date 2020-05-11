@@ -15,6 +15,7 @@
 		531BB330246944190027DE42 /* PredictionSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531BB32F246944190027DE42 /* PredictionSectionHeaderView.swift */; };
 		531BB3342469447B0027DE42 /* PredictionSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531BB3332469447B0027DE42 /* PredictionSectionHeaderView.xib */; };
 		531BB33524694C840027DE42 /* SideMenuHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 538EFC232467FBF90048F9C3 /* SideMenuHeaderView.xib */; };
+		531BB33724696DB60027DE42 /* String+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531BB33624696DB60027DE42 /* String+Helper.swift */; };
 		534ED0AF245634F200CBCE93 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0AD245634F200CBCE93 /* CustomTableViewCell.swift */; };
 		534ED0B0245634F200CBCE93 /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 534ED0AE245634F200CBCE93 /* CustomTableViewCell.xib */; };
 		534ED0B22456404600CBCE93 /* CustomDetailSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */; };
@@ -52,6 +53,7 @@
 		531BB32D246937860027DE42 /* PredictionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionRecord.swift; sourceTree = "<group>"; };
 		531BB32F246944190027DE42 /* PredictionSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionSectionHeaderView.swift; sourceTree = "<group>"; };
 		531BB3332469447B0027DE42 /* PredictionSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PredictionSectionHeaderView.xib; sourceTree = "<group>"; };
+		531BB33624696DB60027DE42 /* String+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helper.swift"; sourceTree = "<group>"; };
 		534ED0AD245634F200CBCE93 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		534ED0AE245634F200CBCE93 /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */,
 				53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */,
 				534ED0B52456935F00CBCE93 /* Color+Helper.swift */,
+				531BB33624696DB60027DE42 /* String+Helper.swift */,
 				53F2D2CB2466973500A7D3E9 /* AppConstants.swift */,
 			);
 			name = Helper;
@@ -386,6 +389,7 @@
 				53EA158524494B2800CCAB40 /* SceneDelegate.swift in Sources */,
 				53EA15AF244FA01300CCAB40 /* ApplicationManager.swift in Sources */,
 				5318A8E8245BF7350021E1F7 /* Record.swift in Sources */,
+				531BB33724696DB60027DE42 /* String+Helper.swift in Sources */,
 				53EA15A9244D6DF700CCAB40 /* Notification+Helper.swift in Sources */,
 				53EA15AD244EDC0000CCAB40 /* Date+Helper.swift in Sources */,
 				531BB32724692EE50027DE42 /* PredictionTableViewController.swift in Sources */,
