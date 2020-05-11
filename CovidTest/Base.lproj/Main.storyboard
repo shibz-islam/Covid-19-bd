@@ -19,11 +19,59 @@
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="pnq-pI-sLq"/>
                         <segue destination="nJP-FE-itB" kind="relationship" relationship="viewControllers" id="7r2-ev-r0W"/>
+                        <segue destination="va0-Ay-rLl" kind="relationship" relationship="viewControllers" id="HN7-V4-qAT"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="42v-uc-udX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1051" y="-236"/>
+        </scene>
+        <!--Prediction Table View Controller-->
+        <scene sceneID="gVD-Tg-LVC">
+            <objects>
+                <viewController id="CIB-YM-KGz" customClass="PredictionTableViewController" customModule="Covid19_BD" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZcP-lN-Tc9">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ann-xW-RKN">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="WJy-iL-u4N">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WJy-iL-u4N" id="lGW-Nh-kyI">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Ann-xW-RKN" firstAttribute="bottom" secondItem="Ehb-Kd-Zh4" secondAttribute="bottom" id="J6F-sl-RhC"/>
+                            <constraint firstItem="Ann-xW-RKN" firstAttribute="leading" secondItem="Ehb-Kd-Zh4" secondAttribute="leading" id="UwU-2I-8I0"/>
+                            <constraint firstItem="Ann-xW-RKN" firstAttribute="top" secondItem="Ehb-Kd-Zh4" secondAttribute="top" id="aR8-44-fu8"/>
+                            <constraint firstItem="Ann-xW-RKN" firstAttribute="trailing" secondItem="Ehb-Kd-Zh4" secondAttribute="trailing" id="ifW-4X-vqt"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Ehb-Kd-Zh4"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="a0I-8a-QDx">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="ellipsis" catalog="system" id="SUA-og-7aH">
+                            <connections>
+                                <segue destination="Wpb-34-qeJ" kind="show" id="4tC-es-Olz"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="predTableView" destination="Ann-xW-RKN" id="8AN-Q4-FIB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OL6-hJ-x1O" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1519" y="21"/>
         </scene>
         <!--Map-->
         <scene sceneID="tne-QT-ifu">
@@ -80,7 +128,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137.68115942028987" y="80.357142857142847"/>
+            <point key="canvasLocation" x="-1052" y="579"/>
         </scene>
         <!--Bar Chart View Controller-->
         <scene sceneID="w9K-vr-e48">
@@ -147,7 +195,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s2f-EZ-pAK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1541" y="54"/>
+            <point key="canvasLocation" x="574" y="792"/>
         </scene>
         <!--TableViewController-->
         <scene sceneID="bkq-tD-fyT">
@@ -322,10 +370,33 @@
             </objects>
             <point key="canvasLocation" x="2687" y="-719"/>
         </scene>
+        <!--Prediction-->
+        <scene sceneID="HfZ-aG-Py9">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="va0-Ay-rLl" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Prediction" image="info.circle" catalog="system" id="2jN-UR-fsG"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wHd-gn-EIh">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="CIB-YM-KGz" kind="relationship" relationship="rootViewController" id="unp-sY-PuD"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LQH-bJ-FLW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="574" y="21"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="4tC-es-Olz"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="Close" width="44" height="44"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
+        <image name="info.circle" catalog="system" width="128" height="121"/>
         <image name="list.bullet" catalog="system" width="128" height="88"/>
         <image name="map" catalog="system" width="128" height="113"/>
     </resources>

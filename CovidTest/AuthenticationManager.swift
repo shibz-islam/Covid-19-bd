@@ -348,4 +348,67 @@ class AuthenticationManager {
         }
         task.resume()
     }
+    
+    
+    func sendRequestForPredictionData(withIsLevelCity isLevelCity: Bool, withIsNextDay isNextDay: Bool, completionHandler: @escaping(_ isSuccess: Bool?, _ message:String?, _ locationArray: [PredictionRecord])->Void) {
+        
+        let levelString = isLevelCity == true ? Constants.KeyStrings.keyLocationLevelCity : Constants.KeyStrings.keyLocationLevelDistrict
+        let nameString = isLevelCity == true ? Constants.LocationConstants.defaultDistrictName : Constants.LocationConstants.defaultCountryName
+        let typeString = isNextDay == true ? Constants.ApiConstants.keyNextDay : Constants.ApiConstants.keyOneWeek
+        
+        var urlComponents = URLComponents(string: Constants.AppUrls.appBaseUrlString + Constants.ApiConstants.keyForApiPrediction)!
+        urlComponents.queryItems = [
+            URLQueryItem(name: Constants.ServerKeywords.keyLevel, value: levelString),
+            URLQueryItem(name: Constants.ServerKeywords.keyName, value: nameString),
+            URLQueryItem(name: Constants.ServerKeywords.keyType, value: typeString)
+        ]
+        let url = urlComponents.url!
+        print("call to server with api: \(String(describing: urlComponents.url?.absoluteString))")
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("error: \(error)")
+            } else {
+                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                    print("Server error!")
+                    return
+                }
+                guard let mime = response.mimeType, mime == "application/json" else {
+                    print("Wrong MIME type!")
+                    return
+                }
+                
+                do {
+                    let json = try?JSON(data: data!)
+                    //print(json)
+                    if json![Constants.ServerKeywords.keyStatus].stringValue == Constants.ServerKeywords.keyError {
+                        print("Received Error Status")
+                        completionHandler(false, Constants.ServerKeywords.keyError, [])
+                    }else {
+                        var recordArray = [PredictionRecord]()
+                        
+                        for item in json![Constants.ServerKeywords.keyPayload][Constants.ServerKeywords.keyPrediction].arrayValue {
+                            let record = PredictionRecord(name: item[Constants.ServerKeywords.keyCity].stringValue,
+                                                level: item[Constants.ServerKeywords.keyLevel].stringValue,
+                                                cases: item[Constants.ServerKeywords.keyCases].intValue,
+                                                date: item[Constants.ServerKeywords.keyType].stringValue)
+                            recordArray.append(record)
+                        }
+                        
+                        print("Numner of cases received: \(recordArray.count)")
+                        if recordArray.count > 0 {
+                            completionHandler(true, Constants.ServerKeywords.keySuccess, recordArray)
+                        } else{
+                            completionHandler(false, Constants.ServerKeywords.keyError, [])
+                        }
+                    }
+                } catch {
+                    print("Error: \(error)")
+                    print("JSON error: \(error.localizedDescription)")
+                    completionHandler(false, Constants.ServerKeywords.keyError, [])
+                }
+            }
+        }
+        task.resume()
+    }
 }

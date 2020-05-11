@@ -19,7 +19,7 @@ class CustomDetailSectionHeaderView: UITableViewHeaderFooterView {
     @IBOutlet weak var casesView: UIView!
     @IBOutlet weak var curedView: UIView!
     @IBOutlet weak var deathView: UIView!
-    
+    @IBOutlet weak var bottomSectionHeaderView: UIView!
     
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -30,6 +30,7 @@ class CustomDetailSectionHeaderView: UITableViewHeaderFooterView {
         casesView.backgroundColor = UIColor.themeLightOrange
         curedView.backgroundColor = UIColor.themeLightOrange
         deathView.backgroundColor = UIColor.themeLightOrange
+        bottomSectionHeaderView.backgroundColor = UIColor.themeWhiteSmoke
         
         topLevelView.layer.cornerRadius = 10
         casesView.layer.cornerRadius = 10

@@ -25,9 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let mainVC = ViewController()
         let tableVC = TableViewController()
+        let predTableVC = PredictionTableViewController()
         
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [mainVC, tableVC]
+        tabBarController.viewControllers = [mainVC, tableVC, predTableVC]
        
         
         return true

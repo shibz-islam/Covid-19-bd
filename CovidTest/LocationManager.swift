@@ -19,6 +19,8 @@ class LocationManager {
     var dictForAllRecords = [String: [Record]]()
     var dictForRecentRecords = [String: Record]()
     
+    var dictForDistrictLevelPredictionRecords = [String: PredictionRecord]()
+    
     
     func getLocationData(withIsLevelCity isLevelCity: Bool?, withDate date: Date, completionHandler: @escaping(_ isSuccess: Bool?, _ message: String?)->Void){
         DispatchQueue.global(qos: .background).async {
@@ -126,4 +128,25 @@ class LocationManager {
             })//end of completionHandler
         }
     }//end func
+    
+    func getPredictionData(withIsLevelCity isLevelCity: Bool, withIsNextDay isNextDay: Bool){
+        DispatchQueue.global(qos: .background).async {
+            AuthenticationManager.shared.sendRequestForPredictionData(withIsLevelCity: isLevelCity, withIsNextDay: isNextDay) { (isSuccess, message, recordArray) in
+                if isSuccess == true {
+                    for predRecord in recordArray {
+                        if isLevelCity == false && self.dictForDistrictLocation[predRecord.name] != nil {
+                            predRecord.cases = self.dictForDistrictLocation[predRecord.name]?.cases ?? 0
+                        }
+                        self.dictForDistrictLevelPredictionRecords[predRecord.name] = predRecord
+                    }
+                    NotificationCenter.default.post(name: .kDidLoadPredictionDataNotification, object: nil)
+                }
+            }
+        }//Dispatch end
+    }
+
+
+
+
+
 }

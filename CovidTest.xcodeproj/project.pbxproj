@@ -8,13 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		5318A8E8245BF7350021E1F7 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5318A8E7245BF7350021E1F7 /* Record.swift */; };
+		531BB32724692EE50027DE42 /* PredictionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531BB32624692EE50027DE42 /* PredictionTableViewController.swift */; };
+		531BB32B246931290027DE42 /* PredictionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531BB329246931290027DE42 /* PredictionTableViewCell.swift */; };
+		531BB32C246931290027DE42 /* PredictionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531BB32A246931290027DE42 /* PredictionTableViewCell.xib */; };
+		531BB32E246937860027DE42 /* PredictionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531BB32D246937860027DE42 /* PredictionRecord.swift */; };
+		531BB330246944190027DE42 /* PredictionSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531BB32F246944190027DE42 /* PredictionSectionHeaderView.swift */; };
+		531BB3342469447B0027DE42 /* PredictionSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531BB3332469447B0027DE42 /* PredictionSectionHeaderView.xib */; };
+		531BB33524694C840027DE42 /* SideMenuHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 538EFC232467FBF90048F9C3 /* SideMenuHeaderView.xib */; };
 		534ED0AF245634F200CBCE93 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0AD245634F200CBCE93 /* CustomTableViewCell.swift */; };
 		534ED0B0245634F200CBCE93 /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 534ED0AE245634F200CBCE93 /* CustomTableViewCell.xib */; };
 		534ED0B22456404600CBCE93 /* CustomDetailSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */; };
 		534ED0B42456405B00CBCE93 /* CustomDetailSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 534ED0B32456405B00CBCE93 /* CustomDetailSectionHeaderView.xib */; };
 		534ED0B62456935F00CBCE93 /* Color+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0B52456935F00CBCE93 /* Color+Helper.swift */; };
 		538EFC192467DE3C0048F9C3 /* SideMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538EFC182467DE3C0048F9C3 /* SideMenuTableViewController.swift */; };
-		538EFC212467FBF30048F9C3 /* SideMenuHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 538EFC1F2467FBF30048F9C3 /* SideMenuHeaderView.xib */; };
 		538EFC242467FBF90048F9C3 /* SideMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538EFC222467FBF90048F9C3 /* SideMenuHeaderView.swift */; };
 		53EA158324494B2800CCAB40 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA158224494B2800CCAB40 /* AppDelegate.swift */; };
 		53EA158524494B2800CCAB40 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA158424494B2800CCAB40 /* SceneDelegate.swift */; };
@@ -40,14 +46,18 @@
 
 /* Begin PBXFileReference section */
 		5318A8E7245BF7350021E1F7 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
+		531BB32624692EE50027DE42 /* PredictionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionTableViewController.swift; sourceTree = "<group>"; };
+		531BB329246931290027DE42 /* PredictionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionTableViewCell.swift; sourceTree = "<group>"; };
+		531BB32A246931290027DE42 /* PredictionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PredictionTableViewCell.xib; sourceTree = "<group>"; };
+		531BB32D246937860027DE42 /* PredictionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionRecord.swift; sourceTree = "<group>"; };
+		531BB32F246944190027DE42 /* PredictionSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionSectionHeaderView.swift; sourceTree = "<group>"; };
+		531BB3332469447B0027DE42 /* PredictionSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PredictionSectionHeaderView.xib; sourceTree = "<group>"; };
 		534ED0AD245634F200CBCE93 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		534ED0AE245634F200CBCE93 /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailSectionHeaderView.swift; sourceTree = "<group>"; };
 		534ED0B32456405B00CBCE93 /* CustomDetailSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomDetailSectionHeaderView.xib; sourceTree = "<group>"; };
 		534ED0B52456935F00CBCE93 /* Color+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Helper.swift"; sourceTree = "<group>"; };
 		538EFC182467DE3C0048F9C3 /* SideMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewController.swift; sourceTree = "<group>"; };
-		538EFC1E2467FBF30048F9C3 /* SideMenuHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideMenuHeaderView.swift; path = ../../TabViewTest/TabViewTest/SideMenuHeaderView.swift; sourceTree = "<group>"; };
-		538EFC1F2467FBF30048F9C3 /* SideMenuHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SideMenuHeaderView.xib; path = ../../TabViewTest/TabViewTest/SideMenuHeaderView.xib; sourceTree = "<group>"; };
 		538EFC222467FBF90048F9C3 /* SideMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuHeaderView.swift; sourceTree = "<group>"; };
 		538EFC232467FBF90048F9C3 /* SideMenuHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SideMenuHeaderView.xib; sourceTree = "<group>"; };
 		53EA157F24494B2800CCAB40 /* Covid19-BD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Covid19-BD.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,6 +106,41 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		531BB32824692F6F0027DE42 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				53EA158824494B2800CCAB40 /* Main.storyboard */,
+				53EA159024494B2900CCAB40 /* LaunchScreen.storyboard */,
+			);
+			name = Storyboard;
+			sourceTree = "<group>";
+		};
+		531BB331246944360027DE42 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				534ED0AD245634F200CBCE93 /* CustomTableViewCell.swift */,
+				534ED0AE245634F200CBCE93 /* CustomTableViewCell.xib */,
+				531BB329246931290027DE42 /* PredictionTableViewCell.swift */,
+				531BB32A246931290027DE42 /* PredictionTableViewCell.xib */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
+		531BB3322469443D0027DE42 /* SectionHeader */ = {
+			isa = PBXGroup;
+			children = (
+				534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */,
+				534ED0B32456405B00CBCE93 /* CustomDetailSectionHeaderView.xib */,
+				538EFC222467FBF90048F9C3 /* SideMenuHeaderView.swift */,
+				538EFC232467FBF90048F9C3 /* SideMenuHeaderView.xib */,
+				53EA16012450D5FE00CCAB40 /* CustomSectionHeaderView.swift */,
+				53EA15FF2450CAB600CCAB40 /* CustomSectionHeaderView.xib */,
+				531BB32F246944190027DE42 /* PredictionSectionHeaderView.swift */,
+				531BB3332469447B0027DE42 /* PredictionSectionHeaderView.xib */,
+			);
+			name = SectionHeader;
+			sourceTree = "<group>";
+		};
 		53EA157624494B2800CCAB40 = {
 			isa = PBXGroup;
 			children = (
@@ -117,14 +162,13 @@
 		53EA158124494B2800CCAB40 /* CovidTest */ = {
 			isa = PBXGroup;
 			children = (
-				538EFC1E2467FBF30048F9C3 /* SideMenuHeaderView.swift */,
-				538EFC1F2467FBF30048F9C3 /* SideMenuHeaderView.xib */,
 				53EA158224494B2800CCAB40 /* AppDelegate.swift */,
 				53EA158424494B2800CCAB40 /* SceneDelegate.swift */,
 				53EA15B0244FA02000CCAB40 /* Manager */,
 				53EA15FA2450154C00CCAB40 /* Views */,
 				53EA15FB2450157100CCAB40 /* Helper */,
 				53EA15FE2450CA8200CCAB40 /* View */,
+				531BB32824692F6F0027DE42 /* Storyboard */,
 				53EA158E24494B2900CCAB40 /* Assets.xcassets */,
 				53EA159324494B2900CCAB40 /* Info.plist */,
 				53EA158B24494B2800CCAB40 /* CovidTest.xcdatamodeld */,
@@ -135,10 +179,10 @@
 		53EA15B0244FA02000CCAB40 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				53EA15A4244D340800CCAB40 /* LocationManager.swift */,
 				53EA15AE244FA01300CCAB40 /* ApplicationManager.swift */,
 				53EA15A2244C53FD00CCAB40 /* AuthenticationManager.swift */,
 				53EA15A6244D67E600CCAB40 /* CoreDataManager.swift */,
+				53EA15A4244D340800CCAB40 /* LocationManager.swift */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -150,6 +194,7 @@
 				53EA159E244C20FB00CCAB40 /* BarChartViewController.swift */,
 				53EA15F7244FD70F00CCAB40 /* TableViewController.swift */,
 				538EFC182467DE3C0048F9C3 /* SideMenuTableViewController.swift */,
+				531BB32624692EE50027DE42 /* PredictionTableViewController.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -159,6 +204,7 @@
 			children = (
 				53EA15A0244C4BEE00CCAB40 /* LocationInfo.swift */,
 				5318A8E7245BF7350021E1F7 /* Record.swift */,
+				531BB32D246937860027DE42 /* PredictionRecord.swift */,
 				53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */,
 				53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */,
 				534ED0B52456935F00CBCE93 /* Color+Helper.swift */,
@@ -170,16 +216,8 @@
 		53EA15FE2450CA8200CCAB40 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				53EA158824494B2800CCAB40 /* Main.storyboard */,
-				53EA159024494B2900CCAB40 /* LaunchScreen.storyboard */,
-				538EFC222467FBF90048F9C3 /* SideMenuHeaderView.swift */,
-				538EFC232467FBF90048F9C3 /* SideMenuHeaderView.xib */,
-				53EA16012450D5FE00CCAB40 /* CustomSectionHeaderView.swift */,
-				53EA15FF2450CAB600CCAB40 /* CustomSectionHeaderView.xib */,
-				534ED0AD245634F200CBCE93 /* CustomTableViewCell.swift */,
-				534ED0AE245634F200CBCE93 /* CustomTableViewCell.xib */,
-				534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */,
-				534ED0B32456405B00CBCE93 /* CustomDetailSectionHeaderView.xib */,
+				531BB3322469443D0027DE42 /* SectionHeader */,
+				531BB331246944360027DE42 /* Cell */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -254,11 +292,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				531BB33524694C840027DE42 /* SideMenuHeaderView.xib in Resources */,
 				53EA16002450CAB600CCAB40 /* CustomSectionHeaderView.xib in Resources */,
-				538EFC212467FBF30048F9C3 /* SideMenuHeaderView.xib in Resources */,
 				53EA159224494B2900CCAB40 /* LaunchScreen.storyboard in Resources */,
+				531BB3342469447B0027DE42 /* PredictionSectionHeaderView.xib in Resources */,
 				53EA158F24494B2900CCAB40 /* Assets.xcassets in Resources */,
 				534ED0B0245634F200CBCE93 /* CustomTableViewCell.xib in Resources */,
+				531BB32C246931290027DE42 /* PredictionTableViewCell.xib in Resources */,
 				53EA158A24494B2800CCAB40 /* Main.storyboard in Resources */,
 				534ED0B42456405B00CBCE93 /* CustomDetailSectionHeaderView.xib in Resources */,
 			);
@@ -339,6 +379,8 @@
 				53EA15F8244FD70F00CCAB40 /* TableViewController.swift in Sources */,
 				534ED0B22456404600CBCE93 /* CustomDetailSectionHeaderView.swift in Sources */,
 				53EA15A3244C53FD00CCAB40 /* AuthenticationManager.swift in Sources */,
+				531BB330246944190027DE42 /* PredictionSectionHeaderView.swift in Sources */,
+				531BB32E246937860027DE42 /* PredictionRecord.swift in Sources */,
 				53EA158324494B2800CCAB40 /* AppDelegate.swift in Sources */,
 				53EA15A5244D340800CCAB40 /* LocationManager.swift in Sources */,
 				53EA158524494B2800CCAB40 /* SceneDelegate.swift in Sources */,
@@ -346,7 +388,9 @@
 				5318A8E8245BF7350021E1F7 /* Record.swift in Sources */,
 				53EA15A9244D6DF700CCAB40 /* Notification+Helper.swift in Sources */,
 				53EA15AD244EDC0000CCAB40 /* Date+Helper.swift in Sources */,
+				531BB32724692EE50027DE42 /* PredictionTableViewController.swift in Sources */,
 				53EA15A7244D67E600CCAB40 /* CoreDataManager.swift in Sources */,
+				531BB32B246931290027DE42 /* PredictionTableViewCell.swift in Sources */,
 				53EA158D24494B2800CCAB40 /* CovidTest.xcdatamodeld in Sources */,
 				53EA159F244C20FB00CCAB40 /* BarChartViewController.swift in Sources */,
 				534ED0B62456935F00CBCE93 /* Color+Helper.swift in Sources */,

@@ -15,4 +15,6 @@ extension Notification.Name {
     static let kDidLoadSummaryPastCasesInformationNotification = Notification.Name("didLoadSummaryPastCasesInformationNotification")
     static let kDidLoadSummaryInformation = Notification.Name("didLoadSummaryInformation")
     static let kDidLoadLocationServiceNotification = Notification.Name("kDidLoadLocationServiceNotification")
+    static let kDidLoadPredictionDataNotification = Notification.Name("kDidLoadPredictionDataNotification")
+    
 }

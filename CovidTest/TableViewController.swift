@@ -113,7 +113,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
         }
         cell.locationNameLabel?.text = location.name
-        cell.countLabel?.text = "Cases: \(location.cases)"
+        cell.countLabel?.text = "\(location.cases)"
         
         return cell
     }
@@ -148,10 +148,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         {
             case 0:
                 if self.record != nil{
-                    return 100
+                    return 150
                 }
             case 1:
-                break
+                return 100
             default:
                 break
         }
@@ -184,7 +184,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
             case 1:
                 let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
-                header.titleLabel.text = "Cases in Dhaka"
+                header.titleLabel.text = "Dhaka"
                 header.casesLabel.text = String(totalCases)
                 return header
             default:

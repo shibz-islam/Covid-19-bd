@@ -9,12 +9,12 @@
 import Foundation
 
 class Record {
-    let name: String
-    let level: String
-    let date: String
-    let cases: Int
-    let recoveries: Int
-    let fatalities: Int
+    var name: String
+    var level: String
+    var date: String
+    var cases: Int
+    var recoveries: Int
+    var fatalities: Int
     
     init(name: String, level: String, cases: Int, date: String) {
         self.name = name

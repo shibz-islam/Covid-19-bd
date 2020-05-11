@@ -46,6 +46,10 @@ extension UIColor {
         return UIColor(red: CGFloat(119/255.0), green: CGFloat(136/255.0), blue: CGFloat(153/255.0), alpha: CGFloat(1.0))
     }
     
+    static var themeWhiteSmoke: UIColor {
+        return UIColor(red: CGFloat(245/255.0), green: CGFloat(245/255.0), blue: CGFloat(245/255.0), alpha: CGFloat(1.0))
+    }
+    
     public convenience init?(hex: String) {
         let r, g, b, a: CGFloat
         
