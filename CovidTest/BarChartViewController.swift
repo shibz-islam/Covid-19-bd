@@ -209,14 +209,16 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         var percentageText: String = ""
         if self.caseList.count > 1{
             let prev = self.caseList[self.caseList.count-2]
-            let increase: Double = Double((self.caseList.last! - prev)*100/prev)
+            var increase: Double = Double((Double(self.caseList.last!) - Double(prev))*100/Double(prev))
             if increase >= 0 {
-                percentageText = "\n with increase = \(increase)%"
+                percentageText = "\n with increase = "
             }
             else{
-                percentageText = "\n with decrease = \(abs(increase))%"
+                percentageText = "\n with decrease = "
+                increase = abs(increase)
             }
-            //print(percentageText)
+            let roundedFormat = String(format: "%.2f", increase)
+            percentageText = percentageText + "\(roundedFormat)%"
         }
         if let loc = self.location {
             descriptionLabel.text = loc.name + "\n Current Patients = \(self.caseList.last!)" + percentageText

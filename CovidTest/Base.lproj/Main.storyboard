@@ -370,11 +370,11 @@
             </objects>
             <point key="canvasLocation" x="2687" y="-719"/>
         </scene>
-        <!--Prediction-->
+        <!--Prediction (Beta)-->
         <scene sceneID="HfZ-aG-Py9">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="va0-Ay-rLl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Prediction" image="info.circle" catalog="system" id="2jN-UR-fsG"/>
+                    <tabBarItem key="tabBarItem" title="Prediction (Beta)" image="info.circle" catalog="system" id="2jN-UR-fsG"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wHd-gn-EIh">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>

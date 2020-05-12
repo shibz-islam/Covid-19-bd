@@ -110,10 +110,10 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = self.predTableView.dequeueReusableHeaderFooterView(withIdentifier: "PredictionSectionHeader") as! PredictionSectionHeaderView
         if self.predictionDate.count > 0 {
-            header.descriptionLabel.text = "District Level Prediction for \(self.predictionDate)"
+            header.descriptionLabel.text = "District Level Prediction (Beta) for \(self.predictionDate)"
         }
         else{
-            header.descriptionLabel.text = "District Level Prediction for next day"
+            header.descriptionLabel.text = "District Level Prediction (Beta) for next day"
         }
         return header
     }
@@ -132,8 +132,8 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
                     self.records = self.records.sorted(by: { $0.cases > $1.cases })
                     let currentDate = self.records[0].date
                     self.predictionDate = currentDate.toDate().dayAfter.getStringDate()
-                    print("lastUpdate Date: \(lastUpdateDate)")
-                    print("Current Date: \(currentDate)")
+                    //print("lastUpdate Date: \(lastUpdateDate)")
+                    //print("Current Date: \(currentDate)")
                     self.predTableView.reloadData()
                     return
                 }
@@ -153,13 +153,17 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
     
     func showAlertMessage(withRecord record:PredictionRecord) {
         var percentageText: String = ""
-        let increase: Double = Double((record.predCases - record.cases)*100/record.cases)
+        var increase: Double = Double((Double(record.predCases) - Double(record.cases))*100/Double(record.cases))
         if increase >= 0 {
-            percentageText = "\n with increase = \(increase)%"
+            percentageText = "\n with increase = "
         }
         else{
-            percentageText = "\n with decrease = \(abs(increase))%"
+            percentageText = "\n with decrease = "
+            increase = abs(increase)
         }
+        let roundedFormat = String(format: "%.2f", increase)
+        percentageText = percentageText + "\(roundedFormat)%"
+        
         let title = record.name
         let subTitle: String = "Current Cases = \(record.cases)\n PredictedCases = \(record.predCases)" + percentageText
         SCLAlertView().showTitle(title, subTitle: subTitle, timeout: SCLAlertView.SCLTimeoutConfiguration?.none, completeText: "OK", style: .notice, colorStyle: 0xE67E22, colorTextButton: 0xFFFFFF, circleIconImage: nil, animationStyle: .bottomToTop)
