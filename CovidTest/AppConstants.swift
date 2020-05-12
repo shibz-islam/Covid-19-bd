@@ -63,7 +63,11 @@ enum Constants {
         static let appBaseUrlString: String = "http://149.165.157.107:1971/api/"
         static let websiteBaseUrl: URL = URL(string:"https://www.covid-bd.info/helpful-sites")!
         static let helpfulSites: URL = URL(string:"https://www.covid-bd.info/helpful-sites")!
-        static let aboutUs: URL = URL(string:"https://www.covid-bd.info/privacy-notice")!
+        static let aboutUs: URL = URL(string:"https://www.lrkhan.com/")!
+    }
+    
+    enum UserDefaults {
+        static let keyPredictionRecordLastUpdateDateDistrictLevel: String = "PredictionRecordLastUpdateDateDistrictLevel"
     }
     
     enum CoreDataConstants {

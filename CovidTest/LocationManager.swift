@@ -140,6 +140,7 @@ class LocationManager {
                         }
                         self.dictForDistrictLevelPredictionRecords[predRecord.name] = predRecord
                     }
+                    UserDefaults.standard.set(Date().getStringDate(), forKey: Constants.UserDefaults.keyPredictionRecordLastUpdateDateDistrictLevel)
                     NotificationCenter.default.post(name: .kDidLoadPredictionDataNotification, object: nil)
                 }
             }

@@ -8,6 +8,7 @@
 
 import UIKit
 import SideMenu
+import SCLAlertView
 
 class PredictionTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -92,6 +93,14 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         predTableView.deselectRow(at: indexPath, animated: true)
+        // Get started
+        var record: PredictionRecord
+        if self.isFiltering {
+            record = self.filteredRecords[indexPath.row]
+        }else{
+            record = self.records[indexPath.row]
+        }
+        showAlertMessage(withRecord: record)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -101,10 +110,10 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = self.predTableView.dequeueReusableHeaderFooterView(withIdentifier: "PredictionSectionHeader") as! PredictionSectionHeaderView
         if self.predictionDate.count > 0 {
-            header.descriptionLabel.text = "District level prediction for \(self.predictionDate)"
+            header.descriptionLabel.text = "District Level Prediction for \(self.predictionDate)"
         }
         else{
-            header.descriptionLabel.text = "District level prediction for next day"
+            header.descriptionLabel.text = "District Level Prediction for next day"
         }
         return header
     }
@@ -112,22 +121,26 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
      // MARK: - Helper
     func loadData() {
         if LocationManager.shared.dictForDistrictLevelPredictionRecords.count > 0{
-            self.records.removeAll()
-            self.predictionDate = ""
-            for (key, record) in LocationManager.shared.dictForDistrictLevelPredictionRecords{
-                self.records.append(record)
+            //check if data is up-to-date
+            if let lastUpdateDate = UserDefaults.standard.string(forKey: Constants.UserDefaults.keyPredictionRecordLastUpdateDateDistrictLevel) {
+                if lastUpdateDate == Date().getStringDate(){
+                    self.records.removeAll()
+                    self.predictionDate = ""
+                    for (key, record) in LocationManager.shared.dictForDistrictLevelPredictionRecords{
+                        self.records.append(record)
+                    }
+                    self.records = self.records.sorted(by: { $0.cases > $1.cases })
+                    let currentDate = self.records[0].date
+                    self.predictionDate = currentDate.toDate().dayAfter.getStringDate()
+                    print("lastUpdate Date: \(lastUpdateDate)")
+                    print("Current Date: \(currentDate)")
+                    self.predTableView.reloadData()
+                    return
+                }
             }
-            self.records = self.records.sorted(by: { $0.cases > $1.cases })
-            let currentDate = self.records[0].date
-            self.predictionDate = currentDate.toDate().dayAfter.getStringDate()
-            print("Current Date: \(currentDate)")
-            print("Prediction Date: \(self.predictionDate)")
-            self.predTableView.reloadData()
         }
-        else{
-            LocationManager.shared.getPredictionData(withIsLevelCity: false, withIsNextDay: true)
-            NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadPredictionDataNotification, object: nil)
-        }
+        LocationManager.shared.getPredictionData(withIsLevelCity: false, withIsNextDay: true)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadPredictionDataNotification, object: nil)
     }
     
     @objc private func onDidReceiveData(_ notification: Notification) {
@@ -136,6 +149,20 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
             NotificationCenter.default.removeObserver(self, name: .kDidLoadPredictionDataNotification, object: nil)
             self.loadData()
         }
+    }
+    
+    func showAlertMessage(withRecord record:PredictionRecord) {
+        var percentageText: String = ""
+        let increase: Double = Double((record.predCases - record.cases)*100/record.cases)
+        if increase >= 0 {
+            percentageText = "\n with increase = \(increase)%"
+        }
+        else{
+            percentageText = "\n with decrease = \(abs(increase))%"
+        }
+        let title = record.name
+        let subTitle: String = "Current Cases = \(record.cases)\n PredictedCases = \(record.predCases)" + percentageText
+        SCLAlertView().showTitle(title, subTitle: subTitle, timeout: SCLAlertView.SCLTimeoutConfiguration?.none, completeText: "OK", style: .notice, colorStyle: 0xE67E22, colorTextButton: 0xFFFFFF, circleIconImage: nil, animationStyle: .bottomToTop)
     }
     
     var isSearchBarEmpty: Bool {

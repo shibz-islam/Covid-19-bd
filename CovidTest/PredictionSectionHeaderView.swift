@@ -19,6 +19,9 @@ class PredictionSectionHeaderView: UITableViewHeaderFooterView {
         // Drawing code
         backgroundWrapperView.backgroundColor = UIColor.themeWhiteSmoke
         backgroundWrapperViewTop.backgroundColor = UIColor.themeWhiteSmoke
+        
+//        if self.traitCollection.userInterfaceStyle == .dark{
+//        }
     }
     
 

@@ -10,6 +10,7 @@ target 'CovidTest' do
     pod 'SwiftyJSON', '~> 4.0'
     pod 'SwiftKeychainWrapper'
     pod 'SideMenu'
+    pod 'SCLAlertView'
 
   # Pods for CovidTest
 
