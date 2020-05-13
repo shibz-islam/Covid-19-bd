@@ -165,7 +165,7 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
         percentageText = percentageText + "\(roundedFormat)%"
         
         let title = record.name
-        let subTitle: String = "Current Cases = \(record.cases)\n PredictedCases = \(record.predCases)" + percentageText
+        let subTitle: String = "Current Cases = \(record.cases)\n Predicted Cases = \(record.predCases)" + percentageText
         SCLAlertView().showTitle(title, subTitle: subTitle, timeout: SCLAlertView.SCLTimeoutConfiguration?.none, completeText: "OK", style: .notice, colorStyle: 0xE67E22, colorTextButton: 0xFFFFFF, circleIconImage: nil, animationStyle: .bottomToTop)
     }
     
