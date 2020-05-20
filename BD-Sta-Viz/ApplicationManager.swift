@@ -184,10 +184,10 @@ class ApplicationManager {
                     LocationManager.shared.listForTimestamps = timeList
                     if LocationManager.shared.dictForDemographicInfo.count == 0 {
                         self.fetchDemographicInfoFromServer(withTimestamp: timeList.last ?? "")
-                    }
-                    for i in 0..<timeList.count-1{
-                        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5) {
-                            self.fetchDemographicInfoFromServer(withTimestamp: timeList[i])
+                        for i in 0..<timeList.count-1{
+                            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5) {
+                                self.fetchDemographicInfoFromServer(withTimestamp: timeList[i])
+                            }
                         }
                     }
                 }

@@ -261,10 +261,13 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         barChartView.data = chartData
         
         let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale.current
         formatter.minimumFractionDigits = 0
         chartData.setValueFormatter(DefaultValueFormatter(formatter:formatter))
         
         setChartParameters()
+        barChartView.leftAxis.valueFormatter = MyLeftAxisFormatter()
         
         var percentageText: String = ""
         if populationList.count > 1{
@@ -314,4 +317,14 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
+}
+
+final class MyLeftAxisFormatter: NSObject, IAxisValueFormatter {
+    func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale.current
+        formatter.minimumFractionDigits = 0
+        return formatter.string(from: NSNumber(value: value))!
+    }
 }

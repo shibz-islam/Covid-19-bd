@@ -77,7 +77,7 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
             location = self.locations[indexPath.row]
         }
         cell.locationNameLabel?.text = location.name
-        cell.countLabel?.text = "\(location.population)"
+        cell.countLabel?.text = formatNumber(withNumber: location.population)
         
         return cell
     }
@@ -108,7 +108,7 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
         // Dequeue with the reuse identifier
         let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
         header.titleLabel.text = "Bangladesh"
-        header.casesLabel.text = String(totalCasesCountryLevel)
+        header.casesLabel.text = formatNumber(withNumber: totalCasesCountryLevel)
         header.headerTitleLabel.text = "Region"
         header.headerSubTitleLabel.text = "Population"
         return header
@@ -139,6 +139,13 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
         print("Refresing...")
         loadInitialData()
         self.tableView.refreshControl?.endRefreshing()
+    }
+    
+    func formatNumber(withNumber num:Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale.current
+        return formatter.string(from: NSNumber(value: num))!
     }
     
     var isSearchBarEmpty: Bool {
