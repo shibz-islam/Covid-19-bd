@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="DemographyInfoEntity" representedClassName="DemographyInfoEntity" parentEntity="LocationInfoEntity" syncable="YES">
+        <attribute name="area" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="areaUnit" optional="YES" attributeType="String"/>
+        <attribute name="population" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="LocationInfoEntity" representedClassName="LocationInfoEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="cases" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="date" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="level" optional="YES" attributeType="String"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="parent" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="DemographyInfoEntity" positionX="-63" positionY="-18" width="128" height="88"/>
+        <element name="LocationInfoEntity" positionX="-54" positionY="72" width="128" height="163"/>
+    </elements>
+</model>
