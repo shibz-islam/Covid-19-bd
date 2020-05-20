@@ -15,6 +15,7 @@ import SideMenu
 class MapViewController: UIViewController {
     @IBOutlet weak var mapView: GMSMapView?
     @IBOutlet weak var segmentedControl: UISegmentedControl?
+    let myActivityIndicator = UIActivityIndicatorView()
     
     var locationManager: CLLocationManager = CLLocationManager()
     var defaultLocation = CLLocation(latitude: Constants.LocationConstants.defaultLocationLatitude,
@@ -36,6 +37,7 @@ class MapViewController: UIViewController {
         segmentedControl?.isHidden = true
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadDemographyDataNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveLocationServiceNotification(_:)), name: .kDidLoadLocationServiceNotification, object: nil)
+        showActivityIndicator()
         loadInitialData()
     }
     
@@ -46,6 +48,7 @@ class MapViewController: UIViewController {
         DispatchQueue.main.async {
             NotificationCenter.default.removeObserver(self, name: .kDidLoadDemographyDataNotification, object: nil)
             self.loadInitialData()
+            self.removeActivityIndicator()
         }
     }
     
@@ -103,7 +106,20 @@ class MapViewController: UIViewController {
     private func showDefaultLocationOnMap(){
         self.mapView?.camera = GMSCameraPosition(target: defaultLocation.coordinate, zoom: defaultZoomLevel, bearing: 0, viewingAngle: 0)
     }
-
+    
+    func showActivityIndicator() {
+        myActivityIndicator.style = .medium
+        myActivityIndicator.center = self.view.center
+        myActivityIndicator.hidesWhenStopped = false
+        //myActivityIndicator.frame = self.view.frame
+        myActivityIndicator.startAnimating()
+        self.mapView?.addSubview(myActivityIndicator)
+    }
+    
+    func removeActivityIndicator() {
+        self.myActivityIndicator.stopAnimating()
+        self.myActivityIndicator.removeFromSuperview()
+    }
 }
 
 // MARK: - GMSMapViewDelegate

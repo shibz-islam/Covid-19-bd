@@ -19,7 +19,6 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationItem.title = Constants.appName
         
         tableView.delegate = self
@@ -45,7 +44,6 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
         if LocationManager.shared.dictForDemographicInfo.count == 0 {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadDemographyDataNotification, object: nil)
         }
-        
         loadInitialData()
         setupSideMenuFromStoryboard()
     }
