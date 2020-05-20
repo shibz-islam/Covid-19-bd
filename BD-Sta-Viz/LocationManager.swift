@@ -150,7 +150,7 @@ class LocationManager {
         }//Dispatch end
     }
 
-
+// MARK: - Demography
     func getDemographicData() -> [DemographyInfo]{
         var demoInfoList = [DemographyInfo] ()
         let year = listForTimestamps.last
@@ -161,6 +161,19 @@ class LocationManager {
         }
         return demoInfoList
     }
-
+    
+    func getDemographicPopulationListByYear() -> [Int] {
+        var populationListByYear = [Int]()
+        for year in listForTimestamps{
+            var sum: Int = 0
+            for (key, locationList) in dictForDemographicInfo {
+                if let item = locationList.first(where: {$0.date == year}) {
+                    sum = sum + item.population
+                }
+            }
+            populationListByYear.append(sum)
+        }
+        return populationListByYear
+    }
 
 }

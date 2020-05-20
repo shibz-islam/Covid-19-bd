@@ -111,6 +111,11 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
         header.casesLabel.text = formatNumber(withNumber: totalCasesCountryLevel)
         header.headerTitleLabel.text = "Region"
         header.headerSubTitleLabel.text = "Population"
+        let tapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(headerTapped(_:))
+        )
+        header.addGestureRecognizer(tapGestureRecognizer)
         return header
     }
     
@@ -123,12 +128,29 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
         }
     }
     
+    @objc func headerTapped(_ sender: UITapGestureRecognizer?) {
+        print("Section header tapped!")
+        let location = DemographyInfo(name: Constants.LocationConstants.defaultCountryName,
+                       parent: "",
+                       level: Constants.KeyStrings.keyCountry,
+                       population: 0,
+                       area: 0,
+                       year: "",
+                       areaUnit: "")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let barVC = storyboard.instantiateViewController(withIdentifier: "barChartVC") as! BarChartViewController
+        barVC.demoLocation = location
+        barVC.isDemographicData = true
+        self.present(barVC, animated: true, completion: nil)
+    }
+    
     private func loadInitialData() {
         if LocationManager.shared.dictForDemographicInfo.count > 0 {
             self.locations.removeAll()
+            self.totalCasesCountryLevel = 0
             self.locations = LocationManager.shared.getDemographicData()
             for location in self.locations{
-                totalCasesCountryLevel = totalCasesCountryLevel + location.population
+                self.totalCasesCountryLevel = self.totalCasesCountryLevel + location.population
             }
             self.locations = self.locations.sorted(by: { $0.population > $1.population })
             self.tableView.reloadData()

@@ -133,17 +133,24 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     }
     
     func loadInitialDataForPopulation() {
-        if let locationList = LocationManager.shared.dictForDemographicInfo[demoLocation!.name] {
-            let orderedList = locationList.sorted(by: {$0.date < $1.date })
-            var populationList = [Int]()
-            for location in orderedList {
-                self.dateList.append(location.date)
-                populationList.append(location.population)
-            }
+        if self.demoLocation?.name == Constants.LocationConstants.defaultCountryName {
+            let populationList = LocationManager.shared.getDemographicPopulationListByYear()
+            self.dateList = LocationManager.shared.listForTimestamps
             loadChartForPopulation(withPopulationList: populationList)
         }
         else{
-            print("Data not available...!")
+            if let locationList = LocationManager.shared.dictForDemographicInfo[demoLocation!.name] {
+                let orderedList = locationList.sorted(by: {$0.date < $1.date })
+                var populationList = [Int]()
+                for location in orderedList {
+                    self.dateList.append(location.date)
+                    populationList.append(location.population)
+                }
+                loadChartForPopulation(withPopulationList: populationList)
+            }
+            else{
+                print("Data not available...!")
+            }
         }
     }
     
