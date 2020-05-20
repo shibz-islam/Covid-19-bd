@@ -35,6 +35,7 @@ class MapViewController: UIViewController {
         mapView?.delegate = self
         segmentedControl?.isHidden = true
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadDemographyDataNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveLocationServiceNotification(_:)), name: .kDidLoadLocationServiceNotification, object: nil)
         loadInitialData()
     }
     
@@ -45,6 +46,14 @@ class MapViewController: UIViewController {
         DispatchQueue.main.async {
             NotificationCenter.default.removeObserver(self, name: .kDidLoadDemographyDataNotification, object: nil)
             self.loadInitialData()
+        }
+    }
+    
+    @objc private func onDidReceiveLocationServiceNotification(_ notification: Notification) {
+        print("onDidReceiveLocationServiceNotification...")
+        DispatchQueue.main.async {
+            NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationServiceNotification, object: nil)
+            self.loadLocationManager()
         }
     }
     
@@ -68,6 +77,18 @@ class MapViewController: UIViewController {
             } catch {
                 print("Unexpected error: \(error).")
             }
+        }
+    }
+    
+    private func loadLocationManager(){
+        //self.locationManager = CLLocationManager()
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        //locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled(){
+            print("#locationServicesEnabled")
+            locationManager.startUpdatingLocation()
         }
     }
     
