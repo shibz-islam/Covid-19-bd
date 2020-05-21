@@ -39,6 +39,7 @@ class MapViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveLocationServiceNotification(_:)), name: .kDidLoadLocationServiceNotification, object: nil)
         showActivityIndicator()
         loadInitialData()
+        loadLocationManager()
     }
     
     // MARK: - Helper
@@ -162,6 +163,7 @@ extension MapViewController: CLLocationManagerDelegate {
             case .authorizedAlways: fallthrough
             case .authorizedWhenInUse:
                 print("#Location status is OK.")
+                //showDefaultLocationOnMap()
                 locationManager.startUpdatingLocation()
             @unknown default:
                 fatalError()

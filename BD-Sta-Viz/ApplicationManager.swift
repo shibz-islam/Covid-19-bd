@@ -172,7 +172,6 @@ class ApplicationManager {
         print("startLocationService")
         NotificationCenter.default.post(name: .kDidLoadLocationServiceNotification, object: nil)
     }
-    
 
     // MARK: - Population info
     func fetchDemographicInfoFromServer() {
