@@ -197,15 +197,27 @@ class ApplicationManager {
     func fetchDemographicInfoFromServer(withTimestamp year: String) {
         AuthenticationManager.shared.sendRequestForDemographicData(withName: Constants.LocationConstants.defaultCountryName, withType: Constants.KeyStrings.keyCountry, withYear: year) { (isSuccess, message, infoArray) in
             if isSuccess == true {
+                /* if no data stored in dict, set a flag and load the data for tableview */
+                var isEmpty: Bool = false
+                if LocationManager.shared.dictForDemographicInfo.count == 0 {
+                    for loc in infoArray {
+                        LocationManager.shared.dictForDemographicInfo[loc.name] = [loc]
+                        //NotificationCenter.default.post(name: .kDidLoadDemographyDataNotification, object: nil)
+                    }
+                    isEmpty = true
+                }
+                
                 var count: Int = 0
-                let totalRequest: Int = infoArray.count ?? 0
-                for loc in infoArray ?? []{
-                    //first check if any records are available
-                    if let demoList = LocationManager.shared.dictForDemographicInfo[loc.name] {
-                        let item = demoList.first
-                        loc.latitude = item?.latitude ?? 0
-                        loc.longitude = item?.longitude ?? 0
-                        LocationManager.shared.dictForDemographicInfo[loc.name]?.append(loc)
+                let totalRequest: Int = infoArray.count
+                for loc in infoArray {
+                    /* if no coordinate is available for locations, fetch the coordinates */
+                    if isEmpty == false{
+                        if let demoList = LocationManager.shared.dictForDemographicInfo[loc.name] {
+                            let item = demoList.first
+                            loc.latitude = item?.latitude ?? 0
+                            loc.longitude = item?.longitude ?? 0
+                            LocationManager.shared.dictForDemographicInfo[loc.name]?.append(loc)
+                        }
                     }
                     else{
                         let key = loc.name + "," + loc.parent
@@ -221,7 +233,6 @@ class ApplicationManager {
                             }
                         }//end of completionHandler
                     }
-                    
                 }//end loop
             }
         }

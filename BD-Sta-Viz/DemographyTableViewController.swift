@@ -41,9 +41,8 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
         let nibSection = UINib(nibName: "CustomSectionHeaderView", bundle: nil)
         tableView.register(nibSection, forHeaderFooterViewReuseIdentifier: "CustomSectionHeader")
         
-        if LocationManager.shared.dictForDemographicInfo.count == 0 {
-            NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadDemographyDataNotification, object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadDemographyDataNotification, object: nil)
+        
         loadInitialData()
         setupSideMenuFromStoryboard()
     }
@@ -121,7 +120,7 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
     @objc private func onDidReceiveData(_ notification: Notification) {
         print("onDidReceiveData...Table")
         DispatchQueue.main.async {
-            NotificationCenter.default.removeObserver(self, name: .kDidLoadDemographyDataNotification, object: nil)
+            //NotificationCenter.default.removeObserver(self, name: .kDidLoadDemographyDataNotification, object: nil)
             self.loadInitialData()
         }
     }

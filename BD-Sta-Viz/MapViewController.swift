@@ -47,7 +47,7 @@ class MapViewController: UIViewController {
     @objc private func onDidReceiveData(_ notification: Notification) {
         print("onDidReceiveData...Map")
         DispatchQueue.main.async {
-            NotificationCenter.default.removeObserver(self, name: .kDidLoadDemographyDataNotification, object: nil)
+            //NotificationCenter.default.removeObserver(self, name: .kDidLoadDemographyDataNotification, object: nil)
             self.loadInitialData()
             self.removeActivityIndicator()
         }
