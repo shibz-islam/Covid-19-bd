@@ -30,7 +30,7 @@ class CoreDataManager {
         
         let entity = NSEntityDescription.entity(forEntityName: kLocationInfoEntity, in: managedContext)!
         
-        let dict = isLevelCity == true ? LocationManager.shared.dictForCityLocation : LocationManager.shared.dictForDistrictLocation
+        let dict = isLevelCity == true ? DataManager.shared.dictForCityLocation : DataManager.shared.dictForDistrictLocation
         
         for (key, location) in dict{
             let locationEntity = NSManagedObject(entity: entity, insertInto: managedContext)
@@ -105,7 +105,7 @@ class CoreDataManager {
                                                 date: data.value(forKeyPath: "date") as! String)
                     locationList.append(location)
                 }
-                return LocationManager.shared.setLocationDictionary(withList: locationList)
+                return DataManager.shared.setLocationDictionary(withList: locationList)
             }
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")

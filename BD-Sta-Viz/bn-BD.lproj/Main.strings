@@ -1,0 +1,66 @@
+
+/* Class = "UISegmentedControl"; 0dE-Gw-6uK.segmentTitles[0] = "First"; ObjectID = "0dE-Gw-6uK"; */
+"0dE-Gw-6uK.segmentTitles[0]" = "First";
+
+/* Class = "UISegmentedControl"; 0dE-Gw-6uK.segmentTitles[1] = "Second"; ObjectID = "0dE-Gw-6uK"; */
+"0dE-Gw-6uK.segmentTitles[1]" = "Second";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "0hl-HT-4Ti"; */
+"0hl-HT-4Ti.title" = "Item";
+
+/* Class = "UITabBarItem"; title = "Prediction (Beta)"; ObjectID = "2jN-UR-fsG"; */
+"2jN-UR-fsG.title" = "Prediction (Beta)";
+
+/* Class = "UISegmentedControl"; 87L-ad-io9.segmentTitles[0] = "First"; ObjectID = "87L-ad-io9"; */
+"87L-ad-io9.segmentTitles[0]" = "First";
+
+/* Class = "UISegmentedControl"; 87L-ad-io9.segmentTitles[1] = "Second"; ObjectID = "87L-ad-io9"; */
+"87L-ad-io9.segmentTitles[1]" = "Second";
+
+/* Class = "UIViewController"; title = "TableViewController"; ObjectID = "8z8-pf-yQf"; */
+"8z8-pf-yQf.title" = "TableViewController";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "Cg7-YJ-Der"; */
+"Cg7-YJ-Der.text" = "Title";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "EFf-fj-59X"; */
+"EFf-fj-59X.title" = "Item";
+
+/* Class = "UINavigationItem"; title = "Title"; ObjectID = "Jrp-6N-uCT"; */
+"Jrp-6N-uCT.title" = "Title";
+
+/* Class = "UISegmentedControl"; LkZ-Bx-EP3.segmentTitles[0] = "First"; ObjectID = "LkZ-Bx-EP3"; */
+"LkZ-Bx-EP3.segmentTitles[0]" = "First";
+
+/* Class = "UISegmentedControl"; LkZ-Bx-EP3.segmentTitles[1] = "Second"; ObjectID = "LkZ-Bx-EP3"; */
+"LkZ-Bx-EP3.segmentTitles[1]" = "Second";
+
+/* Class = "UITabBarItem"; title = "List"; ObjectID = "PtQ-AX-Zi5"; */
+"PtQ-AX-Zi5.title" = "List";
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "RbI-lR-IzI"; */
+"RbI-lR-IzI.text" = "Subtitle";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "SUA-og-7aH"; */
+"SUA-og-7aH.title" = "Item";
+
+/* Class = "UINavigationItem"; title = "Title"; ObjectID = "W0E-uO-5fm"; */
+"W0E-uO-5fm.title" = "Title";
+
+/* Class = "UITabBarItem"; title = "Map"; ObjectID = "XiY-L6-q4s"; */
+"XiY-L6-q4s.title" = "Map";
+
+/* Class = "UITabBarItem"; title = "Map"; ObjectID = "eEH-4d-8uR"; */
+"eEH-4d-8uR.title" = "Map";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "ko9-Zw-5Uu"; */
+"ko9-Zw-5Uu.title" = "Item";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "lzD-kP-b9y"; */
+"lzD-kP-b9y.text" = "Title";
+
+/* Class = "UITabBarItem"; title = "List"; ObjectID = "m4t-vs-qfh"; */
+"m4t-vs-qfh.title" = "List";
+
+/* Class = "UILabel"; text = "..."; ObjectID = "w3Y-1o-ar4"; */
+"w3Y-1o-ar4.text" = "...";

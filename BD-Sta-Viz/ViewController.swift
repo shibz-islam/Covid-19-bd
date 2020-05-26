@@ -104,10 +104,10 @@ class ViewController: UIViewController {
     private func loadInitialData() {
         //self.mapView?.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocation.coordinate.latitude, longitude: self.defaultLocation.coordinate.longitude, zoom: self.defaultZoomLevel)
         
-        if LocationManager.shared.dictForDistrictLocation.count > 0 {
+        if DataManager.shared.dictForDistrictLocation.count > 0 {
             do {
                 //print("loadInitialData")
-                self.locations = LocationManager.shared.dictForDistrictLocation
+                self.locations = DataManager.shared.dictForDistrictLocation
                 self.mapView?.clear()
                 for (key, location) in self.locations{
                     let m = GMSMarker()
@@ -129,8 +129,8 @@ class ViewController: UIViewController {
     private func loadInitialDataForCity(){
         //self.mapViewCity?.camera = GMSCameraPosition.camera(withLatitude: self.defaultLocationCity.coordinate.latitude, longitude: self.defaultLocationCity.coordinate.longitude, zoom: self.defaultZoomLevel*2)
         
-        if LocationManager.shared.dictForCityLocation.count > 0 {
-            self.locationsForCity = LocationManager.shared.dictForCityLocation
+        if DataManager.shared.dictForCityLocation.count > 0 {
+            self.locationsForCity = DataManager.shared.dictForCityLocation
             do {
                 //print("loadInitialData")
                 self.mapViewCity?.clear()

@@ -1,5 +1,5 @@
 //
-//  LocationManager.swift
+//  DataManager.swift
 //  BD-Sta-Viz
 //
 //  Created by shihab on 4/19/20.
@@ -9,8 +9,8 @@
 import Foundation
 
 /// Singleton class for managing locations in the application
-class LocationManager {
-    static let shared = LocationManager()
+class DataManager {
+    static let shared = DataManager()
     private init(){}
     
     var dictForDistrictLocation = [String: LocationInfo]()
@@ -95,7 +95,7 @@ class LocationManager {
     
     
 //    func sortPastCasesDict(withKey key:String) {
-//        let val = LocationManager.shared.dictForPastCases[key]
+//        let val = DataManager.shared.dictForPastCases[key]
 //        print("loading data...-> \(String(describing: val?.count))")
 //        let ordered = val?.sorted {
 //            guard let s1 = $0["date"], let s2 = $1["date"] else {
@@ -103,7 +103,7 @@ class LocationManager {
 //            }
 //            return s1 < s2
 //        }
-//        LocationManager.shared.dictForPastCases[key] = ordered
+//        DataManager.shared.dictForPastCases[key] = ordered
 //    }
     
     

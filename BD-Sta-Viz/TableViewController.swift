@@ -50,13 +50,13 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let nibDetailSection = UINib(nibName: "CustomDetailSectionHeaderView", bundle: nil)
         tableView.register(nibDetailSection, forHeaderFooterViewReuseIdentifier: "CustomDetailSectionHeader")
         
-        if LocationManager.shared.dictForDistrictLocation.count == 0 {
+        if DataManager.shared.dictForDistrictLocation.count == 0 {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadLocationInformation, object: nil)
         }
-        if LocationManager.shared.dictForCityLocation.count == 0 {
+        if DataManager.shared.dictForCityLocation.count == 0 {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveDataForCity(_:)), name: .kDidLoadLocationInformationForCity, object: nil)
         }
-        if LocationManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName] == nil {
+        if DataManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName] == nil {
             NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveSummaryData(_:)), name: .kDidLoadSummaryInformation, object: nil)
         }
         
@@ -244,10 +244,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     private func loadInitialData() {
-        if LocationManager.shared.dictForDistrictLocation.count > 0 {
-            //print("***dictForDistrictLocation \(LocationManager.shared.dictForDistrictLocation.count)")
+        if DataManager.shared.dictForDistrictLocation.count > 0 {
+            //print("***dictForDistrictLocation \(DataManager.shared.dictForDistrictLocation.count)")
             self.locations.removeAll()
-            for (key, location) in LocationManager.shared.dictForDistrictLocation{
+            for (key, location) in DataManager.shared.dictForDistrictLocation{
                 self.locations.append(location)
                 totalCasesCountryLevel = totalCasesCountryLevel + location.cases
             }
@@ -257,23 +257,23 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     private func loadInitialDataForCity(){
-        if LocationManager.shared.dictForCityLocation.count > 0 {
-            //print("***dictForCityLocation \(LocationManager.shared.dictForCityLocation.count)")
+        if DataManager.shared.dictForCityLocation.count > 0 {
+            //print("***dictForCityLocation \(DataManager.shared.dictForCityLocation.count)")
             self.locationsForCity.removeAll()
-            for (key, location) in LocationManager.shared.dictForCityLocation{
+            for (key, location) in DataManager.shared.dictForCityLocation{
                 self.locationsForCity.append(location)
                 totalCases = totalCases + location.cases
             }
             self.locationsForCity = self.locationsForCity.sorted(by: { $0.cases > $1.cases })
             self.tableView.reloadData()
         }
-        if let mainDistrictLocation = LocationManager.shared.dictForDistrictLocation[Constants.LocationConstants.defaultDistrictName]{
+        if let mainDistrictLocation = DataManager.shared.dictForDistrictLocation[Constants.LocationConstants.defaultDistrictName]{
             totalCases = mainDistrictLocation.cases
         }
     }
     
     private func loadSummaryData(){
-        if let rec = LocationManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName] {
+        if let rec = DataManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName] {
             self.record = rec
             if let cases = record?.cases{
                 totalCasesCountryLevel = cases
@@ -299,8 +299,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @objc func refreshData(_ sender: Any){
         print("Refresh Data...")
-        if LocationManager.shared.dictForDistrictLocation.count == 0 {
-            LocationManager.shared.getLocationData(withIsLevelCity: false, withDate: Date()) { (success, message) in
+        if DataManager.shared.dictForDistrictLocation.count == 0 {
+            DataManager.shared.getLocationData(withIsLevelCity: false, withDate: Date()) { (success, message) in
                 DispatchQueue.main.async {
                     if success == true {
                         self.loadInitialData()
@@ -309,8 +309,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
             }
         }
-        else if LocationManager.shared.dictForCityLocation.count == 0 {
-            LocationManager.shared.getLocationData(withIsLevelCity: true, withDate: Date()) { (success, message) in
+        else if DataManager.shared.dictForCityLocation.count == 0 {
+            DataManager.shared.getLocationData(withIsLevelCity: true, withDate: Date()) { (success, message) in
                 DispatchQueue.main.async {
                     if success == true {
                         self.loadInitialDataForCity()
@@ -319,8 +319,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
             }
         }
-        else if LocationManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName] == nil {
-            LocationManager.shared.getRecentSummary(withName:Constants.LocationConstants.defaultCountryName, withType: Constants.KeyStrings.keyCountry) { (success, message) in
+        else if DataManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName] == nil {
+            DataManager.shared.getRecentSummary(withName:Constants.LocationConstants.defaultCountryName, withType: Constants.KeyStrings.keyCountry) { (success, message) in
                 DispatchQueue.main.async {
                     if success == true {
                         self.loadInitialDataForCity()

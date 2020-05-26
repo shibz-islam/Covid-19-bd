@@ -62,10 +62,10 @@ class MapViewController: UIViewController {
     }
     
     private func loadInitialData() {
-        if LocationManager.shared.dictForDemographicInfo.count > 0 {
+        if DataManager.shared.dictForDemographicInfo.count > 0 {
             do {
                 //print("loadInitialData")
-                self.locations = LocationManager.shared.getDemographicData()
+                self.locations = DataManager.shared.getDemographicData()
                 self.mapView?.clear()
                 for location in self.locations{
                     let m = GMSMarker()

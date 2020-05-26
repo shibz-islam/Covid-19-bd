@@ -64,10 +64,10 @@ class ApplicationManager {
     ///   - isLevelCity: City or District level
     ///   - isPreviousData: is previous date stored in keychain
     func fetchNewDataFromServer(withDate date:Date, withIsLevelCity isLevelCity: Bool, withIsPreviousDataExist isPreviousData: Bool) {
-        LocationManager.shared.getLocationData(withIsLevelCity: isLevelCity, withDate: date, completionHandler: { (isSuccess, message) in
+        DataManager.shared.getLocationData(withIsLevelCity: isLevelCity, withDate: date, completionHandler: { (isSuccess, message) in
             if isSuccess == true {
                 if isLevelCity {
-                    print("Success, total count: \(LocationManager.shared.dictForCityLocation.count)")
+                    print("Success, total count: \(DataManager.shared.dictForCityLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
@@ -75,7 +75,7 @@ class ApplicationManager {
                     }
                 }
                 else{
-                    print("Success, total count: \(LocationManager.shared.dictForDistrictLocation.count)")
+                    print("Success, total count: \(DataManager.shared.dictForDistrictLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
@@ -100,10 +100,10 @@ class ApplicationManager {
     ///   - date: date of data (not today)
     ///   - isLevelCity: City or District level
     func fetchPreviousDataFromServer(withDate date:Date, withIsLevelCity isLevelCity: Bool) {
-        LocationManager.shared.getLocationData(withIsLevelCity: isLevelCity, withDate: date, completionHandler: { (isSuccess, message) in
+        DataManager.shared.getLocationData(withIsLevelCity: isLevelCity, withDate: date, completionHandler: { (isSuccess, message) in
             if isSuccess == true {
                 if isLevelCity {
-                    print("Success, total count: \(LocationManager.shared.dictForCityLocation.count)")
+                    print("Success, total count: \(DataManager.shared.dictForCityLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
@@ -111,7 +111,7 @@ class ApplicationManager {
                     }
                 }
                 else{
-                    print("Success, total count: \(LocationManager.shared.dictForDistrictLocation.count)")
+                    print("Success, total count: \(DataManager.shared.dictForDistrictLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
@@ -154,13 +154,13 @@ class ApplicationManager {
     
     
     func checkForSummary() {
-        if let record = LocationManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName]{
+        if let record = DataManager.shared.dictForRecentRecords[Constants.LocationConstants.defaultCountryName]{
             if record.date == Date().getStringDate() {
                 print("Summary already upto date.")
                 return
             }
         }
-        LocationManager.shared.getRecentSummary(withName:Constants.LocationConstants.defaultCountryName, withType: Constants.KeyStrings.keyCountry) { (isSuccess, message) in
+        DataManager.shared.getRecentSummary(withName:Constants.LocationConstants.defaultCountryName, withType: Constants.KeyStrings.keyCountry) { (isSuccess, message) in
             if isSuccess == true {
                 NotificationCenter.default.post(name: .kDidLoadSummaryInformation, object: nil)
             }
@@ -178,10 +178,10 @@ class ApplicationManager {
         DispatchQueue.global(qos: .background).async {
             AuthenticationManager.shared.sendRequestForPopulationTimestamps(withName: Constants.LocationConstants.defaultCountryName, withType: Constants.KeyStrings.keyCountry, withRecordType: Constants.KeyStrings.keyPopulation) { (isSuccess, message, timestampArray) in
                 if isSuccess == true {
-                    LocationManager.shared.listForTimestamps.removeAll()
+                    DataManager.shared.listForTimestamps.removeAll()
                     let timeList = timestampArray.sorted(by: { $0 < $1 })
-                    LocationManager.shared.listForTimestamps = timeList
-                    if LocationManager.shared.dictForDemographicInfo.count == 0 {
+                    DataManager.shared.listForTimestamps = timeList
+                    if DataManager.shared.dictForDemographicInfo.count == 0 {
                         self.fetchDemographicInfoFromServer(withTimestamp: timeList.last ?? "")
                         for i in 0..<timeList.count-1{
                             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5) {
@@ -199,9 +199,9 @@ class ApplicationManager {
             if isSuccess == true {
                 /* if no data stored in dict, set a flag and load the data for tableview */
                 var isEmpty: Bool = false
-                if LocationManager.shared.dictForDemographicInfo.count == 0 {
+                if DataManager.shared.dictForDemographicInfo.count == 0 {
                     for loc in infoArray {
-                        LocationManager.shared.dictForDemographicInfo[loc.name] = [loc]
+                        DataManager.shared.dictForDemographicInfo[loc.name] = [loc]
                         //NotificationCenter.default.post(name: .kDidLoadDemographyDataNotification, object: nil)
                     }
                     isEmpty = true
@@ -212,11 +212,11 @@ class ApplicationManager {
                 for loc in infoArray {
                     /* if no coordinate is available for locations, fetch the coordinates */
                     if isEmpty == false{
-                        if let demoList = LocationManager.shared.dictForDemographicInfo[loc.name] {
+                        if let demoList = DataManager.shared.dictForDemographicInfo[loc.name] {
                             let item = demoList.first
                             loc.latitude = item?.latitude ?? 0
                             loc.longitude = item?.longitude ?? 0
-                            LocationManager.shared.dictForDemographicInfo[loc.name]?.append(loc)
+                            DataManager.shared.dictForDemographicInfo[loc.name]?.append(loc)
                         }
                     }
                     else{
@@ -226,7 +226,7 @@ class ApplicationManager {
                             if isSuccess == true{
                                 loc.latitude = location?.coordinate.latitude ?? 0
                                 loc.longitude = location?.coordinate.longitude ?? 0
-                                LocationManager.shared.dictForDemographicInfo[loc.name] = [loc]
+                                DataManager.shared.dictForDemographicInfo[loc.name] = [loc]
                                 if count == totalRequest {
                                     NotificationCenter.default.post(name: .kDidLoadDemographyDataNotification, object: nil)
                                 }

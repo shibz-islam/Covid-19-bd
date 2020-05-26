@@ -11,6 +11,7 @@ PODS:
   - SideMenu (6.4.8)
   - SwiftCSV (0.5.6)
   - SwiftKeychainWrapper (3.4.0)
+  - SwiftLocation (4.2.0)
   - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
@@ -20,6 +21,7 @@ DEPENDENCIES:
   - SideMenu
   - SwiftCSV
   - SwiftKeychainWrapper
+  - SwiftLocation (~> 4.0)
   - SwiftyJSON (~> 4.0)
 
 SPEC REPOS:
@@ -30,6 +32,7 @@ SPEC REPOS:
     - SideMenu
     - SwiftCSV
     - SwiftKeychainWrapper
+    - SwiftLocation
     - SwiftyJSON
 
 SPEC CHECKSUMS:
@@ -39,8 +42,9 @@ SPEC CHECKSUMS:
   SideMenu: 4a891be552d30bb6fa87ad404d62e485f8450c34
   SwiftCSV: efb4a15dd7f2f1212b3d6986f97a3369ff6c5100
   SwiftKeychainWrapper: 6fc49fbf7d4a6b0772917acb0e53a1639f6078d6
+  SwiftLocation: 609ac8859f2c5d48a6cadd2a58c63b1dae02dc25
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: bd94c8c72feccdaf29ed5c5334a58bbc283ed1f1
+PODFILE CHECKSUM: 9a3e22f0eb2d8b19e5d0b839c11558c6fa8ac3bc
 
 COCOAPODS: 1.9.1

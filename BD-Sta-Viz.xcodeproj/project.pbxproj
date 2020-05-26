@@ -22,6 +22,7 @@
 		534ED0B22456404600CBCE93 /* CustomDetailSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */; };
 		534ED0B42456405B00CBCE93 /* CustomDetailSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 534ED0B32456405B00CBCE93 /* CustomDetailSectionHeaderView.xib */; };
 		534ED0B62456935F00CBCE93 /* Color+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534ED0B52456935F00CBCE93 /* Color+Helper.swift */; };
+		5350D642247D8E680038DA96 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5350D644247D8E680038DA96 /* Localizable.strings */; };
 		537844622473F5CC00A87534 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537844612473F5CC00A87534 /* MapViewController.swift */; };
 		538EFC192467DE3C0048F9C3 /* SideMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538EFC182467DE3C0048F9C3 /* SideMenuTableViewController.swift */; };
 		538EFC242467FBF90048F9C3 /* SideMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538EFC222467FBF90048F9C3 /* SideMenuHeaderView.swift */; };
@@ -36,7 +37,7 @@
 		53EA159F244C20FB00CCAB40 /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA159E244C20FB00CCAB40 /* BarChartViewController.swift */; };
 		53EA15A1244C4BEE00CCAB40 /* LocationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15A0244C4BEE00CCAB40 /* LocationInfo.swift */; };
 		53EA15A3244C53FD00CCAB40 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15A2244C53FD00CCAB40 /* AuthenticationManager.swift */; };
-		53EA15A5244D340800CCAB40 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15A4244D340800CCAB40 /* LocationManager.swift */; };
+		53EA15A5244D340800CCAB40 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15A4244D340800CCAB40 /* DataManager.swift */; };
 		53EA15A7244D67E600CCAB40 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15A6244D67E600CCAB40 /* CoreDataManager.swift */; };
 		53EA15A9244D6DF700CCAB40 /* Notification+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */; };
 		53EA15AD244EDC0000CCAB40 /* Date+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */; };
@@ -65,6 +66,10 @@
 		534ED0B12456404600CBCE93 /* CustomDetailSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailSectionHeaderView.swift; sourceTree = "<group>"; };
 		534ED0B32456405B00CBCE93 /* CustomDetailSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomDetailSectionHeaderView.xib; sourceTree = "<group>"; };
 		534ED0B52456935F00CBCE93 /* Color+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Helper.swift"; sourceTree = "<group>"; };
+		5350D640247D8DF20038DA96 /* bn-BD */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "bn-BD"; path = "bn-BD.lproj/Main.strings"; sourceTree = "<group>"; };
+		5350D641247D8DF30038DA96 /* bn-BD */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "bn-BD"; path = "bn-BD.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		5350D643247D8E680038DA96 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5350D645247D8E6E0038DA96 /* bn-BD */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "bn-BD"; path = "bn-BD.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		537844612473F5CC00A87534 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		538EFC182467DE3C0048F9C3 /* SideMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewController.swift; sourceTree = "<group>"; };
 		538EFC222467FBF90048F9C3 /* SideMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuHeaderView.swift; sourceTree = "<group>"; };
@@ -82,7 +87,7 @@
 		53EA159E244C20FB00CCAB40 /* BarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
 		53EA15A0244C4BEE00CCAB40 /* LocationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfo.swift; sourceTree = "<group>"; };
 		53EA15A2244C53FD00CCAB40 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
-		53EA15A4244D340800CCAB40 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		53EA15A4244D340800CCAB40 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		53EA15A6244D67E600CCAB40 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		53EA15A8244D6DF700CCAB40 /* Notification+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Helper.swift"; sourceTree = "<group>"; };
 		53EA15AC244EDC0000CCAB40 /* Date+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helper.swift"; sourceTree = "<group>"; };
@@ -91,8 +96,8 @@
 		53EA15FF2450CAB600CCAB40 /* CustomSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomSectionHeaderView.xib; sourceTree = "<group>"; };
 		53EA16012450D5FE00CCAB40 /* CustomSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionHeaderView.swift; sourceTree = "<group>"; };
 		53F2D2CB2466973500A7D3E9 /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
-		83066B67AEB887D3AD18691E /* Pods-BD-Sta-Viz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BD-Sta-Viz.debug.xcconfig"; path = "Target Support Files/Pods-CovidTest/Pods-BD-Sta-Viz.debug.xcconfig"; sourceTree = "<group>"; };
-		9CB3DDF853FACCCAB74C8D4E /* Pods-BD-Sta-Viz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BD-Sta-Viz.release.xcconfig"; path = "Target Support Files/Pods-CovidTest/Pods-BD-Sta-Viz.release.xcconfig"; sourceTree = "<group>"; };
+		83066B67AEB887D3AD18691E /* Pods-BD-Sta-Viz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BD-Sta-Viz.debug.xcconfig"; path = "Target Support Files/Pods-BD-Sta-Viz/Pods-BD-Sta-Viz.debug.xcconfig"; sourceTree = "<group>"; };
+		9CB3DDF853FACCCAB74C8D4E /* Pods-BD-Sta-Viz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BD-Sta-Viz.release.xcconfig"; path = "Target Support Files/Pods-BD-Sta-Viz/Pods-BD-Sta-Viz.release.xcconfig"; sourceTree = "<group>"; };
 		B1288BC82205717F15BC4D2A /* Pods-BD-Sta-Viz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BD-Sta-Viz.release.xcconfig"; path = "Target Support Files/Pods-BD-Sta-Viz/Pods-BD-Sta-Viz.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -180,6 +185,7 @@
 				53EA15FE2450CA8200CCAB40 /* View */,
 				531BB32824692F6F0027DE42 /* Storyboard */,
 				53EA158E24494B2900CCAB40 /* Assets.xcassets */,
+				5350D644247D8E680038DA96 /* Localizable.strings */,
 				53EA159324494B2900CCAB40 /* Info.plist */,
 				53B58854247496B1003B963C /* BD_Sta_Viz.xcdatamodeld */,
 			);
@@ -192,7 +198,7 @@
 				53EA15AE244FA01300CCAB40 /* ApplicationManager.swift */,
 				53EA15A2244C53FD00CCAB40 /* AuthenticationManager.swift */,
 				53EA15A6244D67E600CCAB40 /* CoreDataManager.swift */,
-				53EA15A4244D340800CCAB40 /* LocationManager.swift */,
+				53EA15A4244D340800CCAB40 /* DataManager.swift */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -292,6 +298,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"bn-BD",
 			);
 			mainGroup = 53EA157624494B2800CCAB40;
 			productRefGroup = 53EA158024494B2800CCAB40 /* Products */;
@@ -313,6 +320,7 @@
 				53EA159224494B2900CCAB40 /* LaunchScreen.storyboard in Resources */,
 				531BB3342469447B0027DE42 /* PredictionSectionHeaderView.xib in Resources */,
 				53EA158F24494B2900CCAB40 /* Assets.xcassets in Resources */,
+				5350D642247D8E680038DA96 /* Localizable.strings in Resources */,
 				534ED0B0245634F200CBCE93 /* CustomTableViewCell.xib in Resources */,
 				531BB32C246931290027DE42 /* PredictionTableViewCell.xib in Resources */,
 				53EA158A24494B2800CCAB40 /* Main.storyboard in Resources */,
@@ -400,7 +408,7 @@
 				531BB330246944190027DE42 /* PredictionSectionHeaderView.swift in Sources */,
 				531BB32E246937860027DE42 /* PredictionRecord.swift in Sources */,
 				53EA158324494B2800CCAB40 /* AppDelegate.swift in Sources */,
-				53EA15A5244D340800CCAB40 /* LocationManager.swift in Sources */,
+				53EA15A5244D340800CCAB40 /* DataManager.swift in Sources */,
 				53EA158524494B2800CCAB40 /* SceneDelegate.swift in Sources */,
 				53EA15AF244FA01300CCAB40 /* ApplicationManager.swift in Sources */,
 				5318A8E8245BF7350021E1F7 /* Record.swift in Sources */,
@@ -421,10 +429,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		5350D644247D8E680038DA96 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5350D643247D8E680038DA96 /* en */,
+				5350D645247D8E6E0038DA96 /* bn-BD */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		53EA158824494B2800CCAB40 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				53EA158924494B2800CCAB40 /* Base */,
+				5350D640247D8DF20038DA96 /* bn-BD */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -433,6 +451,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				53EA159124494B2900CCAB40 /* Base */,
+				5350D641247D8DF30038DA96 /* bn-BD */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -444,6 +463,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -504,6 +524,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

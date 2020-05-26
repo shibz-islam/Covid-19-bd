@@ -120,13 +120,13 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
 
      // MARK: - Helper
     func loadData() {
-        if LocationManager.shared.dictForDistrictLevelPredictionRecords.count > 0{
+        if DataManager.shared.dictForDistrictLevelPredictionRecords.count > 0{
             //check if data is up-to-date
             if let lastUpdateDate = UserDefaults.standard.string(forKey: Constants.UserDefaults.keyPredictionRecordLastUpdateDateDistrictLevel) {
                 if lastUpdateDate == Date().getStringDate(){
                     self.records.removeAll()
                     self.predictionDate = ""
-                    for (key, record) in LocationManager.shared.dictForDistrictLevelPredictionRecords{
+                    for (key, record) in DataManager.shared.dictForDistrictLevelPredictionRecords{
                         self.records.append(record)
                     }
                     self.records = self.records.sorted(by: { $0.cases > $1.cases })
@@ -139,7 +139,7 @@ class PredictionTableViewController: UIViewController, UITableViewDelegate, UITa
                 }
             }
         }
-        LocationManager.shared.getPredictionData(withIsLevelCity: false, withIsNextDay: true)
+        DataManager.shared.getPredictionData(withIsLevelCity: false, withIsNextDay: true)
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadPredictionDataNotification, object: nil)
     }
     

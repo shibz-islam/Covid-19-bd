@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  BD-Sta-Viz
+
+  Created by shihab on 5/26/20.
+  Copyright © 2020 shihab. All rights reserved.
+*/
+
+"Dhaka" = "ঢাকা";
+"Bangladesh" = "বাংলাদেশ";
+"Region" = "অঞ্চল";
+"District" = "জেলা";
+"City" = "শহর";
+"Population" = "জনসংখ্যা";

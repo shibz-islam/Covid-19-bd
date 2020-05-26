@@ -11,6 +11,7 @@ target 'BD-Sta-Viz' do
     pod 'SwiftKeychainWrapper'
     pod 'SideMenu'
     pod 'SCLAlertView'
+    pod 'SwiftLocation', '~> 4.0'
 
   # Pods for BD-Sta-Viz
 

@@ -33,17 +33,17 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         if isDemographicData == false {
             if let loc = self.location {
                 if loc.name == Constants.LocationConstants.defaultCountryName {
-                    if LocationManager.shared.dictForAllRecords[loc.name] != nil {
+                    if DataManager.shared.dictForAllRecords[loc.name] != nil {
                         loadInitialDataForSummary()
                     }else{
-                        LocationManager.shared.getSummaryPastCasesForLocation(withLocation: loc)
+                        DataManager.shared.getSummaryPastCasesForLocation(withLocation: loc)
                         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveSummaryPastCases(_:)), name: .kDidLoadSummaryPastCasesInformationNotification, object: nil)
                     }
                 }else{
-                    if LocationManager.shared.dictForAllRecords[loc.name] != nil {
+                    if DataManager.shared.dictForAllRecords[loc.name] != nil {
                         loadInitialData()
                     }else{
-                        LocationManager.shared.getPastCasesForLocation(withLocation: loc)
+                        DataManager.shared.getPastCasesForLocation(withLocation: loc)
                         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceivePastCases(_:)), name: .kDidLoadPastCasesInformation, object: nil)
                     }
                 }
@@ -82,8 +82,8 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     
     func loadInitialData() {
         if let loc = self.location {
-            if LocationManager.shared.dictForAllRecords[loc.name] != nil {
-                var ordered = LocationManager.shared.dictForAllRecords[loc.name]!
+            if DataManager.shared.dictForAllRecords[loc.name] != nil {
+                var ordered = DataManager.shared.dictForAllRecords[loc.name]!
                 if ordered.count > maxRecords {
                     let arraySlice = ordered.suffix(maxRecords)
                     ordered = Array(arraySlice)
@@ -108,8 +108,8 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     
     func loadInitialDataForSummary() {
         if let loc = self.location {
-            if LocationManager.shared.dictForAllRecords[loc.name] != nil {
-                var ordered = LocationManager.shared.dictForAllRecords[loc.name]!
+            if DataManager.shared.dictForAllRecords[loc.name] != nil {
+                var ordered = DataManager.shared.dictForAllRecords[loc.name]!
                 if ordered.count > 7 {
                     let arraySlice = ordered.suffix(7)
                     ordered = Array(arraySlice)
@@ -134,12 +134,12 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     
     func loadInitialDataForPopulation() {
         if self.demoLocation?.name == Constants.LocationConstants.defaultCountryName {
-            let populationList = LocationManager.shared.getDemographicPopulationListByYear()
-            self.dateList = LocationManager.shared.listForTimestamps
+            let populationList = DataManager.shared.getDemographicPopulationListByYear()
+            self.dateList = DataManager.shared.listForTimestamps
             loadChartForPopulation(withPopulationList: populationList)
         }
         else{
-            if let locationList = LocationManager.shared.dictForDemographicInfo[demoLocation!.name] {
+            if let locationList = DataManager.shared.dictForDemographicInfo[demoLocation!.name] {
                 let orderedList = locationList.sorted(by: {$0.date < $1.date })
                 var populationList = [Int]()
                 for location in orderedList {

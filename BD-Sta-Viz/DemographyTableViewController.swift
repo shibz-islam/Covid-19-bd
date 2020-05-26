@@ -104,10 +104,10 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         // Dequeue with the reuse identifier
         let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
-        header.titleLabel.text = "Bangladesh"
+        header.titleLabel.text = Constants.ViewControllerConstants.defaultCountryName
         header.casesLabel.text = formatNumber(withNumber: totalCasesCountryLevel)
-        header.headerTitleLabel.text = "Region"
-        header.headerSubTitleLabel.text = "Population"
+        header.headerTitleLabel.text = Constants.ViewControllerConstants.labelRegion
+        header.headerSubTitleLabel.text = Constants.ViewControllerConstants.labelPopulation
         let tapGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(headerTapped(_:))
@@ -142,10 +142,10 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     private func loadInitialData() {
-        if LocationManager.shared.dictForDemographicInfo.count > 0 {
+        if DataManager.shared.dictForDemographicInfo.count > 0 {
             self.locations.removeAll()
             self.totalCasesCountryLevel = 0
-            self.locations = LocationManager.shared.getDemographicData()
+            self.locations = DataManager.shared.getDemographicData()
             for location in self.locations{
                 self.totalCasesCountryLevel = self.totalCasesCountryLevel + location.population
             }

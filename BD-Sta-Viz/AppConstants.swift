@@ -58,11 +58,6 @@ enum Constants {
         static let keyMeta: String = "meta"
     }
     
-    enum ViewControllerConstants {
-        static let segmentedControlFirstIndex: String = "District"
-        static let segmentedControlSecondIndex: String = "Dhaka City"
-    }
-    
     enum StoryboardConstants {
         static let sideMenuNavigationControllerID: String = "RightMenuNavigationController"
     }
@@ -87,5 +82,15 @@ enum Constants {
         static let appBaseUrlString: String = "http://149.165.157.107:1972/api/"
         static let keyForApiTimestamps: String = "timestamps?"
         static let keyForApiData: String = "data?"
+    }
+    
+    
+    enum ViewControllerConstants {
+        static let segmentedControlFirstIndex: String = NSLocalizedString("District", comment: "")
+        static let segmentedControlSecondIndex: String = NSLocalizedString("Dhaka", comment: "") + " " + NSLocalizedString("City", comment: "")
+        static let defaultCountryName: String = NSLocalizedString("Bangladesh", comment: "")
+        static let defaultCityName: String = NSLocalizedString("Dhaka", comment: "")
+        static let labelRegion: String = NSLocalizedString("Region", comment: "")
+        static let labelPopulation: String = NSLocalizedString("Population", comment: "")
     }
 }
