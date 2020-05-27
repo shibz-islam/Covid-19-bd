@@ -73,7 +73,7 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
         }else{
             location = self.locations[indexPath.row]
         }
-        cell.locationNameLabel?.text = location.name
+        cell.locationNameLabel?.text = NSLocalizedString(location.name, comment: "")
         cell.countLabel?.text = formatNumber(withNumber: location.population)
         
         return cell

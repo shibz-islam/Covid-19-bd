@@ -6,7 +6,6 @@
   Copyright © 2020 shihab. All rights reserved.
 */
 
-"Dhaka" = "ঢাকা";
 "Bangladesh" = "বাংলাদেশ";
 "Region" = "অঞ্চল";
 "District" = "জেলা";
@@ -14,3 +13,73 @@
 "Population" = "জনসংখ্যা";
 "increase" = "বৃদ্ধি";
 "decrease" = "হ্রাস";
+
+/* View Controller captions*/
+"Tap to see details..." = "বিস্তারিত দেখতে আলতো চাপুন";
+
+/* District Names */
+"Dhaka" = "ঢাকা";
+"Kurigram" = "কুড়িগ্রাম";
+"Lalmonirhat" = "লালমনিরহাট";
+"Nilphamari" = "নীলফামারি";
+"Panchagarh" = "পঞ্চগড়";
+"Rangpur" = "রংপুর";
+"Thakurgaon" = "ঠাকুরগাঁও";
+"Habiganj" = "হবিগঞ্জ";
+"Moulvibazar" = "মৌলভীবাজার";
+"Sunamganj" = "সুনামগঞ্জ";
+"Sylhet" = "সিলেট";
+"Barguna" = "বরগুনা";
+"Barisal" = "বরিশাল";
+"Bhola" = "ভোলা";
+"Jhalokati" = "ঝালকাঠি";
+"Patuakhali" = "পটুয়াখালি";
+"Pirojpur" = "পিরোজপুর";
+"Bandarban" = "বান্দরবান";
+"Brahmanbaria" = "ব্রাহ্মণবাড়িয়া";
+"Chandpur" = "চাঁদপুর";
+"Chittagong" = "চট্টগ্রাম";
+"Comilla" = "কুমিল্লা";
+"Cox's Bazar" = "কক্সবাজার";
+"Feni" = "ফেনী";
+"Khagrachhari" = "খাগড়াছড়ি";
+"Lakshmipur" = "লক্ষ্মীপুর";
+"Noakhali" = "নোয়াখালি";
+"Rangamati" = "রাঙ্গামাটি";
+"Faridpur" = "ফরিদপুর";
+"Gazipur" = "গাজীপুর";
+"Gopalganj" = "গোপালগঞ্জ";
+"Kishoreganj" = "কিশোরগঞ্জ";
+"Madaripur" = "মাদারিপুর";
+"Manikganj" = "মানিকগঞ্জ";
+"Munshiganj" = "মুন্সিগঞ্জ";
+"Narayanganj" = "নারায়ণগঞ্জ";
+"Narsingdi" = "নরসিংদি";
+"Rajbari" = "রাজবাড়ি";
+"Shariatpur" = "শরিয়তপুর";
+"Tangail" = "টাঙ্গাইল";
+"Bagerhat" = "বাগেরহাট";
+"Chuadanga" = "চুয়াডাঙ্গা";
+"Jessore" = "যশোর";
+"Jhenaidaha" = "ঝিনাইদহ";
+"Khulna" = "খুলনা";
+"Kushtia" = "কুষ্টিয়া";
+"Magura" = "মাগুরা";
+"Meherpur" = "মেহেরপুর";
+"Narail" = "নড়াইল";
+"Satkhira" = "সাতক্ষীরা";
+"Jamalpur" = "জামালপুর";
+"Mymensingh" = "ময়মনসিংহ";
+"Netrokona" = "নেত্রকোনা";
+"Sherpur" = "শেরপুর";
+"Bogra" = "বগুড়া";
+"Jaipurhat" = "জয়পুরহাট";
+"Naogaon" = "নওগাঁ";
+"Natore" = "নাটোর";
+"Chapai Nawabganj" = "চাঁপাইনবাবগঞ্জ";
+"Pabna" = "পাবনা";
+"Rajshahi" = "রাজশাহী";
+"Sirajganj" = "সিরাজগঞ্জ";
+"Dinajpur" = "দিনাজপুর";
+"Gaibandha" = "গাইবান্ধা";
+
