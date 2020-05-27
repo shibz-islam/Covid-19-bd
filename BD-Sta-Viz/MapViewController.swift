@@ -87,6 +87,17 @@ class MapViewController: UIViewController {
             }
             print("*** Authorization status changed to \(newState)")
         }
+        // Once authorization is granted, above code won't execute
+        LocationManager.shared.locateFromGPS(.oneShot, accuracy: .any) { (result) in
+            switch result {
+                case .failure(let error):
+                    debugPrint("Received error (VC): \(error)")
+                    self.showDefaultLocationOnMap()
+                case .success(let location):
+                    debugPrint("Location received (VC): \(location)")
+                    self.showLocationOnMap(withLocation: location)
+            }
+        }
     }
     
     private func showAlertForLocation(){

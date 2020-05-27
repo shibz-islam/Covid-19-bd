@@ -246,10 +246,11 @@ class ApplicationManager {
                 case .success(let location):
                     debugPrint("Location received: \(location)")
                     self.sendUserLocationData(withLocation: location)
+                    //NotificationCenter.default.post(name: .kDidLoadLocationServiceNotification, object: nil)
             }
         }
         request.dataFrequency = .fixed(minInterval: 300, minDistance: 100)
-        //NotificationCenter.default.post(name: .kDidLoadLocationServiceNotification, object: nil)
+        
     }
     
     func sendUserLocationData(withLocation location: CLLocation) {
