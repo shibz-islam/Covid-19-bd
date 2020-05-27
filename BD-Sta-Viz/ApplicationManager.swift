@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import CoreLocation
+import SwiftLocation
 
 
 /// Singleton Class for managing Application flow
@@ -166,12 +168,6 @@ class ApplicationManager {
             }
         }
     }
-    
-    // MARK: - Location Service
-    func startLocationService() {
-        print("startLocationService")
-        NotificationCenter.default.post(name: .kDidLoadLocationServiceNotification, object: nil)
-    }
 
     // MARK: - Population info
     func fetchDemographicInfoFromServer() {
@@ -239,6 +235,33 @@ class ApplicationManager {
 
     }
     
+    // MARK: - Location Service
+    func startLocationService() {
+        print("startLocationService")
+        LocationManager.shared.requireUserAuthorization(.whenInUse)
+        let request = LocationManager.shared.locateFromGPS(.continous, accuracy: .house) { result in
+            switch result {
+                case .failure(let error):
+                    debugPrint("Received error: \(error)")
+                case .success(let location):
+                    debugPrint("Location received: \(location)")
+                    self.sendUserLocationData(withLocation: location)
+            }
+        }
+        request.dataFrequency = .fixed(minInterval: 300, minDistance: 100)
+        //NotificationCenter.default.post(name: .kDidLoadLocationServiceNotification, object: nil)
+    }
     
+    func sendUserLocationData(withLocation location: CLLocation) {
+        if let id = CoreDataManager.shared.retrieveValueFromKeychain(withKey: Constants.KeyStrings.keyAppID) {
+            AuthenticationManager.shared.sendRequestForUploadingUserLocation(withID: id, withLocation: location) { (isSuccess, message) in
+                if isSuccess {
+                    print("Successfully logged user location")
+                }
+            }
+        }else{
+            checkAppIdentifier()
+        }
+    }
     
 }//end of Class

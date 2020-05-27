@@ -11,13 +11,13 @@ import MapKit
 import CoreLocation
 import GoogleMaps
 import SideMenu
+import SwiftLocation
 
 class MapViewController: UIViewController {
     @IBOutlet weak var mapView: GMSMapView?
     @IBOutlet weak var segmentedControl: UISegmentedControl?
     let myActivityIndicator = UIActivityIndicatorView()
     
-    var locationManager: CLLocationManager = CLLocationManager()
     var defaultLocation = CLLocation(latitude: Constants.LocationConstants.defaultLocationLatitude,
                                      longitude: Constants.LocationConstants.defaultLocationLongitude)
     var defaultLocationCity = CLLocation(latitude: Constants.LocationConstants.defaultLocationCityLatitude,
@@ -25,8 +25,6 @@ class MapViewController: UIViewController {
     var defaultZoomLevel: Float = 7.0
     var markers: [GMSMarker] = []
     var locations = [DemographyInfo]()
-    
-    var isDemographicInfo: Bool = true
     
     
     override func viewDidLoad() {
@@ -37,30 +35,13 @@ class MapViewController: UIViewController {
         segmentedControl?.isHidden = true
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .kDidLoadDemographyDataNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveLocationServiceNotification(_:)), name: .kDidLoadLocationServiceNotification, object: nil)
+        
         showActivityIndicator()
         loadInitialData()
         loadLocationManager()
     }
     
     // MARK: - Helper
-    
-    @objc private func onDidReceiveData(_ notification: Notification) {
-        print("onDidReceiveData...Map")
-        DispatchQueue.main.async {
-            //NotificationCenter.default.removeObserver(self, name: .kDidLoadDemographyDataNotification, object: nil)
-            self.loadInitialData()
-            self.removeActivityIndicator()
-        }
-    }
-    
-    @objc private func onDidReceiveLocationServiceNotification(_ notification: Notification) {
-        print("onDidReceiveLocationServiceNotification...")
-        DispatchQueue.main.async {
-            NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationServiceNotification, object: nil)
-            self.loadLocationManager()
-        }
-    }
-    
     private func loadInitialData() {
         if DataManager.shared.dictForDemographicInfo.count > 0 {
             do {
@@ -85,14 +66,26 @@ class MapViewController: UIViewController {
     }
     
     private func loadLocationManager(){
-        //self.locationManager = CLLocationManager()
-        self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        //locationManager.requestAlwaysAuthorization()
-        self.locationManager.requestWhenInUseAuthorization()
-        if CLLocationManager.locationServicesEnabled(){
-            print("#locationServicesEnabled")
-            locationManager.startUpdatingLocation()
+        LocationManager.shared.onAuthorizationChange.add { (newState) in
+            switch newState {
+                case .denied: fallthrough
+                case .disabled: fallthrough
+                case .undetermined: fallthrough
+                case .restricted:
+                    self.showDefaultLocationOnMap()
+                case .available:
+                    LocationManager.shared.locateFromGPS(.oneShot, accuracy: .any) { (result) in
+                        switch result {
+                            case .failure(let error):
+                                debugPrint("Received error (VC): \(error)")
+                                self.showDefaultLocationOnMap()
+                            case .success(let location):
+                                debugPrint("Location received (VC): \(location)")
+                                self.showLocationOnMap(withLocation: location)
+                        }
+                }
+            }
+            print("*** Authorization status changed to \(newState)")
         }
     }
     
@@ -108,6 +101,30 @@ class MapViewController: UIViewController {
         self.mapView?.camera = GMSCameraPosition(target: defaultLocation.coordinate, zoom: defaultZoomLevel, bearing: 0, viewingAngle: 0)
     }
     
+    private func showLocationOnMap(withLocation location: CLLocation){
+        self.mapView?.camera = GMSCameraPosition(target: location.coordinate, zoom: defaultZoomLevel, bearing: 0, viewingAngle: 0)
+        print("#Current Location: Lat=\(location.coordinate.latitude), Long=\(location.coordinate.longitude)")
+    }
+    
+    // MARK: - Notification Center
+    @objc private func onDidReceiveData(_ notification: Notification) {
+        print("onDidReceiveData...Map")
+        DispatchQueue.main.async {
+            //NotificationCenter.default.removeObserver(self, name: .kDidLoadDemographyDataNotification, object: nil)
+            self.loadInitialData()
+            self.removeActivityIndicator()
+        }
+    }
+    
+    @objc private func onDidReceiveLocationServiceNotification(_ notification: Notification) {
+        print("onDidReceiveLocationServiceNotification...")
+        DispatchQueue.main.async {
+            //NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationServiceNotification, object: nil)
+            self.loadLocationManager()
+        }
+    }
+    
+    // MARK: - Activity Indicator
     func showActivityIndicator() {
         myActivityIndicator.style = .medium
         myActivityIndicator.center = self.view.center
@@ -144,48 +161,6 @@ extension MapViewController: GMSMapViewDelegate{
     }
 }
 
-
-// MARK: - CLLocationManagerDelegate
-extension MapViewController: CLLocationManagerDelegate {
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-            case .restricted:
-                print("#Location access was restricted.")
-            case .denied:
-                print("#User denied access to location.")
-                showAlertForLocation()
-                showDefaultLocationOnMap()
-            case .notDetermined:
-                print("#Location status not determined.")
-                showAlertForLocation()
-                showDefaultLocationOnMap()
-            case .authorizedAlways: fallthrough
-            case .authorizedWhenInUse:
-                print("#Location status is OK.")
-                //showDefaultLocationOnMap()
-                locationManager.startUpdatingLocation()
-            @unknown default:
-                fatalError()
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else {
-            print("#Showing default location")
-            showDefaultLocationOnMap()
-            return
-        }
-        self.mapView?.camera = GMSCameraPosition(target: location.coordinate, zoom: defaultZoomLevel, bearing: 0, viewingAngle: 0)
-        locationManager.stopUpdatingLocation()
-        print("#Current Location: Lat=\(location.coordinate.latitude), Long=\(location.coordinate.longitude)")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error){
-        locationManager.stopUpdatingLocation()
-        print("Error \(error)")
-    }
-}
 
 // MARK: - SideMenuNavigationControllerDelegate
 extension MapViewController: SideMenuNavigationControllerDelegate {

@@ -188,7 +188,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
             //print(percentageText)
         }
         if let loc = self.location {
-            descriptionLabel.text = loc.name + "\n Current Patients = \(self.caseList.last!)" + percentageText
+            descriptionLabel.text = NSLocalizedString(loc.name, comment: "") + "\n Current Patients = \(self.caseList.last!)" + percentageText
         }
     }
     
@@ -248,7 +248,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
             percentageText = percentageText + "\(roundedFormat)%"
         }
         if let loc = self.location {
-            descriptionLabel.text = loc.name + "\n Current Patients = \(self.caseList.last!)" + percentageText
+            descriptionLabel.text = NSLocalizedString(loc.name, comment: "") + "\n Current Patients = \(self.caseList.last!)" + percentageText
         }
     }
     
@@ -261,7 +261,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
             dataEntries.append(dataEntry)
         }
         
-        let chartDataSet = BarChartDataSet(entries: dataEntries, label: "Population")
+        let chartDataSet = BarChartDataSet(entries: dataEntries, label: Constants.ViewControllerConstants.labelPopulation)
         chartDataSet.colors = [UIColor.themeDarkOrange]
         
         let chartData = BarChartData(dataSet: chartDataSet)
@@ -276,22 +276,32 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         setChartParameters()
         barChartView.leftAxis.valueFormatter = MyLeftAxisFormatter()
         
+        if let loc = self.demoLocation {
+            descriptionLabel.text = getDescriptionText(withTitleName: loc.name, withSubTitleName: Constants.ViewControllerConstants.labelPopulation, withList: populationList)
+        }
+        
+    }
+    
+    func getDescriptionText(withTitleName name:String, withSubTitleName subtitle:String, withList valueList:[Int]) -> String {
         var percentageText: String = ""
-        if populationList.count > 1{
-            let prev = populationList[populationList.count-2]
-            var increase: Double = Double((Double(populationList.last!) - Double(prev))*100/Double(prev))
+        if valueList.count > 1{
+            let prev = valueList[valueList.count-2]
+            var increase: Double = Double((Double(valueList.last!) - Double(prev))*100/Double(prev))
             if increase >= 0 {
-                percentageText = "increase = "
+                percentageText = NSLocalizedString("increase", comment: "")
             }
             else{
-                percentageText = "decrease = "
+                percentageText = NSLocalizedString("decrease", comment: "")
                 increase = abs(increase)
             }
             let roundedFormat = String(format: "%.2f", increase)
-            percentageText = percentageText + "\(roundedFormat)%"
-        }
-        if let loc = self.demoLocation {
-            descriptionLabel.text = loc.name + "\n Population " + percentageText
+            percentageText = percentageText + " = " + NSLocalizedString("\(roundedFormat)%", comment: "")
+            
+            let textStr: String = NSLocalizedString(name, comment: "") + "\n" + NSLocalizedString(subtitle, comment: "") + " " + percentageText
+            
+            return textStr
+        }else{
+            return NSLocalizedString(name, comment: "")
         }
     }
     

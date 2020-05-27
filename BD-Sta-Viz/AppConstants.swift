@@ -35,6 +35,7 @@ enum Constants {
         static let keyForApiPrediction: String = "predictions/?"
         static let keyNextDay: String = "nextday"
         static let keyOneWeek: String = "7days"
+        static let keyForUpdateLocation: String = "log_location"
     }
     
     enum ServerKeywords {

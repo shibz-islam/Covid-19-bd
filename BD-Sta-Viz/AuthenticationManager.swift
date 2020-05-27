@@ -139,7 +139,6 @@ class AuthenticationManager {
     
     func sendRequestForLocationInfoWithKey(key: String, completionHandler: @escaping(_ isSuccess: Bool?, _ location: CLLocation?)->Void){
         let json: [String] = [key]
-        
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         
         // create post request
@@ -167,7 +166,7 @@ class AuthenticationManager {
                     let json = try JSON(data: data!)
                     //print(json)
                     //print(json["payload"][key])
-                    if json["status"] == "error" {
+                    if json[Constants.ServerKeywords.keyStatus].stringValue == Constants.ServerKeywords.keyError {
                         print("Received Error Status")
                         completionHandler(false, nil)
                     }else{
@@ -183,7 +182,6 @@ class AuthenticationManager {
                 }
             }
         }
-        
         task.resume()
     }
     
@@ -523,6 +521,72 @@ class AuthenticationManager {
                     print("Error: \(error)")
                     print("JSON error: \(error.localizedDescription)")
                     completionHandler(false, Constants.ServerKeywords.keyError, [])
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    // MARK: - User Location
+    func sendRequestForUploadingUserLocation(withID id:String, withLocation location:CLLocation, completionHandler: @escaping(_ isSuccess: Bool, _ message:String?)->Void){
+        
+        let json: JSON = [
+            "id": id,
+            "locations": [
+                [
+                    "time": location.timestamp.currentUTCTimeZoneDate,
+                    "lat": location.coordinate.latitude,
+                    "long": location.coordinate.longitude
+                ]
+            ]
+        ]
+        //print(json)
+//        if (!JSONSerialization.isValidJSONObject(json)) {
+//            print("is not a valid json object")
+//            return
+//        }
+        
+        // create post request
+        let url = URL(string: kApiBaseURL + Constants.ApiConstants.keyForUpdateLocation)!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        do {
+            let jsonData = try json.rawData()
+            request.httpBody = jsonData
+            //Do something you want
+        } catch {
+            print("Error JSON \(error)")
+        }
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        print("call to server with api: \(String(describing: url.absoluteString))")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("error: \(error)")
+            } else {
+                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                    print("Server error!")
+                    return
+                }
+                guard let mime = response.mimeType, mime == "application/json" else {
+                    print("Wrong MIME type!")
+                    //print(response.mimeType)
+                    return
+                }
+                do {
+                    let json = try JSON(data: data!)
+                    //print(json)
+                    if json[Constants.ServerKeywords.keyStatus].stringValue == Constants.ServerKeywords.keyError {
+                        print("Received Error Status")
+                        completionHandler(false, nil)
+                    }else{
+                        completionHandler(true, nil)
+                    }
+                } catch {
+                    print("Error: \(error)")
+                    print("JSON error: \(error.localizedDescription)")
+                    completionHandler(false, nil)
                 }
             }
         }

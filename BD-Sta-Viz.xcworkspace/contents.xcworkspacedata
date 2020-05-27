@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:kalabagan.gpx">
+   </FileRef>
+   <FileRef
+      location = "group:dhaka.gpx">
+   </FileRef>
+   <FileRef
       location = "group:/Users/shihab/Documents/Xcode/CovidTest/BD-Sta-Viz.xcodeproj">
    </FileRef>
    <FileRef

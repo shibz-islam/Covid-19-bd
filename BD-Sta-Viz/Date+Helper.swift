@@ -27,10 +27,29 @@ extension Date {
         return dayAfter.month != month
     }
     
+    var currentUTCTimeZoneDate: String {
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        formatter.amSymbol = "AM"
+        formatter.pmSymbol = "PM"
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        return formatter.string(from: self)
+    }
+    
     func getStringDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let formattedDateString = dateFormatter.string(from: self)
         return formattedDateString
     }
+    
+    func getStringTimestamp() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let formattedDateString = dateFormatter.string(from: self)
+        return formattedDateString
+    }
+    
+    
 }

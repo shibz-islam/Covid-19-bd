@@ -254,9 +254,8 @@ class CoreDataManager {
         let saveSuccessful: Bool = KeychainWrapper.standard.set(value, forKey: key)
         return saveSuccessful
     }
-    func retrieveValueFromKeychain(withKey key:String) -> String {
-        let retrievedString = KeychainWrapper.standard.string(forKey: key)!
-        return retrievedString
+    func retrieveValueFromKeychain(withKey key:String) -> String? {
+        return KeychainWrapper.standard.string(forKey: key)
     }
     func deleteValueFromKeychain(withKey key:String) -> Bool {
         let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: key)
