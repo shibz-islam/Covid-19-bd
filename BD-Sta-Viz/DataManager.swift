@@ -30,29 +30,21 @@ class DataManager {
             AuthenticationManager.shared.sendRequestForLocationData(withIsLevelCity: isLevelCity, withDate: date, completionHandler: { (isSuccess, message, locationArray) in
                 if isSuccess == true {
                     //print(locationArray)
-                    var count: Int = 0
-                    let totalRequest: Int = locationArray?.count ?? 0
-                    //print("totalRequest \(totalRequest)")
-                    for loc in locationArray ?? []{
-                        //count = count + 1
-                        let key = loc.name + "," + loc.parent
-                        AuthenticationManager.shared.sendRequestForLocationInfoWithKey(key: key) { (isSuccess, location) in
-                            count = count + 1
-                            if isSuccess == true{
-                                loc.latitude = location?.coordinate.latitude as! Double
-                                loc.longitude = location?.coordinate.longitude as! Double
+                    AuthenticationManager.shared.sendRequestForLocationInfoWithLocationList(withLocationList: locationArray ?? []) { (isSuccess, locationList) in
+                        if isSuccess == true{
+                            for loc in locationList ?? [] {
                                 if isLevelCity == true {
                                     self.dictForCityLocation[loc.name] = loc
                                 }else{
                                     self.dictForDistrictLocation[loc.name] = loc
                                 }
-                                
-                                if count == totalRequest {
-                                    completionHandler(true, message)
-                                }
                             }
-                        }//end of completionHandler
-                    }//end loop
+                            completionHandler(true, message)
+                        }
+                        else{
+                            completionHandler(false, message)
+                        }
+                    }
                 }//end if
                 else{
                     completionHandler(false, message)

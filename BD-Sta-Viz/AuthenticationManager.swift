@@ -137,8 +137,13 @@ class AuthenticationManager {
     
     
     
-    func sendRequestForLocationInfoWithKey(key: String, completionHandler: @escaping(_ isSuccess: Bool?, _ location: CLLocation?)->Void){
-        let json: [String] = [key]
+    func sendRequestForLocationInfoWithLocationList(withLocationList locationList: [LocationInfo], completionHandler: @escaping(_ isSuccess: Bool?, _ locationList: [LocationInfo]?)->Void){
+        var keyList = [String]()
+        for loc in locationList{
+            let key = loc.name + "," + loc.parent
+            keyList.append(key)
+        }
+        let json: [String] = keyList
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         
         // create post request
@@ -148,7 +153,7 @@ class AuthenticationManager {
         request.httpBody = jsonData
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        //print("call to server with api: \(String(describing: url.absoluteString))")
+        print("call to server with api: \(String(describing: url.absoluteString))")
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -170,10 +175,15 @@ class AuthenticationManager {
                         print("Received Error Status")
                         completionHandler(false, nil)
                     }else{
-                        if let latitude = json["payload"][key]["lat"].numberValue as? Double, let longitude = json["payload"][key]["lng"].numberValue as? Double {
-                            let location = CLLocation(latitude: latitude, longitude: longitude)
-                            completionHandler(true, location)
+                        for item in json["payload"].dictionaryValue {
+                            let key = item.key.components(separatedBy: ",")[0]
+                            if let location = locationList.first(where: {$0.name == key}) {
+                                location.latitude = Double(truncating: item.value["lat"].numberValue)
+                                location.longitude = Double(truncating: item.value["lng"].numberValue)
+                            }
                         }
+                        print("Number of location coordinates received: \(json["payload"].dictionaryValue.count)")
+                        completionHandler(true, locationList)
                     }
                 } catch {
                     print("Error: \(error)")

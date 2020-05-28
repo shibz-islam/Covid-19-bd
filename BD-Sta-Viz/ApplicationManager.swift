@@ -69,7 +69,7 @@ class ApplicationManager {
         DataManager.shared.getLocationData(withIsLevelCity: isLevelCity, withDate: date, completionHandler: { (isSuccess, message) in
             if isSuccess == true {
                 if isLevelCity {
-                    print("Success, total count: \(DataManager.shared.dictForCityLocation.count)")
+                    //print("Success, total count: \(DataManager.shared.dictForCityLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
@@ -77,7 +77,7 @@ class ApplicationManager {
                     }
                 }
                 else{
-                    print("Success, total count: \(DataManager.shared.dictForDistrictLocation.count)")
+                    //print("Success, total count: \(DataManager.shared.dictForDistrictLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
@@ -105,7 +105,7 @@ class ApplicationManager {
         DataManager.shared.getLocationData(withIsLevelCity: isLevelCity, withDate: date, completionHandler: { (isSuccess, message) in
             if isSuccess == true {
                 if isLevelCity {
-                    print("Success, total count: \(DataManager.shared.dictForCityLocation.count)")
+                    //print("Success, total count: \(DataManager.shared.dictForCityLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
@@ -113,7 +113,7 @@ class ApplicationManager {
                     }
                 }
                 else{
-                    print("Success, total count: \(DataManager.shared.dictForDistrictLocation.count)")
+                    //print("Success, total count: \(DataManager.shared.dictForDistrictLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                     DispatchQueue.main.async {
                         CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
@@ -224,44 +224,36 @@ class ApplicationManager {
                     }
                     isEmpty = true
                 }
-                
-                var count: Int = 0
-                let totalRequest: Int = infoArray.count
-                for loc in infoArray {
-                    /* if no coordinate is available for locations, fetch the coordinates */
-                    if isEmpty == false{
-                        count = count + 1
+                if isEmpty {
+                    AuthenticationManager.shared.sendRequestForLocationInfoWithLocationList(withLocationList: infoArray) { (isSuccess, locationList) in
+                        if isSuccess == true{
+                            for loc in locationList ?? []{
+                                if let demoLoc = infoArray.first(where: {$0.name == loc.name}) {
+                                    demoLoc.latitude = loc.latitude
+                                    demoLoc.longitude = loc.longitude
+                                    DataManager.shared.dictForDemographicInfo[loc.name] = [demoLoc]
+                                }
+                            }
+                            NotificationCenter.default.post(name: .kDidLoadDemographyDataNotification, object: nil)
+                            DispatchQueue.main.async {
+                                CoreDataManager.shared.storeDemographyInfo(withList: infoArray)
+                            }
+                        }
+                    }
+                }
+                else{
+                    for loc in infoArray{
                         if let demoList = DataManager.shared.dictForDemographicInfo[loc.name] {
                             let item = demoList.first
                             loc.latitude = item?.latitude ?? 0
                             loc.longitude = item?.longitude ?? 0
                             DataManager.shared.dictForDemographicInfo[loc.name]?.append(loc)
                         }
-                        
-                        if count == infoArray.count {
-                            DispatchQueue.main.async {
-                                CoreDataManager.shared.storeDemographyInfo(withList: infoArray)
-                            }
-                        }
                     }
-                    else{
-                        let key = loc.name + "," + loc.parent
-                        AuthenticationManager.shared.sendRequestForLocationInfoWithKey(key: key) { (isSuccess, location) in
-                            count = count + 1
-                            if isSuccess == true{
-                                loc.latitude = location?.coordinate.latitude ?? 0
-                                loc.longitude = location?.coordinate.longitude ?? 0
-                                DataManager.shared.dictForDemographicInfo[loc.name] = [loc]
-                                if count == totalRequest {
-                                    NotificationCenter.default.post(name: .kDidLoadDemographyDataNotification, object: nil)
-                                    DispatchQueue.main.async {
-                                        CoreDataManager.shared.storeDemographyInfo(withList: infoArray)
-                                    }
-                                }
-                            }
-                        }//end of completionHandler
+                    DispatchQueue.main.async {
+                        CoreDataManager.shared.storeDemographyInfo(withList: infoArray)
                     }
-                }//end loop
+                }
             }
         }
     }
@@ -270,7 +262,8 @@ class ApplicationManager {
     func startLocationService() {
         print("startLocationService")
         LocationManager.shared.requireUserAuthorization(.whenInUse)
-        let request = LocationManager.shared.locateFromGPS(.continous, accuracy: .house) { result in
+        let distance: CLLocationDistance = 50 //meter
+        let request = LocationManager.shared.locateFromGPS(.significant, accuracy: .block, distance: distance) { result in
             switch result {
                 case .failure(let error):
                     debugPrint("Received error: \(error)")
@@ -280,7 +273,7 @@ class ApplicationManager {
                     //NotificationCenter.default.post(name: .kDidLoadLocationServiceNotification, object: nil)
             }
         }
-        request.dataFrequency = .fixed(minInterval: 300, minDistance: 100)
+        //request.dataFrequency = .fixed(minInterval: 30, minDistance: 100)
     }
     
     func sendUserLocationData(withLocation location: CLLocation) {
