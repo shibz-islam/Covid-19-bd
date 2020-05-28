@@ -57,13 +57,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ehb-Kd-Zh4"/>
                     </view>
-                    <navigationItem key="navigationItem" id="a0I-8a-QDx">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="ellipsis" catalog="system" id="SUA-og-7aH">
-                            <connections>
-                                <segue destination="Wpb-34-qeJ" kind="show" id="4tC-es-Olz"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="a0I-8a-QDx"/>
                     <connections>
                         <outlet property="predTableView" destination="Ann-xW-RKN" id="8AN-Q4-FIB"/>
                     </connections>
