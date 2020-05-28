@@ -12,7 +12,7 @@ import SafariServices
 class SideMenuTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var menuTableView: UITableView!
-    let menu = ["Home", "About the App", "About Us"]
+    let menu = ["Home", "Latest Statistics" , "About the App", "About Us"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,9 +62,11 @@ class SideMenuTableViewController: UIViewController, UITableViewDelegate, UITabl
             case 0:
                 image = UIImage(systemName: "house", withConfiguration: symbolConf)?.withTintColor(.white, renderingMode: .alwaysOriginal)
             case 1:
-                image = UIImage(systemName: "info.circle", withConfiguration: symbolConf)?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                image = UIImage(systemName: "hand.point.right", withConfiguration: symbolConf)?.withTintColor(.white, renderingMode: .alwaysOriginal)
             case 2:
-                image = UIImage(systemName: "doc.plaintext", withConfiguration: symbolConf)?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                image = UIImage(systemName: "info.circle", withConfiguration: symbolConf)?.withTintColor(.white, renderingMode: .alwaysOriginal)
+            case 3:
+                image = UIImage(systemName: "person.2.square.stack", withConfiguration: symbolConf)?.withTintColor(.white, renderingMode: .alwaysOriginal)
             default: break
         }
         if let img = image {
@@ -82,10 +84,15 @@ class SideMenuTableViewController: UIViewController, UITableViewDelegate, UITabl
                 //Home
                 self.dismiss(animated: true, completion: nil)
             case 1:
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "tableVC") as! TableViewController
+                self.navigationController?.pushViewController(vc, animated: true)
+                //self.present(vc, animated: true, completion: nil)
+            case 2:
                 //Helpful sites
                 let svc = SFSafariViewController(url: Constants.AppUrls.aboutApp)
                 self.present(svc, animated: true, completion: nil)
-            case 2:
+            case 3:
                 //About us
                 let svc = SFSafariViewController(url: Constants.AppUrls.aboutUs)
                 self.present(svc, animated: true, completion: nil)

@@ -19,10 +19,10 @@ class ApplicationManager {
     
     func loadApplication() {
         checkAppIdentifier()
-        //checkForNewData(withIsLevelCity: false)
-        //checkForNewData(withIsLevelCity: true)
-        //checkForSummary()
         fetchDemographicInfoFromServer()
+        checkForNewData(withIsLevelCity: false)
+        checkForNewData(withIsLevelCity: true)
+        checkForSummary()
     }
     
     /// Check if App id is fetched from server
@@ -72,7 +72,7 @@ class ApplicationManager {
                     print("Success, total count: \(DataManager.shared.dictForCityLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     DispatchQueue.main.async {
-                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        //CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
                         CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDateForLevelCity)
                     }
                 }
@@ -80,7 +80,7 @@ class ApplicationManager {
                     print("Success, total count: \(DataManager.shared.dictForDistrictLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                     DispatchQueue.main.async {
-                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        //CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
                         CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDate)
                     }
                 }
@@ -108,7 +108,7 @@ class ApplicationManager {
                     print("Success, total count: \(DataManager.shared.dictForCityLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     DispatchQueue.main.async {
-                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        //CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
                         CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDateForLevelCity)
                     }
                 }
@@ -116,7 +116,7 @@ class ApplicationManager {
                     print("Success, total count: \(DataManager.shared.dictForDistrictLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                     DispatchQueue.main.async {
-                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        //CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
                         CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDate)
                     }
                 }
@@ -232,7 +232,6 @@ class ApplicationManager {
                 }//end loop
             }
         }
-
     }
     
     // MARK: - Location Service
@@ -249,8 +248,7 @@ class ApplicationManager {
                     //NotificationCenter.default.post(name: .kDidLoadLocationServiceNotification, object: nil)
             }
         }
-        request.dataFrequency = .fixed(minInterval: 300, minDistance: 100)
-        
+        //request.dataFrequency = .fixed(minInterval: 300, minDistance: 100)
     }
     
     func sendUserLocationData(withLocation location: CLLocation) {

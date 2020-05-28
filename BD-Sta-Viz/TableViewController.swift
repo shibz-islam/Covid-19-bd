@@ -29,7 +29,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search locations..."
+        searchController.searchBar.placeholder = NSLocalizedString("Search locations...", comment: "")
         tableView.tableHeaderView = searchController.searchBar
         definesPresentationContext = true
 
@@ -112,8 +112,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     return UITableViewCell()
             }
         }
-        cell.locationNameLabel?.text = location.name
-        cell.countLabel?.text = "\(location.cases)"
+        cell.locationNameLabel?.text = NSLocalizedString(location.name, comment: "")
+        cell.countLabel?.text = NSLocalizedString(String(location.cases), comment: "")
         
         return cell
     }
@@ -165,11 +165,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             case 0:
                 if let rec = self.record{
                     let detailedHeader = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomDetailSectionHeader") as! CustomDetailSectionHeaderView
-                    detailedHeader.nameLabel.text = rec.name
-                    detailedHeader.dateLabel.text = rec.date
-                    detailedHeader.casesLabel.text = String(rec.cases)
-                    detailedHeader.curedLabel.text = String(rec.recoveries)
-                    detailedHeader.deathLabel.text = String(rec.fatalities)
+                    detailedHeader.nameLabel.text = NSLocalizedString(rec.name, comment: "")
+                    detailedHeader.dateLabel.text = NSLocalizedString(rec.date, comment: "")
+                    detailedHeader.casesLabel.text = NSLocalizedString(String(rec.cases), comment: "")
+                    detailedHeader.curedLabel.text = NSLocalizedString(String(rec.recoveries), comment: "")
+                    detailedHeader.deathLabel.text = NSLocalizedString(String(rec.fatalities), comment: "")
+                    detailedHeader.headerTitleLabel.text = Constants.ViewControllerConstants.labelDistrict
                     let tapGestureRecognizer = UITapGestureRecognizer(
                         target: self,
                         action: #selector(headerTapped(_:))
@@ -178,14 +179,18 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     return detailedHeader
                 }else{
                     let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
-                    header.titleLabel.text = "Cases in Bangladesh"
-                    header.casesLabel.text = String(totalCasesCountryLevel)
+                    header.titleLabel.text = Constants.ViewControllerConstants.defaultCountryName
+                    header.casesLabel.text = NSLocalizedString(String(totalCasesCountryLevel), comment: "")
+                    header.headerTitleLabel.text = Constants.ViewControllerConstants.labelDistrict
+                    header.headerSubTitleLabel.text = Constants.ViewControllerConstants.labelCases
                     return header
                 }
             case 1:
                 let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
-                header.titleLabel.text = "Dhaka"
-                header.casesLabel.text = String(totalCases)
+                header.titleLabel.text = Constants.ViewControllerConstants.defaultCityName
+                header.casesLabel.text = NSLocalizedString(String(totalCases), comment: "")
+                header.headerTitleLabel.text = Constants.ViewControllerConstants.labelRegion
+                header.headerSubTitleLabel.text = Constants.ViewControllerConstants.labelCases
                 return header
             default:
                 break
@@ -208,7 +213,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     */
     
-    // MARK: - Helper
+    // MARK: - Notification
     
     @objc private func onDidReceiveData(_ notification: Notification) {
         print("onDidReceiveData from TableView")
@@ -234,15 +239,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    @objc func headerTapped(_ sender: UITapGestureRecognizer?) {
-        print("Section header tapped!")
-        let location = LocationInfo(name: Constants.LocationConstants.defaultCountryName, parent: "", level: Constants.KeyStrings.keyCountry, latitude: 0.0, longitude: 0.0, cases: 0, date: "")
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let barVC = storyboard.instantiateViewController(withIdentifier: "barChartVC") as! BarChartViewController
-        barVC.location = location
-        self.present(barVC, animated: true, completion: nil)
-    }
-    
+    // MARK: - Helper
     private func loadInitialData() {
         if DataManager.shared.dictForDistrictLocation.count > 0 {
             //print("***dictForDistrictLocation \(DataManager.shared.dictForDistrictLocation.count)")
@@ -295,6 +292,15 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 break
         }
         self.tableView.reloadData()
+    }
+    
+    @objc func headerTapped(_ sender: UITapGestureRecognizer?) {
+        print("Section header tapped!")
+        let location = LocationInfo(name: Constants.LocationConstants.defaultCountryName, parent: "", level: Constants.KeyStrings.keyCountry, latitude: 0.0, longitude: 0.0, cases: 0, date: "")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let barVC = storyboard.instantiateViewController(withIdentifier: "barChartVC") as! BarChartViewController
+        barVC.location = location
+        self.present(barVC, animated: true, completion: nil)
     }
     
     @objc func refreshData(_ sender: Any){
@@ -372,7 +378,7 @@ extension TableViewController: UISearchResultsUpdating {
     
         // Enable gestures. The left and/or right menus must be set up above for these to work.
         // Note that these continue to work on the Navigation Controller independent of the View Controller it displays!
-        SideMenuManager.default.addPanGestureToPresent(toView: navigationController!.navigationBar)
+        //SideMenuManager.default.addPanGestureToPresent(toView: navigationController!.navigationBar)
         //SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view)
     }
     
