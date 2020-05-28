@@ -92,6 +92,11 @@ enum Constants {
         static let defaultCountryName: String = NSLocalizedString("Bangladesh", comment: "")
         static let defaultCityName: String = NSLocalizedString("Dhaka", comment: "")
         static let labelRegion: String = NSLocalizedString("Region", comment: "")
+        static let labelDistrict: String = NSLocalizedString("District", comment: "")
         static let labelPopulation: String = NSLocalizedString("Population", comment: "")
+        static let labelCases: String = NSLocalizedString("Cases", comment: "")
+        static let labelCured: String = NSLocalizedString("Cured", comment: "")
+        static let labelCasualties: String = NSLocalizedString("Casualties", comment: "")
+        static let labelPercentage: String = NSLocalizedString("Percentage", comment: "")
     }
 }

@@ -38,7 +38,8 @@ class MapViewController: UIViewController {
         
         showActivityIndicator()
         loadInitialData()
-        loadLocationManager()
+        monitorLocationService()
+        loadLocation()
     }
     
     // MARK: - Helper
@@ -65,7 +66,7 @@ class MapViewController: UIViewController {
         }
     }
     
-    private func loadLocationManager(){
+    func monitorLocationService() {
         LocationManager.shared.onAuthorizationChange.add { (newState) in
             switch newState {
                 case .denied: fallthrough
@@ -87,16 +88,23 @@ class MapViewController: UIViewController {
             }
             print("*** Authorization status changed to \(newState)")
         }
-        // Once authorization is granted, above code won't execute
-        LocationManager.shared.locateFromGPS(.oneShot, accuracy: .any) { (result) in
-            switch result {
-                case .failure(let error):
-                    debugPrint("Received error (VC): \(error)")
-                    self.showDefaultLocationOnMap()
-                case .success(let location):
-                    debugPrint("Location received (VC): \(location)")
-                    self.showLocationOnMap(withLocation: location)
+    }
+    
+    private func loadLocation(){
+        if CLLocationManager.locationServicesEnabled() {
+            LocationManager.shared.locateFromGPS(.oneShot, accuracy: .any) { (result) in
+                switch result {
+                    case .failure(let error):
+                        debugPrint("Received error (VC): \(error)")
+                        self.showDefaultLocationOnMap()
+                    case .success(let location):
+                        debugPrint("Location received (VC): \(location)")
+                        self.showLocationOnMap(withLocation: location)
+                }
             }
+        }else{
+            print("Location service is disabled.")
+            self.showDefaultLocationOnMap()
         }
     }
     
@@ -131,7 +139,7 @@ class MapViewController: UIViewController {
         print("onDidReceiveLocationServiceNotification...")
         DispatchQueue.main.async {
             //NotificationCenter.default.removeObserver(self, name: .kDidLoadLocationServiceNotification, object: nil)
-            self.loadLocationManager()
+            self.loadLocation()
         }
     }
     

@@ -21,7 +21,7 @@ class CustomTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        self.subTitleLabel.text = NSLocalizedString("Tap to see details...", comment: "")
         // Configure the view for the selected state
     }
     

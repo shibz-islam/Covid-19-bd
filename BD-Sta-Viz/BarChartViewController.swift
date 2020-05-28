@@ -28,7 +28,8 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         super.viewDidLoad()
         
         barChartView.delegate = self
-        descriptionLabel.text = "No data for the chart right now. Please try again later..."
+        barChartView.noDataText = "No data for the chart right now. Please try again later..."
+        descriptionLabel.text = barChartView.noDataText
         
         if isDemographicData == false {
             if let loc = self.location {
@@ -155,7 +156,6 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
     }
     
     func loadChart() {
-        barChartView.noDataText = "No data for the chart right now. Please try again later"
         var dataEntries: [BarChartDataEntry] = []
         
         for i in 0..<self.dateList.count {
@@ -163,7 +163,7 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
             dataEntries.append(dataEntry)
         }
         
-        let chartDataSet = BarChartDataSet(entries: dataEntries, label: "Patients")
+        let chartDataSet = BarChartDataSet(entries: dataEntries, label: Constants.ViewControllerConstants.labelCases)
         chartDataSet.colors = [UIColor.themeDarkOrange]
         
         let chartData = BarChartData(dataSet: chartDataSet)
@@ -175,25 +175,12 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         
         setChartParameters()
         
-        var percentageText: String = ""
-        if self.caseList.count > 1{
-            let prev = self.caseList[self.caseList.count-2]
-            let increase: Double = Double((self.caseList.last! - prev)*100/prev)
-            if increase >= 0 {
-                percentageText = "\n with increase = \(increase)%"
-            }
-            else{
-                percentageText = "\n with decrease = \(abs(increase))%"
-            }
-            //print(percentageText)
-        }
         if let loc = self.location {
-            descriptionLabel.text = NSLocalizedString(loc.name, comment: "") + "\n Current Patients = \(self.caseList.last!)" + percentageText
+            descriptionLabel.text = getDescriptionText(withTitleName: loc.name, withSubTitleName: Constants.ViewControllerConstants.labelPercentage, withList: self.caseList)
         }
     }
     
     func loadSummaryChart() {
-        barChartView.noDataText = "No data for the chart right now. Please try again later..."
         var dataEntries: [BarChartDataEntry] = []
         var dataEntriesCured: [BarChartDataEntry] = []
         var dataEntriesDeaths: [BarChartDataEntry] = []
@@ -204,9 +191,9 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
             dataEntriesDeaths.append(BarChartDataEntry(x: Double(i), y: Double(self.deathList[i])))
         }
         
-        let chartDataSet = BarChartDataSet(entries: dataEntries, label: "Patients")
-        let chartDataSetCured = BarChartDataSet(entries: dataEntriesCured, label: "Cured")
-        let chartDataSetDeaths = BarChartDataSet(entries: dataEntriesDeaths, label: "Fatalities")
+        let chartDataSet = BarChartDataSet(entries: dataEntries, label: Constants.ViewControllerConstants.labelCases)
+        let chartDataSetCured = BarChartDataSet(entries: dataEntriesCured, label: Constants.ViewControllerConstants.labelCured)
+        let chartDataSetDeaths = BarChartDataSet(entries: dataEntriesDeaths, label: Constants.ViewControllerConstants.labelCasualties)
         chartDataSet.colors = [UIColor.themeDarkOrange]
         chartDataSetCured.colors = [UIColor.themePaleGreen]
         chartDataSetDeaths.colors = [UIColor.themeDarkRed]
@@ -232,28 +219,12 @@ class BarChartViewController: UIViewController, ChartViewDelegate {
         barChartView.data = chartData
         
         setChartParameters()
-        
-        var percentageText: String = ""
-        if self.caseList.count > 1{
-            let prev = self.caseList[self.caseList.count-2]
-            var increase: Double = Double((Double(self.caseList.last!) - Double(prev))*100/Double(prev))
-            if increase >= 0 {
-                percentageText = "\n with increase = "
-            }
-            else{
-                percentageText = "\n with decrease = "
-                increase = abs(increase)
-            }
-            let roundedFormat = String(format: "%.2f", increase)
-            percentageText = percentageText + "\(roundedFormat)%"
-        }
         if let loc = self.location {
-            descriptionLabel.text = NSLocalizedString(loc.name, comment: "") + "\n Current Patients = \(self.caseList.last!)" + percentageText
+            descriptionLabel.text = getDescriptionText(withTitleName: loc.name, withSubTitleName: Constants.ViewControllerConstants.labelPercentage, withList: self.caseList)
         }
     }
     
     func loadChartForPopulation(withPopulationList populationList:[Int]) {
-        barChartView.noDataText = "No data for the chart right now. Please try again later"
         var dataEntries: [BarChartDataEntry] = []
         
         for i in 0..<self.dateList.count {

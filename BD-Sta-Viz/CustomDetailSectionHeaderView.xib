@@ -9,7 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" restorationIdentifier="CustomDetailSectionHeader" id="iN0-l3-epB" customClass="CustomDetailSectionHeaderView" customModule="Covid19_BD" customModuleProvider="target">
+        <view contentMode="scaleToFill" restorationIdentifier="CustomDetailSectionHeader" id="iN0-l3-epB" customClass="CustomDetailSectionHeaderView" customModule="BD_Sta_Viz" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="381" height="150"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -211,12 +211,17 @@
             <connections>
                 <outlet property="bottomSectionHeaderView" destination="Cox-WC-pfA" id="cIi-93-yeV"/>
                 <outlet property="casesLabel" destination="jLC-Gs-hLf" id="2LI-86-NFW"/>
+                <outlet property="casesTitleLabel" destination="2zY-fE-Fkl" id="d6O-eP-fEg"/>
                 <outlet property="casesView" destination="lkK-2b-dwt" id="Dcf-zh-E9s"/>
                 <outlet property="curedLabel" destination="4gL-D4-X3N" id="cxK-z4-FMf"/>
+                <outlet property="curedTitleLabel" destination="aS2-NF-vbX" id="LpG-iV-Fld"/>
                 <outlet property="curedView" destination="K3h-zY-qiC" id="RSt-aj-PK2"/>
                 <outlet property="dateLabel" destination="Bvq-LZ-T0B" id="yVP-nU-St4"/>
                 <outlet property="deathLabel" destination="D1R-yk-Jil" id="iY2-lx-Be1"/>
+                <outlet property="deathTitleLabel" destination="Tdc-Uw-wQD" id="n6i-ST-Kqi"/>
                 <outlet property="deathView" destination="hv3-vN-Tcp" id="JoO-AZ-ixU"/>
+                <outlet property="headerSubTitleLabel" destination="uRW-HF-IJJ" id="HzV-tu-kU8"/>
+                <outlet property="headerTitleLabel" destination="YIr-eq-xxd" id="AEO-lA-qoC"/>
                 <outlet property="nameLabel" destination="AgU-MS-0Xx" id="YaB-1n-lAc"/>
                 <outlet property="topLevelView" destination="Loc-8W-1kU" id="XZy-3r-KMv"/>
             </connections>

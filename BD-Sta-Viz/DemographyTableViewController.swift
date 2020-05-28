@@ -27,7 +27,7 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
         
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search locations..."
+        searchController.searchBar.placeholder = NSLocalizedString("Search locations...", comment: "")
         tableView.tableHeaderView = searchController.searchBar
         definesPresentationContext = true
         
@@ -75,7 +75,6 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
         }
         cell.locationNameLabel?.text = NSLocalizedString(location.name, comment: "")
         cell.countLabel?.text = NSLocalizedString(formatNumber(withNumber: location.population), comment: "")
-        cell.subTitleLabel.text = NSLocalizedString("Tap to see details...", comment: "")
         
         return cell
     }
@@ -107,7 +106,7 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
         let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: "CustomSectionHeader") as! CustomSectionHeaderView
         header.titleLabel.text = Constants.ViewControllerConstants.defaultCountryName
         header.casesLabel.text = formatNumber(withNumber: totalCasesCountryLevel)
-        header.headerTitleLabel.text = Constants.ViewControllerConstants.labelRegion
+        header.headerTitleLabel.text = Constants.ViewControllerConstants.labelDistrict
         header.headerSubTitleLabel.text = Constants.ViewControllerConstants.labelPopulation
         let tapGestureRecognizer = UITapGestureRecognizer(
             target: self,
@@ -164,6 +163,7 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
     func formatNumber(withNumber num:Int) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
+        //formatter.locale = Locale.init(identifier: "bn")
         formatter.locale = Locale.current
         return formatter.string(from: NSNumber(value: num))!
     }
