@@ -22,7 +22,10 @@ class CustomSectionHeaderView: UITableViewHeaderFooterView {
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         // Drawing code
-        self.backgroundWrapperViewTop.backgroundColor = UIColor.themeLightGreen
+        self.backgroundWrapperViewTop.backgroundColor = UIColor.themeLightOrange
         self.backgroundWrapperViewBottom.backgroundColor = UIColor.themeWhiteSmoke
+//        if self.traitCollection.userInterfaceStyle == .dark{
+//            
+//        }
     }
 }

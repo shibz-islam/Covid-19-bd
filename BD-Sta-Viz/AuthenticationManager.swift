@@ -116,7 +116,7 @@ class AuthenticationManager {
                                                         date: dateString)
                             locationArray.append(location)
                         }
-                        print("Numner of location received: \(locationArray.count)")
+                        print("Number of location received: \(locationArray.count)")
                         if locationArray.count > 0 {
                             completionHandler(true, nil, locationArray)
                         } else {
@@ -225,7 +225,7 @@ class AuthenticationManager {
                             recordArray.append(record)
                         }
                         
-                        print("Numner of cases received: \(recordArray.count)")
+                        print("Number of cases received: \(recordArray.count)")
                         if recordArray.count > 0 {
                             completionHandler(true, recordArray)
                         } else{
@@ -331,7 +331,7 @@ class AuthenticationManager {
                             recordArray.append(record)
                         }
                         
-                        print("Numner of cases received: \(recordArray.count)")
+                        print("Number of cases received: \(recordArray.count)")
                         if recordArray.count > 0 {
                             completionHandler(true, recordArray)
                         } else{
@@ -394,7 +394,7 @@ class AuthenticationManager {
                             recordArray.append(record)
                         }
                         
-                        print("Numner of cases received: \(recordArray.count)")
+                        print("Number of cases received: \(recordArray.count)")
                         if recordArray.count > 0 {
                             completionHandler(true, Constants.ServerKeywords.keySuccess, recordArray)
                         } else{
@@ -450,7 +450,7 @@ class AuthenticationManager {
                             timestampArray.append(yearString)
                         }
                         
-                        print("Numner of data received: \(timestampArray.count)")
+                        print("Number of data received: \(timestampArray.count)")
                         if timestampArray.count > 0 {
                             completionHandler(true, Constants.ServerKeywords.keySuccess, timestampArray)
                         } else{
@@ -510,7 +510,7 @@ class AuthenticationManager {
                             infoArray.append(demo)
                         }
                         
-                        print("Numner of data received: \(infoArray.count)")
+                        print("Number of data received: \(infoArray.count)")
                         if infoArray.count > 0 {
                             completionHandler(true, Constants.ServerKeywords.keySuccess, infoArray)
                         } else{
