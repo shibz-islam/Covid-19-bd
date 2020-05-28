@@ -73,6 +73,8 @@ enum Constants {
     
     enum UserDefaults {
         static let keyPredictionRecordLastUpdateDateDistrictLevel: String = "PredictionRecordLastUpdateDateDistrictLevel"
+        static let keyAppLastUpdateDate: String = "keyAppLastUpdateDate"
+        static let keyAppLastUpdateDateForLevelCity: String = "keyAppLastUpdateDateForLevelCity"
     }
     
     enum CoreDataConstants {
@@ -87,6 +89,11 @@ enum Constants {
     
     
     enum ViewControllerConstants {
+        static let pageTitleHome: String = NSLocalizedString("Home", comment: "")
+        static let pageTitleAboutApp: String = NSLocalizedString("About the App", comment: "")
+        static let pageTitleAboutUs: String = NSLocalizedString("About Us", comment: "")
+        static let pageTitleRecentStat: String = NSLocalizedString("Recent Statistics", comment: "")
+        
         static let segmentedControlFirstIndex: String = NSLocalizedString("District", comment: "")
         static let segmentedControlSecondIndex: String = NSLocalizedString("Dhaka", comment: "") + " " + NSLocalizedString("City", comment: "")
         static let defaultCountryName: String = NSLocalizedString("Bangladesh", comment: "")
