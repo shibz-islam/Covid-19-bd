@@ -72,7 +72,7 @@ class ApplicationManager {
                     print("Success, total count: \(DataManager.shared.dictForCityLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     DispatchQueue.main.async {
-                        //CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
                         CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDateForLevelCity)
                     }
                 }
@@ -80,7 +80,7 @@ class ApplicationManager {
                     print("Success, total count: \(DataManager.shared.dictForDistrictLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                     DispatchQueue.main.async {
-                        //CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
                         CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDate)
                     }
                 }
@@ -108,7 +108,7 @@ class ApplicationManager {
                     print("Success, total count: \(DataManager.shared.dictForCityLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformationForCity, object: nil)
                     DispatchQueue.main.async {
-                        //CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
                         CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDateForLevelCity)
                     }
                 }
@@ -116,7 +116,7 @@ class ApplicationManager {
                     print("Success, total count: \(DataManager.shared.dictForDistrictLocation.count)")
                     NotificationCenter.default.post(name: .kDidLoadLocationInformation, object: nil)
                     DispatchQueue.main.async {
-                        //CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
+                        CoreDataManager.shared.storeLocationInfo(withIsLevelCity: isLevelCity)
                         CoreDataManager.shared.storeValueInKeychain(withValue: date.getStringDate(), withKey: Constants.KeyStrings.keyAppLastUpdateDate)
                     }
                 }
@@ -178,12 +178,34 @@ class ApplicationManager {
                     let timeList = timestampArray.sorted(by: { $0 < $1 })
                     DataManager.shared.listForTimestamps = timeList
                     if DataManager.shared.dictForDemographicInfo.count == 0 {
-                        self.fetchDemographicInfoFromServer(withTimestamp: timeList.last ?? "")
-                        for i in 0..<timeList.count-1{
-                            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5) {
-                                self.fetchDemographicInfoFromServer(withTimestamp: timeList[i])
+                        // Fetch data from CoreData
+                        DispatchQueue.main.async {
+                            var infolist = CoreDataManager.shared.fetchDemographyInfo(withName: "", withDate: timeList.last!)
+                            if infolist.count > 0 {
+                                print("DemographyInfo available in CoreData...")
+                                infolist = CoreDataManager.shared.fetchDemographyInfo(withName: "", withDate: timeList.last!)
+                                for loc in infolist {
+                                    DataManager.shared.dictForDemographicInfo[loc.name] = [loc]
+                                }
+                                for i in 0..<timeList.count-1{
+                                    infolist = CoreDataManager.shared.fetchDemographyInfo(withName: "", withDate: timeList[i])
+                                    for loc in infolist {
+                                        DataManager.shared.dictForDemographicInfo[loc.name]?.append(loc)
+                                    }
+                                    NotificationCenter.default.post(name: .kDidLoadDemographyDataNotification, object: nil)
+                                }
+                            }
+                            else{
+                                print("DemographyInfo not available in CoreData...")
+                                self.fetchDemographicInfoFromServer(withTimestamp: timeList.last ?? "")
+                                for i in 0..<timeList.count-1{
+                                    DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5) {
+                                        self.fetchDemographicInfoFromServer(withTimestamp: timeList[i])
+                                    }
+                                }
                             }
                         }
+                        
                     }
                 }
             }
@@ -208,11 +230,18 @@ class ApplicationManager {
                 for loc in infoArray {
                     /* if no coordinate is available for locations, fetch the coordinates */
                     if isEmpty == false{
+                        count = count + 1
                         if let demoList = DataManager.shared.dictForDemographicInfo[loc.name] {
                             let item = demoList.first
                             loc.latitude = item?.latitude ?? 0
                             loc.longitude = item?.longitude ?? 0
                             DataManager.shared.dictForDemographicInfo[loc.name]?.append(loc)
+                        }
+                        
+                        if count == infoArray.count {
+                            DispatchQueue.main.async {
+                                CoreDataManager.shared.storeDemographyInfo(withList: infoArray)
+                            }
                         }
                     }
                     else{
@@ -225,6 +254,9 @@ class ApplicationManager {
                                 DataManager.shared.dictForDemographicInfo[loc.name] = [loc]
                                 if count == totalRequest {
                                     NotificationCenter.default.post(name: .kDidLoadDemographyDataNotification, object: nil)
+                                    DispatchQueue.main.async {
+                                        CoreDataManager.shared.storeDemographyInfo(withList: infoArray)
+                                    }
                                 }
                             }
                         }//end of completionHandler
@@ -248,7 +280,7 @@ class ApplicationManager {
                     //NotificationCenter.default.post(name: .kDidLoadLocationServiceNotification, object: nil)
             }
         }
-        //request.dataFrequency = .fixed(minInterval: 300, minDistance: 100)
+        request.dataFrequency = .fixed(minInterval: 300, minDistance: 100)
     }
     
     func sendUserLocationData(withLocation location: CLLocation) {

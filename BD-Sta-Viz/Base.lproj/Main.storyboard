@@ -356,13 +356,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9uM-oY-1sd"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="W0E-uO-5fm">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="ellipsis" catalog="system" id="0hl-HT-4Ti">
-                            <connections>
-                                <segue destination="Wpb-34-qeJ" kind="show" id="8ms-1g-Eq7"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Title" id="W0E-uO-5fm"/>
                     <connections>
                         <outlet property="segmentedControl" destination="87L-ad-io9" id="c4L-aS-bIb"/>
                         <outlet property="tableView" destination="DJf-cl-V0e" id="RTP-bZ-2mM"/>
@@ -381,7 +375,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pvV-BK-6Up">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="lzD-kP-b9y" style="IBUITableViewCellStyleDefault" id="PQn-ec-mDW">
@@ -524,7 +518,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="8ms-1g-Eq7"/>
+        <segue reference="cN3-Cf-IBh"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Close" width="44" height="44"/>

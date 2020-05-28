@@ -216,9 +216,9 @@ class CoreDataManager {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: kLocationInfoEntity)
         
-        let predicate1 = NSPredicate(format:"name == %@", name)
-        if date.count > 0 {
-            let predicate2 = NSPredicate(format:"date == %@", date)
+        let predicate1 = NSPredicate(format:"date == %@", date)
+        if name.count > 0 {
+            let predicate2 = NSPredicate(format:"name == %@", name)
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
         }else{
             fetchRequest.predicate = predicate1
