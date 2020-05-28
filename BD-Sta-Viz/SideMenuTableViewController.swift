@@ -12,7 +12,10 @@ import SafariServices
 class SideMenuTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var menuTableView: UITableView!
-    let menu = ["Home", "Latest Statistics" , "About the App", "About Us"]
+    let menu = [Constants.ViewControllerConstants.pageTitleHome,
+                Constants.ViewControllerConstants.pageTitleRecentStat,
+                Constants.ViewControllerConstants.pageTitleAboutApp,
+                Constants.ViewControllerConstants.pageTitleAboutUs]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,12 +87,13 @@ class SideMenuTableViewController: UIViewController, UITableViewDelegate, UITabl
                 //Home
                 self.dismiss(animated: true, completion: nil)
             case 1:
+                // Recent Stat
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "tableVC") as! TableViewController
                 self.navigationController?.pushViewController(vc, animated: true)
                 //self.present(vc, animated: true, completion: nil)
             case 2:
-                //Helpful sites
+                //About App
                 let svc = SFSafariViewController(url: Constants.AppUrls.aboutApp)
                 self.present(svc, animated: true, completion: nil)
             case 3:

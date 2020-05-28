@@ -55,8 +55,10 @@ class DemographyTableViewController: UIViewController, UITableViewDelegate, UITa
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.isFiltering {
+            self.filteredLocations.count == 0 ? tableView.setEmptyView(title: Constants.ViewControllerConstants.pageNoDataMessageTitle, message: Constants.ViewControllerConstants.pageNoDataMessageSubTitle) : tableView.restore()
             return self.filteredLocations.count
         }else{
+            self.locations.count == 0 ? tableView.setEmptyView(title: Constants.ViewControllerConstants.pageNoDataMessageTitle, message: Constants.ViewControllerConstants.pageNoDataMessageSubTitle) : tableView.restore()
             return self.locations.count
         }
     }
@@ -218,3 +220,4 @@ extension DemographyTableViewController: SideMenuNavigationControllerDelegate {
         print("SideMenu Disappeared! (animated: \(animated))")
     }
 }
+

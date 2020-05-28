@@ -94,6 +94,9 @@ enum Constants {
         static let pageTitleAboutUs: String = NSLocalizedString("About Us", comment: "")
         static let pageTitleRecentStat: String = NSLocalizedString("Recent Statistics", comment: "")
         
+        static let pageNoDataMessageTitle: String = NSLocalizedString("No data available.", comment: "")
+        static let pageNoDataMessageSubTitle: String = NSLocalizedString("Please try again later...", comment: "")
+        
         static let segmentedControlFirstIndex: String = NSLocalizedString("District", comment: "")
         static let segmentedControlSecondIndex: String = NSLocalizedString("Dhaka", comment: "") + " " + NSLocalizedString("City", comment: "")
         static let defaultCountryName: String = NSLocalizedString("Bangladesh", comment: "")
